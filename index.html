@@ -215,6 +215,151 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lwy">
+      <meta itemprop="description" content="茫茫人海，总会与你相遇">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lwy的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">EOSIOAnalyzer架构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-13 19:00:39" itemprop="dateCreated datePublished" datetime="2021-12-13T19:00:39+08:00">2021-12-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-22 14:25:22" itemprop="dateModified" datetime="2021-12-22T14:25:22+08:00">2021-12-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/EOSIO/" itemprop="url" rel="index"><span itemprop="name">EOSIO</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" class="post-meta-item leancloud_visitors" data-flag-title="EOSIOAnalyzer架构" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <meta name="referrer" content="no-referrer" />
+
+<h1 id="EOSIOAnalyzer"><a href="#EOSIOAnalyzer" class="headerlink" title="EOSIOAnalyzer"></a>EOSIOAnalyzer</h1><p><strong>目录</strong></p>
+<ul>
+<li><p><a href="#0">EOSIOAnalyzer 框架</a></p>
+<ul>
+<li><p><a href="#1">Control flow graph builder</a></p>
+</li>
+<li><p><a href="#2">Static analyzer</a></p>
+<ul>
+<li><a href="#2.1">将得到的Wasm CFG转为IR CFG</a></li>
+<li><a href="#2.2">对IR CFG基本块进行数据流分析</a></li>
+<li><a href="#2.3">输出所有的EDB文件</a></li>
+<li><a href="#2.4">程序介绍</a></li>
+<li><a href="#2.5">分析脚本</a></li>
+<li><a href="#2.6">Datalog规范</a></li>
+</ul>
+</li>
+<li><p><a href="#3">Vulnerability detector</a></p>
+<ul>
+<li><a href="#3.1">Fake EOS Transfer</a></li>
+<li><a href="#3.2">Forged Transfer Notification</a></li>
+<li><a href="#3.3">Block Information Dependency</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lwy0518.github.io/2021/12/22/Hexo-NexT-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -584,154 +729,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/12/21/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lwy">
-      <meta itemprop="description" content="茫茫人海，总会与你相遇">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lwy的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-              <span class="post-sticky-flag" title="置顶">
-                <i class="fa fa-thumbtack"></i>
-              </span>
-            <a href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">EOSIOAnalyzer架构</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-13 19:00:39" itemprop="dateCreated datePublished" datetime="2021-12-13T19:00:39+08:00">2021-12-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-22 14:15:05" itemprop="dateModified" datetime="2021-12-22T14:15:05+08:00">2021-12-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/EOSIO/" itemprop="url" rel="index"><span itemprop="name">EOSIO</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" class="post-meta-item leancloud_visitors" data-flag-title="EOSIOAnalyzer架构" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <meta name="referrer" content="no-referrer" />
-
-<h1 id="EOSIOAnalyzer"><a href="#EOSIOAnalyzer" class="headerlink" title="EOSIOAnalyzer"></a>EOSIOAnalyzer</h1><p><strong>目录</strong></p>
-<ul>
-<li><p><a href="#0">EOSIOAnalyzer 框架</a></p>
-<ul>
-<li><p><a href="#1">Control flow graph builder</a></p>
-</li>
-<li><p><a href="#2">Static analyzer</a></p>
-<ul>
-<li><a href="#2.1">将得到的Wasm CFG转为IR CFG</a></li>
-<li><a href="#2.2">对IR CFG基本块进行数据流分析</a></li>
-<li><a href="#2.3">输出所有的EDB文件</a></li>
-<li><a href="#2.4">程序介绍</a></li>
-<li><a href="#2.5">分析脚本</a></li>
-<li><a href="#2.6">Datalog规范</a></li>
-</ul>
-</li>
-<li><p><a href="#3">Vulnerability detector</a></p>
-<ul>
-<li><a href="#3.1">Fake EOS Transfer</a></li>
-<li><a href="#3.2">Forged Transfer Notification</a></li>
-<li><a href="#3.3">Block Information Dependency</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

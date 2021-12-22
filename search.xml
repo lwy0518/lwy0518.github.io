@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>EOSIOAnalyzer架构</title>
+    <url>/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h1 id="EOSIOAnalyzer"><a href="#EOSIOAnalyzer" class="headerlink" title="EOSIOAnalyzer"></a>EOSIOAnalyzer</h1><p><strong>目录</strong></p>
+<ul>
+<li><p><a href="#0">EOSIOAnalyzer 框架</a></p>
+<ul>
+<li><p><a href="#1">Control flow graph builder</a></p>
+</li>
+<li><p><a href="#2">Static analyzer</a></p>
+<ul>
+<li><a href="#2.1">将得到的Wasm CFG转为IR CFG</a></li>
+<li><a href="#2.2">对IR CFG基本块进行数据流分析</a></li>
+<li><a href="#2.3">输出所有的EDB文件</a></li>
+<li><a href="#2.4">程序介绍</a></li>
+<li><a href="#2.5">分析脚本</a></li>
+<li><a href="#2.6">Datalog规范</a></li>
+</ul>
+</li>
+<li><p><a href="#3">Vulnerability detector</a></p>
+<ul>
+<li><a href="#3.1">Fake EOS Transfer</a></li>
+<li><a href="#3.2">Forged Transfer Notification</a></li>
+<li><a href="#3.3">Block Information Dependency</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h3 id="EOSIOAnalyzer-1"><a href="#EOSIOAnalyzer-1" class="headerlink" title=" EOSIOAnalyzer"></a><span id="0"> EOSIOAnalyzer</span></h3><hr>
+<p>EOSIOAnalyzer是一个用于分析EOSIO智能合约字节码的分析框架。分析框架由三个部分组成：</p>
+<ul>
+<li>Control flow graph builder</li>
+<li>Static analyzer</li>
+<li>Vulnerability detector</li>
+</ul>
+<p>以上是该框架的主要部分。除了<strong>Vulnerability detector</strong>部分是通过 Datalog编写的（执行引擎为<a href="https://souffle-lang.github.io/">Souffle</a>)，其他部分均用python编写。</p>
+<blockquote>
+<p>Datalog大约900行，python大约3000行</p>
+</blockquote>
+<p>下图是其框架图：</p>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213160448317.png" class="" title="EOSIOAnalyzer框架">
+
+<h4 id="Control-flow-graph-builder"><a href="#Control-flow-graph-builder" class="headerlink" title=" Control flow graph builder"></a><span id="1"> Control flow graph builder</span></h4><p>​    输入为Wasm字节码，如果是源代码，可以用现有的编译器（<a href="https://github.com/llvm/llvm-project">llvm</a>，<a href="https://github.com/EOSIO/eosio.cdt">eosio.cdt</a>，<a href="https://github.com/emscripten-core/emscripten">emscripten</a>，<a href="https://github.com/rust-lang/rustup">rustup</a>等等）编译为字节码，然后基于现有开源工具<a href="https://github.com/lwy0518/octopus">Octopus</a>将Wasm字节码构造对应的控制流图，作为下一步的输入</p>
+<h4 id="Static-analyzer"><a href="#Static-analyzer" class="headerlink" title="Static analyzer"></a><span id="2">Static analyzer</span></h4><blockquote>
+<p> 这是EOSIOAnalyzer的核心。由于EOS VM的基于堆栈的紧凑执行模型混淆了跳转地址，所以将 Wasm字节码转换为中间表示，其中执行堆栈被寄存器变量替换，然后构建合约的过程间控制流图（ICFG）以进行漏洞分析</p>
+</blockquote>
+<h5 id="将得到的Wasm-CFG转为IR-CFG"><a href="#将得到的Wasm-CFG转为IR-CFG" class="headerlink" title="将得到的Wasm CFG转为IR CFG"></a><span id="2.1">将得到的Wasm CFG转为IR CFG</span></h5><p>​    将上一步得到的Wasm CFG进行转换，将低级的wasm指令转为更高级中间表示（IR）</p>
+<h5 id="对IR-CFG基本块进行数据流分析"><a href="#对IR-CFG基本块进行数据流分析" class="headerlink" title="对IR CFG基本块进行数据流分析"></a><span id="2.2">对IR CFG基本块进行数据流分析</span></h5><p>​    对得到的IR CFG进行数据流分析，得到完整的数据传播关系（Def_Use）</p>
+<blockquote>
+<p>细粒度分析得到过程内CFG（intra-procedural control flow graph）以及粗粒度分析得到调用图（call graph），结合得到过程间控制流图（ICFG，inter-procedural control flow graph）</p>
+</blockquote>
+<p>​    具体过程如下：</p>
+<ul>
+<li>将 Wasm字节码转为Wasm基本块（在<a href="#1">Control flow graph builder</a>中已经实现）</li>
+<li>将每个Wasm基本块转为对应的IR基本块</li>
+<li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
+</ul>
+<h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
+<li>edge：包含块内与块间之间的边</li>
+<li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
+<li>use：每个语句需要使用之前定义的变量</li>
+<li>op：wasm操作码</li>
+<li>value：程序中的常量</li>
+<li>imm：操作码需要的立即数</li>
+<li>block_in_function：每个函数包含的块名</li>
+<li>func_call_edge：包含所有直接调用（call）以及间接调用（call_indirect）之间的边</li>
+<li>in_function：每个函数包含的语句（statement）</li>
+<li>is_function：程序中的所有函数（包括import、export、local）</li>
+<li>function_types：只包含export和local函数的签名（参数及返回值）</li>
+<li>static_datas：程序中的常量及字符串</li>
+<li>block_dom：包含块内与块间的dominator关系</li>
+<li>types：间接调用对应的函数类型（call_indirect的第一个立即数）</li>
+</ul>
+<h5 id="程序介绍"><a href="#程序介绍" class="headerlink" title="程序介绍"></a><span id="2.4">程序介绍</span></h5><blockquote>
+<p>实现：目录<em>src</em>下包含大部分python程序，下面将介绍这些程序功能 </p>
+</blockquote>
+<ul>
+<li><code>src/cfg.py</code>：定义基类<code>ControlFlowGraph</code>和<code>BasicBlock</code></li>
+<li><code>src/wasm_cfg.py</code>：专门的<code>cfg.ControlFlowGraph</code>和<code>cfg.BasicBlock</code>用于表示Wasm字节码的控制流图</li>
+<li><code>src/ir_cfg.py</code>：专门<code>wasm_cfg.*</code>用于在我们的中间表示中表示合约的类。实现定义<code>ir_cfg.Destackifier</code>了一个将单个<code>wasm_cfg.EVMBasicBlock</code>实例转换为<code>ir_cfg.IRBasicBlock</code>实例的类；和辅助类<code>IROp</code>, <code>IRAssignOp</code>, <code>IRArg</code>,<code>IRCallOp</code> 以及<code>IRLocRef</code>我们的中间表示</li>
+<li><code>src/exporter.py</code>：定义了从给定的控制流图生成 EOSIOAnalyzer输出表示的类。在其构造函数中接受一个 CFG 实例，并包含一个产生输出的<code>export()</code>函数，输出所有<a href="#2.3">EDB文件</a></li>
+<li><code>src/dataflow.py</code>：</li>
+<li><code>src/lattice.py</code>：实现<a href="https://en.wikipedia.org/wiki/Lattice_(order)">lattice</a>类，用于定点数据流分析</li>
+<li><code>src/memtypes.py</code>：用于表示和使用我们的 IR 中使用的寄存器变量的类。变量可以是常数、设定值或未知</li>
+<li><code>src/wasm_inst.py</code>：使用<a href="https://webassembly.github.io/spec/core/appendix/index-instructions.html">官方文档</a>中的信息定义 Wasm指令集</li>
+<li><code>src/number.py</code>：包含所有与<em>number</em>相关的函数和类</li>
+<li><code>src/requirement.txt</code>：包含程序运行所需要的包</li>
+</ul>
+<h5 id="分析脚本"><a href="#分析脚本" class="headerlink" title="分析脚本"></a><span id="2.5">分析脚本</span></h5><blockquote>
+<p>我们的分析脚本<code>tools/bulk_analysis.py</code>可以分析单个合约字节码目录，也可以分析包含多个智能合约字节码目录（可以多线程运行），只需修改路径即可。结合Souffle 引擎以及编写的<a href="#3">漏洞规则</a>，最终会输出一个<strong>json</strong>格式的文件，包含最终的漏洞分析结果</p>
+</blockquote>
+<h5 id="Datalog规范"><a href="#Datalog规范" class="headerlink" title="Datalog规范"></a><span id="2.6">Datalog规范</span></h5><blockquote>
+<p>我们编写的Datalog规则在目录<code>tools/spec.dl</code>、<code>tools/instructions.dl</code>中</p>
+</blockquote>
+<p>例如，以下规则用于检测<strong>Fake EOS Transfer</strong>漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.decl DetectFakedEosTransfer(call_stmt: Statement)</span><br><span class="line">.output DetectFakedEosTransfer</span><br><span class="line"></span><br><span class="line">DetectFakedEosTransfer(call_stmt) :-</span><br><span class="line">    NotEosioToken(true_stmt),</span><br><span class="line">    Call_Transfer(call_stmt),</span><br><span class="line">    Dominates(call_stmt, true_stmt).</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Vulnerability-detector"><a href="#Vulnerability-detector" class="headerlink" title="Vulnerability detector"></a><span id="3">Vulnerability detector</span></h4><img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172803305.png" class="" title="漏洞特征组合">
+
+<h5 id="Fake-EOS-Transfer"><a href="#Fake-EOS-Transfer" class="headerlink" title="Fake EOS Transfer"></a><span id="3.1">Fake EOS Transfer</span></h5><blockquote>
+<p>描述：由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人。或者直接调用漏洞合约的transfer函数进行转账</p>
+</blockquote>
+<blockquote>
+<p>规则：<em>code == N(eosio.token)  –&gt;  action == N(transfer)</em><br>     在apply函数中，看是否存在这样一条验证路径，如存在则不存在该漏洞，反之则存在；</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172533141.png" class="" title="Fake EOS Transfer检测规则">
+
+<h5 id="Forged-Transfer-Notification"><a href="#Forged-Transfer-Notification" class="headerlink" title="Forged Transfer Notification"></a><span id="3.2">Forged Transfer Notification</span></h5><blockquote>
+<p>描述：攻击者在 EOS 网络中控制两个账户 A 和 B，通过账户 A 向账户 B 发送真正的 EOS，eosio.token 合约在转账成功后会向 B 发送 notification。当账户 B 收到 notification后随即转发到受害者智能合约 C</p>
+</blockquote>
+<blockquote>
+<p> <em>Transfer  –&gt;  _self == to</em><br>      在找到的所以可能“transfer”函数中，看是否存在*_self*与to的比较，如存在则不存在该漏洞，反之则存在；</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172547651.png" class="" title="Forged Transfer Notification检测规则">
+
+<h5 id="Block-Information-Dependency"><a href="#Block-Information-Dependency" class="headerlink" title="Block Information Dependency"></a><span id="3.3">Block Information Dependency</span></h5><blockquote>
+<p>描述：开发者一般调用tapos_block_prefix或tapos_block_number获得区块链信息，并将其返回值作为控制流的判断条件，并最后触发调用send_inline函数进行转账行为</p>
+</blockquote>
+<blockquote>
+<p><em>tapos_block_prefix/tapos_block_num  –&gt;  send_inline</em><br>     如果存在一条由<em>tapos_block_prefix/tapos_block_num</em>函数作为控制条件并最后触发<em>send_inline</em>函数的调用，则存在该漏洞，反之不存在</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png" class="" title="Block Information Dependency检测规则">
+
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>编译器</tag>
+        <tag>漏洞检测</tag>
+        <tag>静态分析</tag>
+        <tag>Datalog</tag>
+        <tag>CFG</tag>
+        <tag>IR</tag>
+        <tag>数据流</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo NexT 主题更新</title>
     <url>/2021/12/22/Hexo-NexT-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />
@@ -450,151 +595,6 @@
       </tags>
   </entry>
   <entry>
-    <title>EOSIOAnalyzer架构</title>
-    <url>/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h1 id="EOSIOAnalyzer"><a href="#EOSIOAnalyzer" class="headerlink" title="EOSIOAnalyzer"></a>EOSIOAnalyzer</h1><p><strong>目录</strong></p>
-<ul>
-<li><p><a href="#0">EOSIOAnalyzer 框架</a></p>
-<ul>
-<li><p><a href="#1">Control flow graph builder</a></p>
-</li>
-<li><p><a href="#2">Static analyzer</a></p>
-<ul>
-<li><a href="#2.1">将得到的Wasm CFG转为IR CFG</a></li>
-<li><a href="#2.2">对IR CFG基本块进行数据流分析</a></li>
-<li><a href="#2.3">输出所有的EDB文件</a></li>
-<li><a href="#2.4">程序介绍</a></li>
-<li><a href="#2.5">分析脚本</a></li>
-<li><a href="#2.6">Datalog规范</a></li>
-</ul>
-</li>
-<li><p><a href="#3">Vulnerability detector</a></p>
-<ul>
-<li><a href="#3.1">Fake EOS Transfer</a></li>
-<li><a href="#3.2">Forged Transfer Notification</a></li>
-<li><a href="#3.3">Block Information Dependency</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<span id="more"></span>
-
-<h3 id="EOSIOAnalyzer-1"><a href="#EOSIOAnalyzer-1" class="headerlink" title=" EOSIOAnalyzer"></a><span id="0"> EOSIOAnalyzer</span></h3><hr>
-<p>EOSIOAnalyzer是一个用于分析EOSIO智能合约字节码的分析框架。分析框架由三个部分组成：</p>
-<ul>
-<li>Control flow graph builder</li>
-<li>Static analyzer</li>
-<li>Vulnerability detector</li>
-</ul>
-<p>以上是该框架的主要部分。除了<strong>Vulnerability detector</strong>部分是通过 Datalog编写的（执行引擎为<a href="https://souffle-lang.github.io/">Souffle</a>)，其他部分均用python编写。</p>
-<blockquote>
-<p>Datalog大约900行，python大约3000行</p>
-</blockquote>
-<p>下图是其框架图：</p>
-<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213160448317.png" class="" title="EOSIOAnalyzer框架">
-
-<h4 id="Control-flow-graph-builder"><a href="#Control-flow-graph-builder" class="headerlink" title=" Control flow graph builder"></a><span id="1"> Control flow graph builder</span></h4><p>​    输入为Wasm字节码，如果是源代码，可以用现有的编译器（<a href="https://github.com/llvm/llvm-project">llvm</a>，<a href="https://github.com/EOSIO/eosio.cdt">eosio.cdt</a>，<a href="https://github.com/emscripten-core/emscripten">emscripten</a>，<a href="https://github.com/rust-lang/rustup">rustup</a>等等）编译为字节码，然后基于现有开源工具<a href="https://github.com/lwy0518/octopus">Octopus</a>将Wasm字节码构造对应的控制流图，作为下一步的输入</p>
-<h4 id="Static-analyzer"><a href="#Static-analyzer" class="headerlink" title="Static analyzer"></a><span id="2">Static analyzer</span></h4><blockquote>
-<p> 这是EOSIOAnalyzer的核心。由于EOS VM的基于堆栈的紧凑执行模型混淆了跳转地址，所以将 Wasm字节码转换为中间表示，其中执行堆栈被寄存器变量替换，然后构建合约的过程间控制流图（ICFG）以进行漏洞分析</p>
-</blockquote>
-<h5 id="将得到的Wasm-CFG转为IR-CFG"><a href="#将得到的Wasm-CFG转为IR-CFG" class="headerlink" title="将得到的Wasm CFG转为IR CFG"></a><span id="2.1">将得到的Wasm CFG转为IR CFG</span></h5><p>​    将上一步得到的Wasm CFG进行转换，将低级的wasm指令转为更高级中间表示（IR）</p>
-<h5 id="对IR-CFG基本块进行数据流分析"><a href="#对IR-CFG基本块进行数据流分析" class="headerlink" title="对IR CFG基本块进行数据流分析"></a><span id="2.2">对IR CFG基本块进行数据流分析</span></h5><p>​    对得到的IR CFG进行数据流分析，得到完整的数据传播关系（Def_Use）</p>
-<blockquote>
-<p>细粒度分析得到过程内CFG（intra-procedural control flow graph）以及粗粒度分析得到调用图（call graph），结合得到过程间控制流图（ICFG，inter-procedural control flow graph）</p>
-</blockquote>
-<p>​    具体过程如下：</p>
-<ul>
-<li>将 Wasm字节码转为Wasm基本块（在<a href="#1">Control flow graph builder</a>中已经实现）</li>
-<li>将每个Wasm基本块转为对应的IR基本块</li>
-<li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
-</ul>
-<h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
-<li>edge：包含块内与块间之间的边</li>
-<li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
-<li>use：每个语句需要使用之前定义的变量</li>
-<li>op：wasm操作码</li>
-<li>value：程序中的常量</li>
-<li>imm：操作码需要的立即数</li>
-<li>block_in_function：每个函数包含的块名</li>
-<li>func_call_edge：包含所有直接调用（call）以及间接调用（call_indirect）之间的边</li>
-<li>in_function：每个函数包含的语句（statement）</li>
-<li>is_function：程序中的所有函数（包括import、export、local）</li>
-<li>function_types：只包含export和local函数的签名（参数及返回值）</li>
-<li>static_datas：程序中的常量及字符串</li>
-<li>block_dom：包含块内与块间的dominator关系</li>
-<li>types：间接调用对应的函数类型（call_indirect的第一个立即数）</li>
-</ul>
-<h5 id="程序介绍"><a href="#程序介绍" class="headerlink" title="程序介绍"></a><span id="2.4">程序介绍</span></h5><blockquote>
-<p>实现：目录<em>src</em>下包含大部分python程序，下面将介绍这些程序功能 </p>
-</blockquote>
-<ul>
-<li><code>src/cfg.py</code>：定义基类<code>ControlFlowGraph</code>和<code>BasicBlock</code></li>
-<li><code>src/wasm_cfg.py</code>：专门的<code>cfg.ControlFlowGraph</code>和<code>cfg.BasicBlock</code>用于表示Wasm字节码的控制流图</li>
-<li><code>src/ir_cfg.py</code>：专门<code>wasm_cfg.*</code>用于在我们的中间表示中表示合约的类。实现定义<code>ir_cfg.Destackifier</code>了一个将单个<code>wasm_cfg.EVMBasicBlock</code>实例转换为<code>ir_cfg.IRBasicBlock</code>实例的类；和辅助类<code>IROp</code>, <code>IRAssignOp</code>, <code>IRArg</code>,<code>IRCallOp</code> 以及<code>IRLocRef</code>我们的中间表示</li>
-<li><code>src/exporter.py</code>：定义了从给定的控制流图生成 EOSIOAnalyzer输出表示的类。在其构造函数中接受一个 CFG 实例，并包含一个产生输出的<code>export()</code>函数，输出所有<a href="#2.3">EDB文件</a></li>
-<li><code>src/dataflow.py</code>：</li>
-<li><code>src/lattice.py</code>：实现<a href="https://en.wikipedia.org/wiki/Lattice_(order)">lattice</a>类，用于定点数据流分析</li>
-<li><code>src/memtypes.py</code>：用于表示和使用我们的 IR 中使用的寄存器变量的类。变量可以是常数、设定值或未知</li>
-<li><code>src/wasm_inst.py</code>：使用<a href="https://webassembly.github.io/spec/core/appendix/index-instructions.html">官方文档</a>中的信息定义 Wasm指令集</li>
-<li><code>src/number.py</code>：包含所有与<em>number</em>相关的函数和类</li>
-<li><code>src/requirement.txt</code>：包含程序运行所需要的包</li>
-</ul>
-<h5 id="分析脚本"><a href="#分析脚本" class="headerlink" title="分析脚本"></a><span id="2.5">分析脚本</span></h5><blockquote>
-<p>我们的分析脚本<code>tools/bulk_analysis.py</code>可以分析单个合约字节码目录，也可以分析包含多个智能合约字节码目录（可以多线程运行），只需修改路径即可。结合Souffle 引擎以及编写的<a href="#3">漏洞规则</a>，最终会输出一个<strong>json</strong>格式的文件，包含最终的漏洞分析结果</p>
-</blockquote>
-<h5 id="Datalog规范"><a href="#Datalog规范" class="headerlink" title="Datalog规范"></a><span id="2.6">Datalog规范</span></h5><blockquote>
-<p>我们编写的Datalog规则在目录<code>tools/spec.dl</code>、<code>tools/instructions.dl</code>中</p>
-</blockquote>
-<p>例如，以下规则用于检测<strong>Fake EOS Transfer</strong>漏洞</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.decl DetectFakedEosTransfer(call_stmt: Statement)</span><br><span class="line">.output DetectFakedEosTransfer</span><br><span class="line"></span><br><span class="line">DetectFakedEosTransfer(call_stmt) :-</span><br><span class="line">    NotEosioToken(true_stmt),</span><br><span class="line">    Call_Transfer(call_stmt),</span><br><span class="line">    Dominates(call_stmt, true_stmt).</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="Vulnerability-detector"><a href="#Vulnerability-detector" class="headerlink" title="Vulnerability detector"></a><span id="3">Vulnerability detector</span></h4><img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172803305.png" class="" title="漏洞特征组合">
-
-<h5 id="Fake-EOS-Transfer"><a href="#Fake-EOS-Transfer" class="headerlink" title="Fake EOS Transfer"></a><span id="3.1">Fake EOS Transfer</span></h5><blockquote>
-<p>描述：由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人。或者直接调用漏洞合约的transfer函数进行转账</p>
-</blockquote>
-<blockquote>
-<p>规则：<em>code == N(eosio.token)  –&gt;  action == N(transfer)</em><br>     在apply函数中，看是否存在这样一条验证路径，如存在则不存在该漏洞，反之则存在；</p>
-</blockquote>
-<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172533141.png" class="" title="Fake EOS Transfer检测规则">
-
-<h5 id="Forged-Transfer-Notification"><a href="#Forged-Transfer-Notification" class="headerlink" title="Forged Transfer Notification"></a><span id="3.2">Forged Transfer Notification</span></h5><blockquote>
-<p>描述：攻击者在 EOS 网络中控制两个账户 A 和 B，通过账户 A 向账户 B 发送真正的 EOS，eosio.token 合约在转账成功后会向 B 发送 notification。当账户 B 收到 notification后随即转发到受害者智能合约 C</p>
-</blockquote>
-<blockquote>
-<p> <em>Transfer  –&gt;  _self == to</em><br>      在找到的所以可能“transfer”函数中，看是否存在*_self*与to的比较，如存在则不存在该漏洞，反之则存在；</p>
-</blockquote>
-<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172547651.png" class="" title="Forged Transfer Notification检测规则">
-
-<h5 id="Block-Information-Dependency"><a href="#Block-Information-Dependency" class="headerlink" title="Block Information Dependency"></a><span id="3.3">Block Information Dependency</span></h5><blockquote>
-<p>描述：开发者一般调用tapos_block_prefix或tapos_block_number获得区块链信息，并将其返回值作为控制流的判断条件，并最后触发调用send_inline函数进行转账行为</p>
-</blockquote>
-<blockquote>
-<p><em>tapos_block_prefix/tapos_block_num  –&gt;  send_inline</em><br>     如果存在一条由<em>tapos_block_prefix/tapos_block_num</em>函数作为控制条件并最后触发<em>send_inline</em>函数的调用，则存在该漏洞，反之不存在</p>
-</blockquote>
-<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png" class="" title="Block Information Dependency检测规则">
-
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>数据流</tag>
-        <tag>编译器</tag>
-        <tag>漏洞检测</tag>
-        <tag>静态分析</tag>
-        <tag>Datalog</tag>
-        <tag>CFG</tag>
-        <tag>IR</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序分析之中间表示（Intermediate Representation）</title>
     <url>/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />
@@ -736,8 +736,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>中间表示（IR）</tag>
         <tag>CFG</tag>
+        <tag>中间表示（IR）</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
@@ -779,8 +779,8 @@
         <category>博客</category>
       </categories>
       <tags>
-        <tag>博客</tag>
         <tag>hexo</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
   <entry>
@@ -891,13 +891,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
-        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
+        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -1020,8 +1020,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>程序分析</tag>
         <tag>数据流</tag>
+        <tag>程序分析</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
