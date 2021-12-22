@@ -135,8 +135,240 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>EOSIO</tag>
         <tag>数据流</tag>
+        <tag>EOSIO</tag>
+        <tag>编译器</tag>
+        <tag>漏洞检测</tag>
+        <tag>静态分析</tag>
+        <tag>Datalog</tag>
+        <tag>CFG</tag>
+        <tag>IR</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO-Vulneribilities</title>
+    <url>/2021/12/07/EOSIO-Vulneribilities/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="EOSIO漏洞复现"><a href="#EOSIO漏洞复现" class="headerlink" title="EOSIO漏洞复现"></a><a href="https://github.com/lwy0518/blog_files">EOSIO漏洞复现</a></h4><h5 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h5><ul>
+<li>nodeos ：2.0.12</li>
+<li>EOSIO.CDT（编译器）：1.2.1</li>
+<li><a href="https://github.com/gongbell/EOSFuzzer">实验数据</a></li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h5 id="准备（前一篇文章已经介绍如何创建账户等等操作）"><a href="#准备（前一篇文章已经介绍如何创建账户等等操作）" class="headerlink" title="准备（前一篇文章已经介绍如何创建账户等等操作）"></a>准备（<a href="https://lwy0518.github.io/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/#more">前一篇文章已经介绍如何创建账户等等操作</a>）</h5><ul>
+<li><p>解锁账户（默认锁定时间较短，可以自己修改配置文件使得时间更长）</p>
+<blockquote>
+<p> yourcount：指你自己创建的钱包名</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n yourcount --password</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="EOS-Fake-Transfer复现过程"><a href="#EOS-Fake-Transfer复现过程" class="headerlink" title="EOS Fake Transfer复现过程"></a>EOS Fake Transfer复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( code == self || action == ::eosio::<span class="built_in">string_to_name</span>(<span class="string">&quot;onerror&quot;</span>) || code == <span class="built_in">N</span>(eosio.token)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;receiver:&quot;</span>, name&#123;receiver&#125;, <span class="string">&quot;, code:&quot;</span>, name&#123;code&#125;, <span class="string">&quot;, action:&quot;</span>, name&#123;action&#125;, <span class="string">&quot;\n&quot;</span>); </span><br><span class="line">	<span class="function">notified <span class="title">thiscontract</span><span class="params">( self )</span></span>; </span><br><span class="line">	<span class="built_in"><span class="keyword">switch</span></span>( action ) &#123; </span><br><span class="line">		<span class="keyword">case</span> ::eosio::<span class="built_in">string_to_name</span>( <span class="string">&quot;transfer&quot;</span> ): </span><br><span class="line">			eosio::<span class="built_in">execute_action</span>( &amp;thiscontract, &amp;notified::transfer ); </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人（<strong>issuer</strong>）。或者直接调用漏洞合约的transfer函数进行转账</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建受害者账户</p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim4 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>部署测试合约<em>test.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim4 <span class="built_in">test</span>/ -p  victim4</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>直接调用<em>test.cpp</em>合约的<em>transfer</em>（主要目的看是否<em>trasnfer</em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action victim4 transfer <span class="string">&#x27;[&quot;eosio&quot;,&quot;victim4&quot;,&quot;10.0000 EOS&quot;,&quot;inlined call&quot;]&#x27;</span> -p  eosio -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/inlined_call.png" class="" title="inlined_call"></li>
+</ul>
+</li>
+<li><p>查询账户余额</p>
+<blockquote>
+<p> cleos get currency balance eosio.token + 查询账户 + token名（EOS)</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get currency balance eosio.token victim4 EOS</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="Forged-Transfer-Notification复现过程"><a href="#Forged-Transfer-Notification复现过程" class="headerlink" title="Forged Transfer Notification复现过程"></a>Forged Transfer Notification复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(account_name from, account_name to, asset quantity, string memo)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n Receiving transfer message: from &quot;</span>, name&#123;from&#125;, <span class="string">&quot; to &quot;</span>, name&#123;to&#125;, <span class="string">&quot;,&quot;</span>, quantity, <span class="string">&quot;,&quot;</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (from == _self) &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;have a vulnerability!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;in eosbet transfer,&quot;</span>, name&#123; from &#125;, <span class="string">&quot;,&quot;</span>, name&#123; to &#125;);</span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>攻击者在 EOS 网络中控制两个账户 A（发起攻击的账户） 和 B（将收到的通知立即转发给账户C）。通过账户 A 向账户 B 发送真正的 EOS，如图所示，eosio.token 合约在转账成功后会向 账户A、B 发送 notification。当账户 B 收到 notification后，通过调用require_recipient(C)随即将收到的通知转发给部署受害者智能合约的账户C。</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建攻击者账户<strong>sender</strong>，用于向另一个由攻击者控制的账户<strong>notifier</strong></p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio sender <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建账户<strong>notifier</strong>，用于将收到的转账通知转发给受害者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio notifier <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建受害者账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim5 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>notifier</strong>部署攻击合约<em>eosbethack.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract notifier eosbethack/ -p notifier</span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>victim5</strong>部署攻击合约<em>eosbet.cpp</em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim5 eosbet/ -p victim5</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>账户<strong>sender</strong>（攻击者）向账户notifier（攻击者）发送<strong>EOS</strong>（主要目的看是否<em><strong>trasnfer</strong></em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action eosio.token transfer <span class="string">&#x27;[&quot;sender&quot;,&quot;notifier&quot;,&quot;10.0000 EOS&quot;,&quot;transfer himself&quot;]&#x27;</span> -p sender -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<p>结果显示：</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/export.png" class="" title="export"></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>漏洞</tag>
+        <tag>智能合约</tag>
+        <tag>防护</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO环境搭建及创建账户</title>
+    <url>/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p><a href="https://developers.eos.io/manuals/eos/latest/install/install-prebuilt-binaries">官方文档</a></p>
+<h4 id="钱包和账户"><a href="#钱包和账户" class="headerlink" title="钱包和账户"></a>钱包和账户</h4><img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-01.png" class="" title="EOS架构图">
+
+<hr>
+<span id="more"></span>
+
+<ul>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/nodeos/index">Nodeos</a>（node + eos = nodeos）</strong>：运行节点的核心服务守护进程，用于区块生产、API 端点或本地开发</li>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/cleos/index">Cleos</a> (cli + eos = cleos)</strong> ： 与区块链交互的命令行界面 (via <code>nodeos</code>) 和管理钱包 (via <code>keosd</code>)</li>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/keosd/index">Keosd</a> (key + eos = keosd)</strong> ： 管理钱包中的 EOSIO 密钥并为数字签名提供安全飞地的组件</li>
+</ul>
+<p>可以参考下列解读图：</p>
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-02.png" class="" title="eos解读图">
+
+<h5 id="创建钱包"><a href="#创建钱包" class="headerlink" title="创建钱包"></a>创建钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet create -n wallet_name --to-console</span><br></pre></td></tr></table></figure>
+
+<p>其中：**-n<strong>是指定钱包名称（如果不指定则会默认生成一个default钱包）， <strong>wallet_name</strong>是你需要创建的钱包名（以下用lwy代替），</strong>–to-console**是将密钥输出到控制台（记得一定要保存这个密钥，因为要用于钱包的解锁）</p>
+<h5 id="查看创建的钱包"><a href="#查看创建的钱包" class="headerlink" title="查看创建的钱包"></a>查看创建的钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet list</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094122334.png" class="" title="image-20211210094122334">
+
+<p>其中带**”*”**号指已解锁的钱包</p>
+<h5 id="钱包的解锁与加锁"><a href="#钱包的解锁与加锁" class="headerlink" title="钱包的解锁与加锁"></a>钱包的解锁与加锁</h5><ul>
+<li><p><strong>解锁</strong>（会提示你输入钱包密钥）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n lwy --password</span><br></pre></td></tr></table></figure></li>
+<li><p>加锁（不需要输入密钥）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet lock -n lwy</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094458277.png" class="" title="image-20211210094458277"></li>
+</ul>
+<h4 id="生成和导入公钥-私钥对"><a href="#生成和导入公钥-私钥对" class="headerlink" title="生成和导入公钥-私钥对"></a>生成和导入公钥-私钥对</h4><h5 id="生成公钥-私钥对"><a href="#生成公钥-私钥对" class="headerlink" title="生成公钥-私钥对"></a>生成公钥-私钥对</h5><blockquote>
+<p>为了简单可以直接用一个公钥-私钥对（记得保存私钥，一定！一定 ！）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create key --to-console</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094807129.png" class="" title="image-20211210094807129">
+
+<h5 id="导入公钥-私钥对"><a href="#导入公钥-私钥对" class="headerlink" title="导入公钥-私钥对"></a>导入公钥-私钥对</h5><blockquote>
+<p>如果lwy钱包还没解锁，记得先解锁</p>
+</blockquote>
+<p>将生成的公钥-私钥对导入lwy钱包内</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210095118841.png" class="" title="image-20211210095118841">
+
+<h4 id="创建和管理账户"><a href="#创建和管理账户" class="headerlink" title="创建和管理账户"></a>创建和管理账户</h4><h5 id="命令行及参数说明"><a href="#命令行及参数说明" class="headerlink" title="命令行及参数说明"></a>命令行及参数说明</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account authorizing_account NEW_ACCOUNT OWNER_KEY ACTIVE_KEY</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注：</strong>在这OWNER_KEY与ACTIVE_KEY是同一个，因为我为了简单只生成了一个公钥-私钥对</p>
+<ul>
+<li>authorizing_account 是为帐户创建提供资金的帐户的名称</li>
+<li>new_account 是您要创建的帐户的名称</li>
+<li>owner_key是分配给帐户owner权限的公钥</li>
+<li>active_key是分配给您帐户的active权限的公钥</li>
+</ul>
+</blockquote>
+<p>新帐户名称必须符合以下准则：</p>
+<blockquote>
+<ul>
+<li>必须在12个字符以内，包括12字符。</li>
+<li>只能包含以下符号：.12345abcdefghijklmnopqrstuvwxyz</li>
+<li>请注意，账户名称不允许使用6,7,8,9,0。</li>
+</ul>
+</blockquote>
+<h5 id="使用eosio初始账户创建新账户"><a href="#使用eosio初始账户创建新账户" class="headerlink" title="使用eosio初始账户创建新账户"></a>使用eosio初始账户创建新账户</h5><p>eosio帐户是用于引导EOSIO节点的特殊帐户。<br>由于我们没有其他账户，所以用初始eosio账户来创建新帐户</p>
+<blockquote>
+<p>eosio帐户的密钥可以在nodeos配置文件中找到，位于~/.local/share/eosio/nodeos/config/config.ini。 同时，记得解锁lwy钱包</p>
+</blockquote>
+<p>首先，需要将默认账号eosio的私钥导入lwy钱包内：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<p>然后，用初始eosio账户来创建新帐户<strong>testaccount</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio testaccount 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看账户信息"><a href="#查看账户信息" class="headerlink" title="查看账户信息"></a>查看账户信息</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get account testaccount -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>-j</strong> 指信息以json格式输出</p>
+<p><strong>至此，EOSIO环境搭建以及账户创建已完成！！</strong></p>
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>智能合约</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO部署全过程</title>
+    <url>/2021/12/10/EOSIO%E9%83%A8%E7%BD%B2%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+
+
+<hr>
+<span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>数据流</tag>
+        <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
@@ -235,6 +467,427 @@
       <tags>
         <tag>Typora</tag>
         <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据流分析</title>
+    <url>/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h4><p>数据流分析是一种用来获取相关数据沿着程序执行路径流动的信息分析技术。分析对象是程序执行路径上的数据流动或可能的取值</p>
+<ul>
+<li>优点：具有更强的分析能力，适合需要考虑控制流信息且变量属性之操作十分简单的静态分析问题</li>
+<li>缺点：分析效率低，过程间分析和优化算法复杂，编程工作量大，容易出错且效率低</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h5 id="数据流分析的分类"><a href="#数据流分析的分类" class="headerlink" title="数据流分析的分类"></a>数据流分析的分类</h5><ul>
+<li>对程序路径的分析精度分类<ul>
+<li>流不敏感分析（flow insensitive）：不考虑语句的先后顺序，按照程序语句的物理位置从上往下顺序分析每一语句，忽略程序中存在的分支</li>
+<li>流敏感分析（flow sensitive）：考虑程序语句可能的执行顺序，通常需要利用程序的控制流图（CFG）</li>
+<li>路径敏感分析（path sensitive）：不仅考虑语句的先后顺序，还对程序执行路径条件加以判断，以确定分析使用的语句序列是否对应着一条可实际运行的程序执行路径</li>
+</ul>
+</li>
+<li>分析程序路径的深度分类<ul>
+<li>过程内分析（intra-procedure analysis）：只针对程序中函数内的代码</li>
+<li>过程间分析（inter-procedure analysis）：考虑函数之间的数据流，即需要跟踪分析目标数据在函数之间的传递过程<ul>
+<li>上下文不敏感分析（context-insensitive）：将每个调用或返回看做一个 “goto” 操作，忽略调用位置和函数参数取值等函数调用的相关信息</li>
+<li>上下文敏感分析（context-sensitive）：对不同调用位置调用的同一函数加以区分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="检测程序漏洞"><a href="#检测程序漏洞" class="headerlink" title="检测程序漏洞"></a>检测程序漏洞</h5><p>基于数据流的源代码漏洞分析的原理如下图所示：</p>
+<p><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_overview.png" alt="数据流分析原理"></p>
+<ul>
+<li>代码建模<ul>
+<li>该过程通过一系列的程序分析技术获得程序代码模型。首先通过词法分析生成词素的序列，然后通过语法分析将词素组合成抽象语法树。如果需要三地址码，则利用中间代码生成过程解析抽象语法树生成三地址码。如果采用流敏感或路径敏感的方式，则可以通过分析抽象语法树得到程序的控制流图。构造控制流图的过程是过程内的控制流分析过程。控制流还包含分析各个过程之间的调用关系的部分。通过分析过程之间的调用关系，还可以构造程序的调用图。另外，该过程还需要一些辅助支持技术，例如变量的别名分析，Java 反射机制分析，C/C++ 的函数指针或虚函数调用分析等<ul>
+<li>代码解析：指词法分析、语法分析、中间代码生成以及过程内的控制流分析等基础的分析过程</li>
+<li>辅助分析：包括控制流分析等为数据流分析提供支持的分析过程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>程序代码建模<ul>
+<li>漏洞分析系统通常使用树型结构的抽象语法树或者线性的三地址码来描述程序代码的语义。控制流图描述了过程内程序的控制流路径，较为精确的数据流分析通常利用控制流图分析程序执行路径上的某些行为。调用图描述了过程之间的调用关系，是过程间分析需要用到的程序结构</li>
+</ul>
+</li>
+<li>漏洞分析规则<ul>
+<li>漏洞分析规则是检测程序漏洞的依据。对于分析变量状态的规则，可以使用状态自动机来描述。对于需要分析变量取值的情况，则需要指出应该怎样记录变量的取值，以及在怎样的情况下对变量的取值进行何种的检测<ul>
+<li>程序漏洞通常和程序中变量的状态或者变量的取值相关。状态自动机可以描述和程序变量状态相关的漏洞分析规则，自动机的状态和变量相应的状态对应</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>静态漏洞分析<ul>
+<li>数据流分析可以看做一个根据检测规则在程序的可执行路径上跟踪变量的状态或者变量取值的过程。在该过程中，如果待分析的程序语句是函数调用语句，则需要利用调用图进行过程间的分析，以分析被调用函数的内部代码。另外，数据流分析还可以作为辅助技术，用于完善程序调用图和分析变量别名等<ul>
+<li><strong>赋值语句</strong>、<strong>控制转移语句</strong>和<strong>过程调用语句</strong>是数据流分析最关心的三类语句</li>
+<li>过程内分析<ul>
+<li>对于<strong>抽象语法树</strong>的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析</li>
+<li>对于<strong>三地址码</strong>的分析，则可以直接识别其操作以及操作相关的变量</li>
+<li>在<strong>流不敏感分析</strong>中，常常使用线性扫描的方式依次分析每一条中间表示形式的语句</li>
+<li><strong>流敏感的分析</strong>或<strong>路径敏感的分析</strong>，则根据控制流图进行分析。对控制流图的遍历主要是<strong>深度优先</strong>和<strong>广度优先</strong>两种方式</li>
+</ul>
+</li>
+<li><div align="center">
+    <src img=https://github.com/lwy0518/blog_files/tree/master/images>
+</div>
+
+<ul>
+<li>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析</li>
+<li>借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件<ul>
+<li>前置条件记录对基本块分析前已有的相关分析结果</li>
+<li>后置条件是分析基本块后得到的结果</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理分析结果<ul>
+<li>对检测出的漏洞进行危害程度分类等</li>
+</ul>
+</li>
+</ul>
+<h4 id="方法实现"><a href="#方法实现" class="headerlink" title="方法实现"></a>方法实现</h4><p>数据流分析使用的程序代码模型主要包括程序代码的中间表示以及一些关键的数据结构，利用程序代码的中间表示可以对程序语句的指令语义进行分析</p>
+<h5 id="抽象语法树（AST）"><a href="#抽象语法树（AST）" class="headerlink" title="抽象语法树（AST）"></a>抽象语法树（AST）</h5><p>是程序抽象语法结构的树状表现形式，其每个内部节点代表一个运算符，该节点的子节点代表这个运算符的运算分量。通过描述控制转移语句的语法结构，抽象语法树在一定程度上也描述了程序的过程内代码的控制流结构</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> b ≠ <span class="number">0</span></span><br><span class="line">	<span class="keyword">if</span> a &gt; b</span><br><span class="line">		a := a − b</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		b := b − a</span><br><span class="line"><span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
+
+<p>对应的抽象语法树为：</p>
+<h5 id=""><a href="#" class="headerlink" title=""></a><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ast.png" alt="TAC"></h5><p>由一组类似于汇编语言的指令组成，每个指令具有不多于三个的运算分量。每个运算分量都像是一个<strong>寄存器</strong></p>
+<h5 id="静态单赋值形式（SSA）"><a href="#静态单赋值形式（SSA）" class="headerlink" title="静态单赋值形式（SSA）"></a>静态单赋值形式（SSA）</h5><p>是一种程序语句或者指令的表示形式，在这种表示形式中，所有的赋值都是针对具有不同名字的变量，也就是说，如果某个变量在不同的程序点被赋值，那么在这些程序点上，该变量在静态单赋值形式的表示中应该使用不同的名字。在使用下标的赋值表示中，变量的名字用于区分程序中的不同的变量，下标用于区分不同程序点上变量的赋值情况。另外，如果在一个程序中，同一个变量可能在两个不同的控制流路径中被赋值，并且在<strong>路径交汇</strong>后，该变量被使用，那么就需要一种被称为 <strong>Φ 函数</strong>的的表示规则将变量的赋值合并起来</p>
+<div align="center">
+    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa1.png">
+    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa2.png">
+</div>
+
+
+
+<p><strong>作用：</strong>静态单赋值形式对于数据流分析的意义在于，可以简单而直接地<strong>发现变量的赋值和使用情况</strong>，以此分析数据的流向并发现程序不安全的行为</p>
+<h5 id="控制流图（CFG）"><a href="#控制流图（CFG）" class="headerlink" title="控制流图（CFG）"></a>控制流图（CFG）</h5><p>是指用于描述程序过程内的控制流的有向图。控制流由节点和有向边组成。典型的节点是基本块（BB），即程序语句的线性序列。有向边表示节点之间存在潜在的控制流路径，通常都带有属性（如if语句的true分支和false分支）</p>
+<h5 id="调用图（CG）"><a href="#调用图（CG）" class="headerlink" title="调用图（CG）"></a>调用图（CG）</h5><p>是描述程序中过程之间的调用和被调用关系的有向图。控制图是一个节点和边的集合，并满足如下原则</p>
+<ul>
+<li>对程序中的每个过程都有一个节点</li>
+<li>对每个调用点都有一个节点</li>
+<li>如果调用点 c 调用了过程 p，就存在一条从 c 的节点到 p 的节点的边</li>
+</ul>
+<h5 id="静态漏洞分析"><a href="#静态漏洞分析" class="headerlink" title="静态漏洞分析"></a>静态漏洞分析</h5><p>数据流分析检测漏洞是利用分析规则按照一定的顺序分析代码中间表示的过程</p>
+<ul>
+<li><strong>过程内分析：</strong>对于抽象语法树的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析。对于三地址码的分析，则可以直接识别其操作以及操作相关的变量</li>
+<li><strong>过程间分析：</strong>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析。另一种思路是借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件</li>
+</ul>
+<blockquote>
+<p><a href="https://firmianay.gitbooks.io/ctf-all-in-one/content/doc/5.4_dataflow_analysis.html">原文链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>程序分析</category>
+      </categories>
+      <tags>
+        <tag>程序分析</tag>
+        <tag>数据流</tag>
+        <tag>Def-Use</tag>
+        <tag>中间表示（IR）</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客迁移到另外一台电脑</title>
+    <url>/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="复制原电脑上的数据"><a href="#复制原电脑上的数据" class="headerlink" title="复制原电脑上的数据"></a>复制原电脑上的数据</h4><p> <strong>注：</strong>不需要全部复制</p>
+<blockquote>
+<ul>
+<li>_config.yml：站点配置文件</li>
+<li>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</li>
+<li>scaffolds/：layout模板文件目录，其中的md文件可以添加编辑</li>
+<li>source/：</li>
+<li>文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<ul>
+<li>drafts：草稿文章</li>
+<li>posts：发布文章</li>
+</ul>
+</li>
+<li>themes/：主题文件</li>
+</ul>
+</blockquote>
+<hr>
+<span id="more"></span>
+
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><ol>
+<li>安装node</li>
+<li>安装git</li>
+<li><a href="https://lwy0518.github.io/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/#more">再参考上一篇文章</a></li>
+</ol>
+<h5 id="下载相关插件"><a href="#下载相关插件" class="headerlink" title="下载相关插件"></a>下载相关插件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文章部署到github上的模块</span></span><br><span class="line">$ cnpm install hexo-deployer-git --save</span><br><span class="line"><span class="comment"># 安装RSS插件</span></span><br><span class="line">$ cnpm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 添加Sitemap,加速网页收录速度</span></span><br><span class="line">$ cnpm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>构建hexo博客过程</title>
+    <url>/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="环境（Windows）"><a href="#环境（Windows）" class="headerlink" title="环境（Windows）"></a>环境（Windows）</h4><ul>
+<li>git（git version 2.29.2.windows.3）</li>
+<li>node（v14.17.0）</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h4 id="本地部署"><a href="#本地部署" class="headerlink" title="本地部署"></a>本地部署</h4><ul>
+<li><p>安装cnpm（国内镜像源很慢）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p> “-g”：表示全局安装</p>
+<p> 验证是否安装成功：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm -v</span><br></pre></td></tr></table></figure>
+
+<p> 设置源：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org </span><br></pre></td></tr></table></figure></li>
+<li><p>安装hexo</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p> 验证是否安装成功：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个目录（出错直接删掉目录即可）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir myBlog</span><br><span class="line">$ <span class="built_in">cd</span> myBlog</span><br></pre></td></tr></table></figure></li>
+<li><p>初始化</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure></li>
+<li><p>启动hexo</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<p> 访问地址:localhost:4000</p>
+</li>
+</ul>
+<h4 id="GitHub部署"><a href="#GitHub部署" class="headerlink" title="GitHub部署"></a>GitHub部署</h4><ul>
+<li><p>创建一个仓库，仓库名必须为：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yourname.github.io</span><br></pre></td></tr></table></figure></li>
+<li><p>安装插件</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure></li>
+<li><p>修改配置文件（在文件最下面修改）</p>
+<ul>
+<li><p>Windows 下直接可以用文本打开</p>
+</li>
+<li><p>其他系统可以用vim</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p> 添加以下内容</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deploy:                                                      </span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo: https://github.com:yourname/yourname.github.io.git</span><br><span class="line">	branch: master</span><br></pre></td></tr></table></figure></li>
+<li><p>部署到远端（可以提前配置好git账号和密码）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>访问远程博客</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://yourname.github.io.git</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="换主题"><a href="#换主题" class="headerlink" title="换主题"></a>换主题</h4><ul>
+<li><p>下载主题（下载到themes目录下）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/litten/hexo-theme-yilia.git themes.yilia</span><br></pre></td></tr></table></figure></li>
+<li><p>修改</p>
+<ul>
+<li><p>Windows 下直接可以用文本打开</p>
+</li>
+<li><p>其他系统可以用vim</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p> 修改以下内容</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">theme: yilia</span><br></pre></td></tr></table></figure></li>
+<li><p>重新生成</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp; hexo g &amp; hexo s</span><br></pre></td></tr></table></figure></li>
+<li><p>远程部署到github</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><ol>
+<li>如遇到这个问题，先检查是否是网络的原因 ，多部署几次，如果还是不行，则采用以下方式：</li>
+</ol>
+<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209184952522.png" class="" title="image-20211209184952522">
+
+<ul>
+<li><p>方法一：在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 删除git提交内容文件夹</span></span><br><span class="line">$ rm -rf .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##执行</span></span><br><span class="line">$ git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>方法二：有可能是你的git repo配置地址不正确,可以将http方式变更为ssh方式，在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##删除git提交内容文件夹</span></span><br><span class="line">$ vim _config.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">##修改</span></span><br><span class="line">deploy:</span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo:https://github.com/yourname/yourname.github.io.git -&gt;</span><br><span class="line">			git@github.com:a956551943/weixiaohui.github.io.git</span><br><span class="line">	branch: master</span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>方法三：备选，在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##进入depoly文件夹</span></span><br><span class="line">$ <span class="built_in">cd</span> .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##强制推送</span></span><br><span class="line">$ git push -f</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><p>遇到新建博客文章部署之后图片不显示的问题</p>
+<blockquote>
+<p>在Typora中的工具栏中的“格式” –&gt; “图像” –&gt; “全局图像设置”中设置如下，此后会在当前目录下生成包含图片同名的文件</p>
+</blockquote>
+<p>另外，在文章开始部分加上以上命令即可解决图片不显示的问题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;meta name=<span class="string">&quot;referrer&quot;</span> content=<span class="string">&quot;no-referrer&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209185640095.png" class="" title="image-20211209185640095"></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序分析之中间表示（Intermediate Representation）</title>
+    <url>/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a><a href="https://baike.baidu.com/item/%E7%A8%8B%E5%BA%8F%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90">静态分析</a></h4><p>程序静态分析（Program Static Analysis）是指在不运行<a href="https://baike.baidu.com/item/%E4%BB%A3%E7%A0%81/86048">代码</a>的方式下，通过<a href="https://baike.baidu.com/item/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/8853461">词法分析</a>、<a href="https://baike.baidu.com/item/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/8853407">语法分析</a>、<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81/854473">控制流</a>、<a href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/21496987">数据流分析</a>等技术对程序代码进行扫描，验证代码是否满足规范性、安全性、可靠性、可维护性等指标的一种代码分析技术。静态分析技术向模拟执行的技术发展以能够发现更多传统意义上动态测试才能发现的缺陷，从而提高开发效率和软件质量。本文介绍部分在静态代码分析中使用的<a href="https://bbs.huaweicloud.com/blogs/detail/227535">中间表示</a>的概念，主要包括<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>、<a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>、<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">SSA形式</a>，及<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">CFG</a>和<a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">RTL</a>等概念</p>
+<hr>
+<span id="more"></span>
+
+<h4 id="中间表示（Intermediate-Representation）"><a href="#中间表示（Intermediate-Representation）" class="headerlink" title="中间表示（Intermediate Representation）"></a>中间表示（Intermediate Representation）</h4><h5 id="抽象语法树（Abstract-Syntax-Tree，AST）"><a href="#抽象语法树（Abstract-Syntax-Tree，AST）" class="headerlink" title="抽象语法树（Abstract Syntax Tree，AST）"></a><a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>（Abstract Syntax Tree，AST）</h5><p>在介绍AST时，我们用一个简单的例子：x = 3 + 4 * y 这个表达式作为例子来进行介绍：</p>
+<ul>
+<li>AST：<ul>
+<li>是源代码的抽象语法结构的树状表示，树上的每个节点都表示源代码中的一种结构，之所以说是抽象的，是因为抽象语法树并不会表示出真实语法出现的每一个细节</li>
+<li>抽象语法树，其实就是用树状结构表示语法结构，也没有说必须是什么形式，只要能忠实地反映出源码的格式即可</li>
+</ul>
+</li>
+</ul>
+<p>当然，一般资料中在进行介绍时，都是以操作符作为根节点，画个树状的结构来表示，这里咱们也简单画一个意思一下，如下图：</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646488430032435.png" alt="AST示例"></p>
+<h5 id="三地址码（Three-Address-Code，TAC-3AC）"><a href="#三地址码（Three-Address-Code，TAC-3AC）" class="headerlink" title="三地址码（Three Address Code，TAC/3AC）"></a><a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>（Three Address Code，TAC/3AC）</h5><p>三地址码是一种有意思的中间表示，当前也是编译原理中用得最火的。这里我给大家梳理一种我的理解上的概念，那就是，<strong>刨掉赋值操作，最多只有一个操作符</strong>，先看下面的几个例子</p>
+<ul>
+<li>x = y bop z</li>
+<li>x = uop y</li>
+<li>x = y</li>
+<li>goto L</li>
+</ul>
+<p>如上，第一个，除了赋值之外，只有 bop 一个操作符，第二个，只有 uop 一个操作符，第三个没有操作符，同时，操作符的概念可以进一步扩展到函数调用等，例如 call fun(a, b, c, d)，虽然有四个操作数，但是我们认为 call fun只是一个操作符。</p>
+<p>如上面 x = 3 + 4 * y 转换为三地址码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span></span><br><span class="line">t2 = y</span><br><span class="line">t3 = t1 * t2</span><br><span class="line">t4 = <span class="number">3</span></span><br><span class="line">t5 = t4 + t3</span><br><span class="line">x = t5</span><br></pre></td></tr></table></figure>
+
+<p>当然，有些形式下会减少临时变量的使用，尽量复用原来的变量或者常量，形成的三地址码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span> * y</span><br><span class="line">x = <span class="number">3</span> + t1</span><br></pre></td></tr></table></figure>
+
+<p>三地址码最初只是处理类似于 x = y bop z 这种形式的语句，而提出来的“三个操作数”的意思，随着语法的扩充，也并不是完全就是“三地址”。</p>
+<h5 id="AST和三地址码对比"><a href="#AST和三地址码对比" class="headerlink" title="AST和三地址码对比"></a>AST和三地址码对比</h5><p>以下介绍几点AST和三地址码的对比特点：</p>
+<ul>
+<li><p>源码相关性</p>
+<p>AST中的节点与输入源代码中的各个语法元素一一对应，忠实地体现了源码的内容和语法特性，因此AST与源码强相关；三地址码就是从AST进一步抽象的一种中间表示，更接近机器语言，可以认为和语言无关，是连接前后端的一种中间表示</p>
+</li>
+<li><p>变化频繁程度</p>
+<p>因为AST需要忠实地体现出源代码的语法元素，因此在对应的编程语言升级时，对应的AST必然会跟着发生变化，比如Java，从Java7变成Java8，增加了大量的Lambda表达式、函数引用等特性，所以AST节点也需要增加这些语法节点，所以AST的版本需要随着语言发布而不断变化。</p>
+<p>但是三地址码是一种经过处理的语言无关的中间表示，即使源代码结构变化，AST结构变化，但是转换后的三地址码是稳定的，不会经常发生变化，构造在三地址码上面的分析算法就相对比较稳定</p>
+</li>
+<li><p>结构</p>
+<p>AST体现源码的结构，需要匹配源码的语法，因此一般结构比较复杂，而三地址经过处理，一般比较紧凑，简单。例如，Java中，对 for，while，do while 有多种不同的循环方式，但是，其实内容大同小异，但是在AST层面，就是不一样的，但是转换为三地址码后，所表达的控制语义是完全一样的</p>
+</li>
+<li><p>表达信息</p>
+<p>AST表达了源码的信息，因此可以在AST上做程序结构的检查，但是三地址码中，可以更好地包含了程序控制流和数据流信息，能进行更深层次的流敏感分析，过程间分析，上下文敏感分析和对象敏感分析等等，从而实现各种更高难度的程序漏洞检查。</p>
+<p>同时，三地址码因为是语言无关的， 所以在部分静态代码分析工具实现时，会对不同的三地址码，实现一个分析引擎，只是通过开发不同语言的规则，实现对不同语言的能力的覆盖，而AST是无法做到这一点的。因此，三地址码也被认为是静态代码分析的基础</p>
+</li>
+</ul>
+<h5 id="静态单赋值形式-（Static-Single-Assignment-Form，SSA）"><a href="#静态单赋值形式-（Static-Single-Assignment-Form，SSA）" class="headerlink" title="**静态单赋值形式**（Static Single Assignment Form，SSA）"></a>**<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">静态单赋值形式</a>**（Static Single Assignment Form，SSA）</h5><p><a href="https://github.com/lwy0518/blog_files/tree/master/%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%E6%96%87%E4%BB%B6">文件地址</a></p>
+<h6 id="SSA概念及分类"><a href="#SSA概念及分类" class="headerlink" title="SSA概念及分类"></a>SSA概念及分类</h6><ul>
+<li><p>SSA概念</p>
+<blockquote>
+<p>在编译器的设计中，<strong>静态单赋值形式</strong>通常简写为<strong>SSA form</strong>或是<strong>SSA</strong>，是中介码的特性，每个变数仅被赋值一次。在原始的IR中，已存在的变数可被分割成许多不同的<strong>版本</strong>，在许多教科书当中通常会将旧的变数名称加上一个下标而成为新的变数名称，以至于标明每个变数及其不同版本。在SSA中，<strong>UD链</strong>（use-define chain，赋值代表define，使用变数代表use）是非常明确，而且每个仅包含单一元素</p>
+</blockquote>
+<p>以下面的代码为例：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">3</span>) &#123;</span><br><span class="line">        y = x + <span class="number">4</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> z = y + <span class="number">3</span>;</span><br><span class="line">    System.out.println(z);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下图为例，左图是原始代码，里面有分支， y 变量在不同路径中有不同赋值，最后打印 z的值。右图是等价的 SSA 形式，y 变量在两个分支中被改写为 y2, y3，在控制流交汇处插入φ函数，合并了来自不同边的 y2, y3值, 赋给 y4 最后z由y4生成</p>
+<img src="/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/1608646522321044418.png" class="" title="原始代码与SSA形式及相应CFG控制流图">
+
+<p>其实要讲SSA形式，就不能离开对DU Chain（Define-Use Chain）和UD Chain（Use-Define Chain）的介绍，因为很多地方对SSA的概念的介绍，都是从DU Chain和UD Chain引起的。Use-Define Chain 是一个数据结构，包含一个Define变量，以及它的全部Use的集合。相对的，Define-Use Chain 包含一个Use变量，以及它的全部 Define的集合。</p>
+<p>另外一种SSA的描述，就是在 Define-Use Chain中，每一个Use变量，只会有一个Define，例如，在前面例子中，z = y + 3 中，因为此时 y可能在两个分支中赋值，因此，对于变量 z = y + 3 中，y 的Use来说，有两个 Define，但是，通过更改为 SSA形式，z = y + 3 中，y只有一个 Define，那就是 y4。因此，通过将三地址码转为SSA形式，可以很大程度上，简化Use-Define Chain和Define-Use Chain。</p>
+</li>
+<li><p>SSA分类</p>
+<blockquote>
+<p>SSA 有几种不同分类（主要是最小SSA、剪枝SSA、半剪枝SSA，另外两种严格SSA和最大SSA，大部分资料上都没有看到，只是在少部分资料中有见到，所以简单提一下）</p>
+</blockquote>
+<ul>
+<li><p>最小SSA</p>
+<p>最小SSA有以下特点：同一原始名字的两个不同定义的路径汇合处都插入一个φ函数。这样得到符合两大特征的且拥有最少φ函数数量的 SSA 形式。但是这里的最小不包含优化效果，比如死代码消除。如上面图2.1节，就是一个最小SSA形式</p>
+</li>
+<li><p>剪枝SSA</p>
+<p>如果变量在基本块的入口处不是活跃 (live) 的，就不必插入φ函数。一种方法是在插入 φ函数的时候计算活跃变量分析。另一种剪枝方式是在最小SSA上做死代码消除，删掉多余的φ函数。如下面的例子，y在分支执行完后，在最后的BB块中不再使用，y已经不再活跃，此时没必要在这个节点添加φ函数，如下面右图红色标出来的位置（说明：虽然不是剪枝SSA，但是仍然是最小SSA）</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646556674025089.png" alt="剪枝SSA和最小SSA说明"></p>
+</li>
+<li><p>半剪枝SSA</p>
+<p>鉴于剪枝 SSA 的成本，可以稍微折衷一点。插入φ函数前先去掉非跨越基本块的变量名。这样既减少了名字空间也没有计算活跃变量集的开销。如下图所示，y变量除了Define，并没有Use，所以，变量y其实可以去掉，如下右图</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646587998085989.png" alt="半剪枝SSA形式"></p>
+</li>
+<li><p>严格SSA</p>
+<p>如果一个 SSA中，每个Use被其Define支配（如果从程序入口到一个结点 A 的所有路径，都先经过结点B，则称A被B支配），那么称为严格 SSA（实际上，在强类型语言中，这种情况比较少，因为没有定义，就不允许使用，在少数动态类型语言中，允许没有定义就可以使用的才有这类问题）</p>
+</li>
+<li><p>最大SSA</p>
+<p>最大SSA是相对最小SSA而言的，就是在每个汇合点处为每个变量放置一个φ函数。很显然，这种方法会导致SSA的使用效率最差，用户体验也很差，我估计谁生成的SSA是这样的形式，会被使用的人打死的</p>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="SSA形式和普通三地址码对比"><a href="#SSA形式和普通三地址码对比" class="headerlink" title="SSA形式和普通三地址码对比"></a>SSA形式和普通三地址码对比</h6><p>其实对比SSA形式和普通的三地址码形式，只有一个区别，那就是，SSA形式，对于每个Use，只会有一个Define。两者在一定程度上，还是非常类似的。那么主要对比在于两种形式的各自的优缺点：</p>
+<ul>
+<li>SSA形式相对于三地址码，会引入大量的额外的临时变量，同时需要插入φ函数，还需要维护这些临时变量到原始变量的映射关系（当然，仁者见仁，智者见智，也有资料觉得这些额外的临时变量可以忽略，驳斥这个观点为谬论，不过的确还是有其不舒服的地方的）</li>
+<li>SSA形式的优势在于，SSA形式简化了DU Chain和UD chain，构建了一种稀疏结构，可以简化数据流分析（一般基于三地址码，需要基于传统的数据流分析来进行分析，称为dense分析，基于SSA形式，可以构造值依赖关系，基于值流分析，也称为sparse分析，同时，SSA形式也隐含了一定的程序流信息）</li>
+<li>SSA形式相比于普通三地址码，可以优化常量传播、值依赖分析、死代码、重复代码删除等</li>
+</ul>
+<h5 id="控制流图（Control-Flow-Graph，CFG）"><a href="#控制流图（Control-Flow-Graph，CFG）" class="headerlink" title="控制流图（Control Flow Graph，CFG）"></a><a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">控制流图</a>（Control Flow Graph，CFG）</h5><blockquote>
+<p>也叫控制<a href="https://baike.baidu.com/item/%E6%B5%81%E7%A8%8B%E5%9B%BE/206961">流程图</a>，是一个过程或程序的抽象表现，是用在<a href="https://baike.baidu.com/item/%E7%BC%96%E8%AF%91%E5%99%A8/8853067">编译器</a>中的一个<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/22093090">抽象数据结构</a>，由编译器在内部维护，代表了一个程序执行过程中会遍历到的所有路径。它用图的形式表示一个过程内所有基本块执行的可能流向, 也能反映一个过程的实时执行过程</p>
+</blockquote>
+<ol>
+<li><p>基本块（Basic Block）</p>
+<ul>
+<li>特点：<ul>
+<li>单入口、单出口、每个块内的语句都是按顺序执行的，不能有分支和跳转</li>
+<li>只能从第一条语句进入该基本块，不能够以某种方式跳入该基本块的中间</li>
+<li>基本块内的语句在执行时必须从最后一条语句离开，不能够执行到一半跳转到其它的基本块</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CFG</p>
+<p>CFG是一个由基本块组成的有向图，每个节点都是一个基本块。如果程序的执行路径可能从一个基本块$B_1$进入另一个基本块**$B_2$<strong>，</strong>$B_1$<strong>有一条指向</strong>$ B_2 $**的边</p>
+<p>其中：</p>
+<p>$N:$表示所有基本块节点的集合</p>
+<p>$E:$表示所有边的集合</p>
+<p>$n_0:$表示首节点</p>
+<p>CFG具有如下的两条性质：</p>
+<ul>
+<li>CFG 必然有唯一的一个入口点</li>
+<li>首节点必然支配CFG中其他的所有节点（即从首节点到CFG上其他任何一个节点都有一条路可以连通）</li>
+</ul>
+</li>
+</ol>
+<h5 id="寄存器传输语言（Register-Transfer-Language，RFL）"><a href="#寄存器传输语言（Register-Transfer-Language，RFL）" class="headerlink" title="寄存器传输语言（Register Transfer Language，RFL）"></a><a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">寄存器传输语言</a>（Register Transfer Language，RFL）</h5><blockquote>
+<p>又译为<strong>暂存器转换语言</strong>、<strong>寄存器转换语言</strong>，一种中间语言，使用于<a href="https://zh.wikipedia.org/wiki/%E7%B7%A8%E8%AD%AF%E5%99%A8">编译器</a>中。与<a href="https://zh.wikipedia.org/wiki/%E7%B5%84%E5%90%88%E8%AA%9E%E8%A8%80">汇编语言</a>很接近。寄存器传递语言被用于描述一个架构中<a href="https://zh.wikipedia.org/wiki/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E7%BA%A7">寄存器传输级</a>上的数据流。 在学术论文和教科书中，寄存器传递语言被认为是一种与架构无关的汇编语言。<a href="https://zh.wikipedia.org/wiki/GCC">GCC</a>的中间语言，也被称为寄存器传递语言，风格类似于<a href="https://zh.wikipedia.org/wiki/LISP">LISP</a>。GCC的前端（front-end）会先将编程语言转译成RTL，之后再利用后端（back-end）转化成机器代码</p>
+</blockquote>
+<p>以下一些文章用到相关技术：</p>
+<ul>
+<li><a href="https://github.com/usyd-blockchain/vandal">Vandal</a></li>
+<li><a href="https://github.com/eth-sri/securify2">Securify2</a></li>
+<li><a href="https://github.com/nevillegrech/MadMax">MadMax</a></li>
+<li><a href="https://github.com/nevillegrech/gigahorse-toolchain">Gigahorse</a></li>
+<li><a href="https://yanniss.github.io/ethainter-pldi20.pdf">Ethainter</a></li>
+</ul>
+<blockquote>
+<p><a href="https://bbs.huaweicloud.com/blogs/detail/227535">原文链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>程序分析</category>
+      </categories>
+      <tags>
+        <tag>中间表示（IR）</tag>
+        <tag>CFG</tag>
+        <tag>AST</tag>
+        <tag>TAC</tag>
+        <tag>SSA</tag>
+        <tag>RTL</tag>
       </tags>
   </entry>
   <entry>
@@ -592,659 +1245,6 @@
         <tag>污点分析</tag>
         <tag>依赖关系</tag>
         <tag>Source/Sink</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序分析之中间表示（Intermediate Representation）</title>
-    <url>/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a><a href="https://baike.baidu.com/item/%E7%A8%8B%E5%BA%8F%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90">静态分析</a></h4><p>程序静态分析（Program Static Analysis）是指在不运行<a href="https://baike.baidu.com/item/%E4%BB%A3%E7%A0%81/86048">代码</a>的方式下，通过<a href="https://baike.baidu.com/item/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/8853461">词法分析</a>、<a href="https://baike.baidu.com/item/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/8853407">语法分析</a>、<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81/854473">控制流</a>、<a href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/21496987">数据流分析</a>等技术对程序代码进行扫描，验证代码是否满足规范性、安全性、可靠性、可维护性等指标的一种代码分析技术。静态分析技术向模拟执行的技术发展以能够发现更多传统意义上动态测试才能发现的缺陷，从而提高开发效率和软件质量。本文介绍部分在静态代码分析中使用的<a href="https://bbs.huaweicloud.com/blogs/detail/227535">中间表示</a>的概念，主要包括<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>、<a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>、<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">SSA形式</a>，及<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">CFG</a>和<a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">RTL</a>等概念</p>
-<hr>
-<span id="more"></span>
-
-<h4 id="中间表示（Intermediate-Representation）"><a href="#中间表示（Intermediate-Representation）" class="headerlink" title="中间表示（Intermediate Representation）"></a>中间表示（Intermediate Representation）</h4><h5 id="抽象语法树（Abstract-Syntax-Tree，AST）"><a href="#抽象语法树（Abstract-Syntax-Tree，AST）" class="headerlink" title="抽象语法树（Abstract Syntax Tree，AST）"></a><a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>（Abstract Syntax Tree，AST）</h5><p>在介绍AST时，我们用一个简单的例子：x = 3 + 4 * y 这个表达式作为例子来进行介绍：</p>
-<ul>
-<li>AST：<ul>
-<li>是源代码的抽象语法结构的树状表示，树上的每个节点都表示源代码中的一种结构，之所以说是抽象的，是因为抽象语法树并不会表示出真实语法出现的每一个细节</li>
-<li>抽象语法树，其实就是用树状结构表示语法结构，也没有说必须是什么形式，只要能忠实地反映出源码的格式即可</li>
-</ul>
-</li>
-</ul>
-<p>当然，一般资料中在进行介绍时，都是以操作符作为根节点，画个树状的结构来表示，这里咱们也简单画一个意思一下，如下图：</p>
-<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646488430032435.png" alt="AST示例"></p>
-<h5 id="三地址码（Three-Address-Code，TAC-3AC）"><a href="#三地址码（Three-Address-Code，TAC-3AC）" class="headerlink" title="三地址码（Three Address Code，TAC/3AC）"></a><a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>（Three Address Code，TAC/3AC）</h5><p>三地址码是一种有意思的中间表示，当前也是编译原理中用得最火的。这里我给大家梳理一种我的理解上的概念，那就是，<strong>刨掉赋值操作，最多只有一个操作符</strong>，先看下面的几个例子</p>
-<ul>
-<li>x = y bop z</li>
-<li>x = uop y</li>
-<li>x = y</li>
-<li>goto L</li>
-</ul>
-<p>如上，第一个，除了赋值之外，只有 bop 一个操作符，第二个，只有 uop 一个操作符，第三个没有操作符，同时，操作符的概念可以进一步扩展到函数调用等，例如 call fun(a, b, c, d)，虽然有四个操作数，但是我们认为 call fun只是一个操作符。</p>
-<p>如上面 x = 3 + 4 * y 转换为三地址码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span></span><br><span class="line">t2 = y</span><br><span class="line">t3 = t1 * t2</span><br><span class="line">t4 = <span class="number">3</span></span><br><span class="line">t5 = t4 + t3</span><br><span class="line">x = t5</span><br></pre></td></tr></table></figure>
-
-<p>当然，有些形式下会减少临时变量的使用，尽量复用原来的变量或者常量，形成的三地址码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span> * y</span><br><span class="line">x = <span class="number">3</span> + t1</span><br></pre></td></tr></table></figure>
-
-<p>三地址码最初只是处理类似于 x = y bop z 这种形式的语句，而提出来的“三个操作数”的意思，随着语法的扩充，也并不是完全就是“三地址”。</p>
-<h5 id="AST和三地址码对比"><a href="#AST和三地址码对比" class="headerlink" title="AST和三地址码对比"></a>AST和三地址码对比</h5><p>以下介绍几点AST和三地址码的对比特点：</p>
-<ul>
-<li><p>源码相关性</p>
-<p>AST中的节点与输入源代码中的各个语法元素一一对应，忠实地体现了源码的内容和语法特性，因此AST与源码强相关；三地址码就是从AST进一步抽象的一种中间表示，更接近机器语言，可以认为和语言无关，是连接前后端的一种中间表示</p>
-</li>
-<li><p>变化频繁程度</p>
-<p>因为AST需要忠实地体现出源代码的语法元素，因此在对应的编程语言升级时，对应的AST必然会跟着发生变化，比如Java，从Java7变成Java8，增加了大量的Lambda表达式、函数引用等特性，所以AST节点也需要增加这些语法节点，所以AST的版本需要随着语言发布而不断变化。</p>
-<p>但是三地址码是一种经过处理的语言无关的中间表示，即使源代码结构变化，AST结构变化，但是转换后的三地址码是稳定的，不会经常发生变化，构造在三地址码上面的分析算法就相对比较稳定</p>
-</li>
-<li><p>结构</p>
-<p>AST体现源码的结构，需要匹配源码的语法，因此一般结构比较复杂，而三地址经过处理，一般比较紧凑，简单。例如，Java中，对 for，while，do while 有多种不同的循环方式，但是，其实内容大同小异，但是在AST层面，就是不一样的，但是转换为三地址码后，所表达的控制语义是完全一样的</p>
-</li>
-<li><p>表达信息</p>
-<p>AST表达了源码的信息，因此可以在AST上做程序结构的检查，但是三地址码中，可以更好地包含了程序控制流和数据流信息，能进行更深层次的流敏感分析，过程间分析，上下文敏感分析和对象敏感分析等等，从而实现各种更高难度的程序漏洞检查。</p>
-<p>同时，三地址码因为是语言无关的， 所以在部分静态代码分析工具实现时，会对不同的三地址码，实现一个分析引擎，只是通过开发不同语言的规则，实现对不同语言的能力的覆盖，而AST是无法做到这一点的。因此，三地址码也被认为是静态代码分析的基础</p>
-</li>
-</ul>
-<h5 id="静态单赋值形式-（Static-Single-Assignment-Form，SSA）"><a href="#静态单赋值形式-（Static-Single-Assignment-Form，SSA）" class="headerlink" title="**静态单赋值形式**（Static Single Assignment Form，SSA）"></a>**<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">静态单赋值形式</a>**（Static Single Assignment Form，SSA）</h5><p><a href="https://github.com/lwy0518/blog_files/tree/master/%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%E6%96%87%E4%BB%B6">文件地址</a></p>
-<h6 id="SSA概念及分类"><a href="#SSA概念及分类" class="headerlink" title="SSA概念及分类"></a>SSA概念及分类</h6><ul>
-<li><p>SSA概念</p>
-<blockquote>
-<p>在编译器的设计中，<strong>静态单赋值形式</strong>通常简写为<strong>SSA form</strong>或是<strong>SSA</strong>，是中介码的特性，每个变数仅被赋值一次。在原始的IR中，已存在的变数可被分割成许多不同的<strong>版本</strong>，在许多教科书当中通常会将旧的变数名称加上一个下标而成为新的变数名称，以至于标明每个变数及其不同版本。在SSA中，<strong>UD链</strong>（use-define chain，赋值代表define，使用变数代表use）是非常明确，而且每个仅包含单一元素</p>
-</blockquote>
-<p>以下面的代码为例：</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">3</span>) &#123;</span><br><span class="line">        y = x + <span class="number">4</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> z = y + <span class="number">3</span>;</span><br><span class="line">    System.out.println(z);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下图为例，左图是原始代码，里面有分支， y 变量在不同路径中有不同赋值，最后打印 z的值。右图是等价的 SSA 形式，y 变量在两个分支中被改写为 y2, y3，在控制流交汇处插入φ函数，合并了来自不同边的 y2, y3值, 赋给 y4 最后z由y4生成</p>
-<img src="/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/1608646522321044418.png" class="" title="原始代码与SSA形式及相应CFG控制流图">
-
-<p>其实要讲SSA形式，就不能离开对DU Chain（Define-Use Chain）和UD Chain（Use-Define Chain）的介绍，因为很多地方对SSA的概念的介绍，都是从DU Chain和UD Chain引起的。Use-Define Chain 是一个数据结构，包含一个Define变量，以及它的全部Use的集合。相对的，Define-Use Chain 包含一个Use变量，以及它的全部 Define的集合。</p>
-<p>另外一种SSA的描述，就是在 Define-Use Chain中，每一个Use变量，只会有一个Define，例如，在前面例子中，z = y + 3 中，因为此时 y可能在两个分支中赋值，因此，对于变量 z = y + 3 中，y 的Use来说，有两个 Define，但是，通过更改为 SSA形式，z = y + 3 中，y只有一个 Define，那就是 y4。因此，通过将三地址码转为SSA形式，可以很大程度上，简化Use-Define Chain和Define-Use Chain。</p>
-</li>
-<li><p>SSA分类</p>
-<blockquote>
-<p>SSA 有几种不同分类（主要是最小SSA、剪枝SSA、半剪枝SSA，另外两种严格SSA和最大SSA，大部分资料上都没有看到，只是在少部分资料中有见到，所以简单提一下）</p>
-</blockquote>
-<ul>
-<li><p>最小SSA</p>
-<p>最小SSA有以下特点：同一原始名字的两个不同定义的路径汇合处都插入一个φ函数。这样得到符合两大特征的且拥有最少φ函数数量的 SSA 形式。但是这里的最小不包含优化效果，比如死代码消除。如上面图2.1节，就是一个最小SSA形式</p>
-</li>
-<li><p>剪枝SSA</p>
-<p>如果变量在基本块的入口处不是活跃 (live) 的，就不必插入φ函数。一种方法是在插入 φ函数的时候计算活跃变量分析。另一种剪枝方式是在最小SSA上做死代码消除，删掉多余的φ函数。如下面的例子，y在分支执行完后，在最后的BB块中不再使用，y已经不再活跃，此时没必要在这个节点添加φ函数，如下面右图红色标出来的位置（说明：虽然不是剪枝SSA，但是仍然是最小SSA）</p>
-<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646556674025089.png" alt="剪枝SSA和最小SSA说明"></p>
-</li>
-<li><p>半剪枝SSA</p>
-<p>鉴于剪枝 SSA 的成本，可以稍微折衷一点。插入φ函数前先去掉非跨越基本块的变量名。这样既减少了名字空间也没有计算活跃变量集的开销。如下图所示，y变量除了Define，并没有Use，所以，变量y其实可以去掉，如下右图</p>
-<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646587998085989.png" alt="半剪枝SSA形式"></p>
-</li>
-<li><p>严格SSA</p>
-<p>如果一个 SSA中，每个Use被其Define支配（如果从程序入口到一个结点 A 的所有路径，都先经过结点B，则称A被B支配），那么称为严格 SSA（实际上，在强类型语言中，这种情况比较少，因为没有定义，就不允许使用，在少数动态类型语言中，允许没有定义就可以使用的才有这类问题）</p>
-</li>
-<li><p>最大SSA</p>
-<p>最大SSA是相对最小SSA而言的，就是在每个汇合点处为每个变量放置一个φ函数。很显然，这种方法会导致SSA的使用效率最差，用户体验也很差，我估计谁生成的SSA是这样的形式，会被使用的人打死的</p>
-</li>
-</ul>
-</li>
-</ul>
-<h6 id="SSA形式和普通三地址码对比"><a href="#SSA形式和普通三地址码对比" class="headerlink" title="SSA形式和普通三地址码对比"></a>SSA形式和普通三地址码对比</h6><p>其实对比SSA形式和普通的三地址码形式，只有一个区别，那就是，SSA形式，对于每个Use，只会有一个Define。两者在一定程度上，还是非常类似的。那么主要对比在于两种形式的各自的优缺点：</p>
-<ul>
-<li>SSA形式相对于三地址码，会引入大量的额外的临时变量，同时需要插入φ函数，还需要维护这些临时变量到原始变量的映射关系（当然，仁者见仁，智者见智，也有资料觉得这些额外的临时变量可以忽略，驳斥这个观点为谬论，不过的确还是有其不舒服的地方的）</li>
-<li>SSA形式的优势在于，SSA形式简化了DU Chain和UD chain，构建了一种稀疏结构，可以简化数据流分析（一般基于三地址码，需要基于传统的数据流分析来进行分析，称为dense分析，基于SSA形式，可以构造值依赖关系，基于值流分析，也称为sparse分析，同时，SSA形式也隐含了一定的程序流信息）</li>
-<li>SSA形式相比于普通三地址码，可以优化常量传播、值依赖分析、死代码、重复代码删除等</li>
-</ul>
-<h5 id="控制流图（Control-Flow-Graph，CFG）"><a href="#控制流图（Control-Flow-Graph，CFG）" class="headerlink" title="控制流图（Control Flow Graph，CFG）"></a><a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">控制流图</a>（Control Flow Graph，CFG）</h5><blockquote>
-<p>也叫控制<a href="https://baike.baidu.com/item/%E6%B5%81%E7%A8%8B%E5%9B%BE/206961">流程图</a>，是一个过程或程序的抽象表现，是用在<a href="https://baike.baidu.com/item/%E7%BC%96%E8%AF%91%E5%99%A8/8853067">编译器</a>中的一个<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/22093090">抽象数据结构</a>，由编译器在内部维护，代表了一个程序执行过程中会遍历到的所有路径。它用图的形式表示一个过程内所有基本块执行的可能流向, 也能反映一个过程的实时执行过程</p>
-</blockquote>
-<ol>
-<li><p>基本块（Basic Block）</p>
-<ul>
-<li>特点：<ul>
-<li>单入口、单出口、每个块内的语句都是按顺序执行的，不能有分支和跳转</li>
-<li>只能从第一条语句进入该基本块，不能够以某种方式跳入该基本块的中间</li>
-<li>基本块内的语句在执行时必须从最后一条语句离开，不能够执行到一半跳转到其它的基本块</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>CFG</p>
-<p>CFG是一个由基本块组成的有向图，每个节点都是一个基本块。如果程序的执行路径可能从一个基本块$B_1$进入另一个基本块**$B_2$<strong>，</strong>$B_1$<strong>有一条指向</strong>$ B_2 $**的边</p>
-<p>其中：</p>
-<p>$N:$表示所有基本块节点的集合</p>
-<p>$E:$表示所有边的集合</p>
-<p>$n_0:$表示首节点</p>
-<p>CFG具有如下的两条性质：</p>
-<ul>
-<li>CFG 必然有唯一的一个入口点</li>
-<li>首节点必然支配CFG中其他的所有节点（即从首节点到CFG上其他任何一个节点都有一条路可以连通）</li>
-</ul>
-</li>
-</ol>
-<h5 id="寄存器传输语言（Register-Transfer-Language，RFL）"><a href="#寄存器传输语言（Register-Transfer-Language，RFL）" class="headerlink" title="寄存器传输语言（Register Transfer Language，RFL）"></a><a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">寄存器传输语言</a>（Register Transfer Language，RFL）</h5><blockquote>
-<p>又译为<strong>暂存器转换语言</strong>、<strong>寄存器转换语言</strong>，一种中间语言，使用于<a href="https://zh.wikipedia.org/wiki/%E7%B7%A8%E8%AD%AF%E5%99%A8">编译器</a>中。与<a href="https://zh.wikipedia.org/wiki/%E7%B5%84%E5%90%88%E8%AA%9E%E8%A8%80">汇编语言</a>很接近。寄存器传递语言被用于描述一个架构中<a href="https://zh.wikipedia.org/wiki/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E7%BA%A7">寄存器传输级</a>上的数据流。 在学术论文和教科书中，寄存器传递语言被认为是一种与架构无关的汇编语言。<a href="https://zh.wikipedia.org/wiki/GCC">GCC</a>的中间语言，也被称为寄存器传递语言，风格类似于<a href="https://zh.wikipedia.org/wiki/LISP">LISP</a>。GCC的前端（front-end）会先将编程语言转译成RTL，之后再利用后端（back-end）转化成机器代码</p>
-</blockquote>
-<p>以下一些文章用到相关技术：</p>
-<ul>
-<li><a href="https://github.com/usyd-blockchain/vandal">Vandal</a></li>
-<li><a href="https://github.com/eth-sri/securify2">Securify2</a></li>
-<li><a href="https://github.com/nevillegrech/MadMax">MadMax</a></li>
-<li><a href="https://github.com/nevillegrech/gigahorse-toolchain">Gigahorse</a></li>
-<li><a href="https://yanniss.github.io/ethainter-pldi20.pdf">Ethainter</a></li>
-</ul>
-<blockquote>
-<p><a href="https://bbs.huaweicloud.com/blogs/detail/227535">原文链接</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>程序分析</category>
-      </categories>
-      <tags>
-        <tag>中间表示（IR）</tag>
-        <tag>CFG</tag>
-        <tag>AST</tag>
-        <tag>TAC</tag>
-        <tag>SSA</tag>
-        <tag>RTL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客迁移到另外一台电脑</title>
-    <url>/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="复制原电脑上的数据"><a href="#复制原电脑上的数据" class="headerlink" title="复制原电脑上的数据"></a>复制原电脑上的数据</h4><p> <strong>注：</strong>不需要全部复制</p>
-<blockquote>
-<ul>
-<li>_config.yml：站点配置文件</li>
-<li>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</li>
-<li>scaffolds/：layout模板文件目录，其中的md文件可以添加编辑</li>
-<li>source/：</li>
-<li>文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<ul>
-<li>drafts：草稿文章</li>
-<li>posts：发布文章</li>
-</ul>
-</li>
-<li>themes/：主题文件</li>
-</ul>
-</blockquote>
-<hr>
-<span id="more"></span>
-
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><ol>
-<li>安装node</li>
-<li>安装git</li>
-<li><a href="https://lwy0518.github.io/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/#more">再参考上一篇文章</a></li>
-</ol>
-<h5 id="下载相关插件"><a href="#下载相关插件" class="headerlink" title="下载相关插件"></a>下载相关插件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文章部署到github上的模块</span></span><br><span class="line">$ cnpm install hexo-deployer-git --save</span><br><span class="line"><span class="comment"># 安装RSS插件</span></span><br><span class="line">$ cnpm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 添加Sitemap,加速网页收录速度</span></span><br><span class="line">$ cnpm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>博客</category>
-      </categories>
-      <tags>
-        <tag>博客</tag>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOSIO环境搭建及创建账户</title>
-    <url>/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p><a href="https://developers.eos.io/manuals/eos/latest/install/install-prebuilt-binaries">官方文档</a></p>
-<h4 id="钱包和账户"><a href="#钱包和账户" class="headerlink" title="钱包和账户"></a>钱包和账户</h4><img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-01.png" class="" title="EOS架构图">
-
-<hr>
-<span id="more"></span>
-
-<ul>
-<li><strong><a href="https://developers.eos.io/manuals/eos/latest/nodeos/index">Nodeos</a>（node + eos = nodeos）</strong>：运行节点的核心服务守护进程，用于区块生产、API 端点或本地开发</li>
-<li><strong><a href="https://developers.eos.io/manuals/eos/latest/cleos/index">Cleos</a> (cli + eos = cleos)</strong> ： 与区块链交互的命令行界面 (via <code>nodeos</code>) 和管理钱包 (via <code>keosd</code>)</li>
-<li><strong><a href="https://developers.eos.io/manuals/eos/latest/keosd/index">Keosd</a> (key + eos = keosd)</strong> ： 管理钱包中的 EOSIO 密钥并为数字签名提供安全飞地的组件</li>
-</ul>
-<p>可以参考下列解读图：</p>
-<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-02.png" class="" title="eos解读图">
-
-<h5 id="创建钱包"><a href="#创建钱包" class="headerlink" title="创建钱包"></a>创建钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet create -n wallet_name --to-console</span><br></pre></td></tr></table></figure>
-
-<p>其中：**-n<strong>是指定钱包名称（如果不指定则会默认生成一个default钱包）， <strong>wallet_name</strong>是你需要创建的钱包名（以下用lwy代替），</strong>–to-console**是将密钥输出到控制台（记得一定要保存这个密钥，因为要用于钱包的解锁）</p>
-<h5 id="查看创建的钱包"><a href="#查看创建的钱包" class="headerlink" title="查看创建的钱包"></a>查看创建的钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet list</span><br></pre></td></tr></table></figure>
-
-<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094122334.png" class="" title="image-20211210094122334">
-
-<p>其中带**”*”**号指已解锁的钱包</p>
-<h5 id="钱包的解锁与加锁"><a href="#钱包的解锁与加锁" class="headerlink" title="钱包的解锁与加锁"></a>钱包的解锁与加锁</h5><ul>
-<li><p><strong>解锁</strong>（会提示你输入钱包密钥）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n lwy --password</span><br></pre></td></tr></table></figure></li>
-<li><p>加锁（不需要输入密钥）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet lock -n lwy</span><br></pre></td></tr></table></figure>
-
-<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094458277.png" class="" title="image-20211210094458277"></li>
-</ul>
-<h4 id="生成和导入公钥-私钥对"><a href="#生成和导入公钥-私钥对" class="headerlink" title="生成和导入公钥-私钥对"></a>生成和导入公钥-私钥对</h4><h5 id="生成公钥-私钥对"><a href="#生成公钥-私钥对" class="headerlink" title="生成公钥-私钥对"></a>生成公钥-私钥对</h5><blockquote>
-<p>为了简单可以直接用一个公钥-私钥对（记得保存私钥，一定！一定 ！）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create key --to-console</span><br></pre></td></tr></table></figure>
-
-<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094807129.png" class="" title="image-20211210094807129">
-
-<h5 id="导入公钥-私钥对"><a href="#导入公钥-私钥对" class="headerlink" title="导入公钥-私钥对"></a>导入公钥-私钥对</h5><blockquote>
-<p>如果lwy钱包还没解锁，记得先解锁</p>
-</blockquote>
-<p>将生成的公钥-私钥对导入lwy钱包内</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
-
-<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210095118841.png" class="" title="image-20211210095118841">
-
-<h4 id="创建和管理账户"><a href="#创建和管理账户" class="headerlink" title="创建和管理账户"></a>创建和管理账户</h4><h5 id="命令行及参数说明"><a href="#命令行及参数说明" class="headerlink" title="命令行及参数说明"></a>命令行及参数说明</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account authorizing_account NEW_ACCOUNT OWNER_KEY ACTIVE_KEY</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>注：</strong>在这OWNER_KEY与ACTIVE_KEY是同一个，因为我为了简单只生成了一个公钥-私钥对</p>
-<ul>
-<li>authorizing_account 是为帐户创建提供资金的帐户的名称</li>
-<li>new_account 是您要创建的帐户的名称</li>
-<li>owner_key是分配给帐户owner权限的公钥</li>
-<li>active_key是分配给您帐户的active权限的公钥</li>
-</ul>
-</blockquote>
-<p>新帐户名称必须符合以下准则：</p>
-<blockquote>
-<ul>
-<li>必须在12个字符以内，包括12字符。</li>
-<li>只能包含以下符号：.12345abcdefghijklmnopqrstuvwxyz</li>
-<li>请注意，账户名称不允许使用6,7,8,9,0。</li>
-</ul>
-</blockquote>
-<h5 id="使用eosio初始账户创建新账户"><a href="#使用eosio初始账户创建新账户" class="headerlink" title="使用eosio初始账户创建新账户"></a>使用eosio初始账户创建新账户</h5><p>eosio帐户是用于引导EOSIO节点的特殊帐户。<br>由于我们没有其他账户，所以用初始eosio账户来创建新帐户</p>
-<blockquote>
-<p>eosio帐户的密钥可以在nodeos配置文件中找到，位于~/.local/share/eosio/nodeos/config/config.ini。 同时，记得解锁lwy钱包</p>
-</blockquote>
-<p>首先，需要将默认账号eosio的私钥导入lwy钱包内：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
-
-<p>然后，用初始eosio账户来创建新帐户<strong>testaccount</strong>：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio testaccount 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
-
-<h5 id="查看账户信息"><a href="#查看账户信息" class="headerlink" title="查看账户信息"></a>查看账户信息</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get account testaccount -j</span><br></pre></td></tr></table></figure>
-
-<p><strong>-j</strong> 指信息以json格式输出</p>
-<p><strong>至此，EOSIO环境搭建以及账户创建已完成！！</strong></p>
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>智能合约</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOSIO部署全过程</title>
-    <url>/2021/12/10/EOSIO%E9%83%A8%E7%BD%B2%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-
-
-<hr>
-<span id="more"></span>
-
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>数据流</tag>
-        <tag>编译器</tag>
-        <tag>漏洞检测</tag>
-        <tag>静态分析</tag>
-        <tag>Datalog</tag>
-        <tag>CFG</tag>
-        <tag>IR</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据流分析</title>
-    <url>/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h4><p>数据流分析是一种用来获取相关数据沿着程序执行路径流动的信息分析技术。分析对象是程序执行路径上的数据流动或可能的取值</p>
-<ul>
-<li>优点：具有更强的分析能力，适合需要考虑控制流信息且变量属性之操作十分简单的静态分析问题</li>
-<li>缺点：分析效率低，过程间分析和优化算法复杂，编程工作量大，容易出错且效率低</li>
-</ul>
-<hr>
-<span id="more"></span>
-
-<h5 id="数据流分析的分类"><a href="#数据流分析的分类" class="headerlink" title="数据流分析的分类"></a>数据流分析的分类</h5><ul>
-<li>对程序路径的分析精度分类<ul>
-<li>流不敏感分析（flow insensitive）：不考虑语句的先后顺序，按照程序语句的物理位置从上往下顺序分析每一语句，忽略程序中存在的分支</li>
-<li>流敏感分析（flow sensitive）：考虑程序语句可能的执行顺序，通常需要利用程序的控制流图（CFG）</li>
-<li>路径敏感分析（path sensitive）：不仅考虑语句的先后顺序，还对程序执行路径条件加以判断，以确定分析使用的语句序列是否对应着一条可实际运行的程序执行路径</li>
-</ul>
-</li>
-<li>分析程序路径的深度分类<ul>
-<li>过程内分析（intra-procedure analysis）：只针对程序中函数内的代码</li>
-<li>过程间分析（inter-procedure analysis）：考虑函数之间的数据流，即需要跟踪分析目标数据在函数之间的传递过程<ul>
-<li>上下文不敏感分析（context-insensitive）：将每个调用或返回看做一个 “goto” 操作，忽略调用位置和函数参数取值等函数调用的相关信息</li>
-<li>上下文敏感分析（context-sensitive）：对不同调用位置调用的同一函数加以区分</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="检测程序漏洞"><a href="#检测程序漏洞" class="headerlink" title="检测程序漏洞"></a>检测程序漏洞</h5><p>基于数据流的源代码漏洞分析的原理如下图所示：</p>
-<p><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_overview.png" alt="数据流分析原理"></p>
-<ul>
-<li>代码建模<ul>
-<li>该过程通过一系列的程序分析技术获得程序代码模型。首先通过词法分析生成词素的序列，然后通过语法分析将词素组合成抽象语法树。如果需要三地址码，则利用中间代码生成过程解析抽象语法树生成三地址码。如果采用流敏感或路径敏感的方式，则可以通过分析抽象语法树得到程序的控制流图。构造控制流图的过程是过程内的控制流分析过程。控制流还包含分析各个过程之间的调用关系的部分。通过分析过程之间的调用关系，还可以构造程序的调用图。另外，该过程还需要一些辅助支持技术，例如变量的别名分析，Java 反射机制分析，C/C++ 的函数指针或虚函数调用分析等<ul>
-<li>代码解析：指词法分析、语法分析、中间代码生成以及过程内的控制流分析等基础的分析过程</li>
-<li>辅助分析：包括控制流分析等为数据流分析提供支持的分析过程</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>程序代码建模<ul>
-<li>漏洞分析系统通常使用树型结构的抽象语法树或者线性的三地址码来描述程序代码的语义。控制流图描述了过程内程序的控制流路径，较为精确的数据流分析通常利用控制流图分析程序执行路径上的某些行为。调用图描述了过程之间的调用关系，是过程间分析需要用到的程序结构</li>
-</ul>
-</li>
-<li>漏洞分析规则<ul>
-<li>漏洞分析规则是检测程序漏洞的依据。对于分析变量状态的规则，可以使用状态自动机来描述。对于需要分析变量取值的情况，则需要指出应该怎样记录变量的取值，以及在怎样的情况下对变量的取值进行何种的检测<ul>
-<li>程序漏洞通常和程序中变量的状态或者变量的取值相关。状态自动机可以描述和程序变量状态相关的漏洞分析规则，自动机的状态和变量相应的状态对应</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>静态漏洞分析<ul>
-<li>数据流分析可以看做一个根据检测规则在程序的可执行路径上跟踪变量的状态或者变量取值的过程。在该过程中，如果待分析的程序语句是函数调用语句，则需要利用调用图进行过程间的分析，以分析被调用函数的内部代码。另外，数据流分析还可以作为辅助技术，用于完善程序调用图和分析变量别名等<ul>
-<li><strong>赋值语句</strong>、<strong>控制转移语句</strong>和<strong>过程调用语句</strong>是数据流分析最关心的三类语句</li>
-<li>过程内分析<ul>
-<li>对于<strong>抽象语法树</strong>的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析</li>
-<li>对于<strong>三地址码</strong>的分析，则可以直接识别其操作以及操作相关的变量</li>
-<li>在<strong>流不敏感分析</strong>中，常常使用线性扫描的方式依次分析每一条中间表示形式的语句</li>
-<li><strong>流敏感的分析</strong>或<strong>路径敏感的分析</strong>，则根据控制流图进行分析。对控制流图的遍历主要是<strong>深度优先</strong>和<strong>广度优先</strong>两种方式</li>
-</ul>
-</li>
-<li><div align="center">
-    <src img=https://github.com/lwy0518/blog_files/tree/master/images>
-</div>
-
-<ul>
-<li>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析</li>
-<li>借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件<ul>
-<li>前置条件记录对基本块分析前已有的相关分析结果</li>
-<li>后置条件是分析基本块后得到的结果</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>处理分析结果<ul>
-<li>对检测出的漏洞进行危害程度分类等</li>
-</ul>
-</li>
-</ul>
-<h4 id="方法实现"><a href="#方法实现" class="headerlink" title="方法实现"></a>方法实现</h4><p>数据流分析使用的程序代码模型主要包括程序代码的中间表示以及一些关键的数据结构，利用程序代码的中间表示可以对程序语句的指令语义进行分析</p>
-<h5 id="抽象语法树（AST）"><a href="#抽象语法树（AST）" class="headerlink" title="抽象语法树（AST）"></a>抽象语法树（AST）</h5><p>是程序抽象语法结构的树状表现形式，其每个内部节点代表一个运算符，该节点的子节点代表这个运算符的运算分量。通过描述控制转移语句的语法结构，抽象语法树在一定程度上也描述了程序的过程内代码的控制流结构</p>
-<p>例子：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> b ≠ <span class="number">0</span></span><br><span class="line">	<span class="keyword">if</span> a &gt; b</span><br><span class="line">		a := a − b</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		b := b − a</span><br><span class="line"><span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
-
-<p>对应的抽象语法树为：</p>
-<h5 id=""><a href="#" class="headerlink" title=""></a><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ast.png" alt="TAC"></h5><p>由一组类似于汇编语言的指令组成，每个指令具有不多于三个的运算分量。每个运算分量都像是一个<strong>寄存器</strong></p>
-<h5 id="静态单赋值形式（SSA）"><a href="#静态单赋值形式（SSA）" class="headerlink" title="静态单赋值形式（SSA）"></a>静态单赋值形式（SSA）</h5><p>是一种程序语句或者指令的表示形式，在这种表示形式中，所有的赋值都是针对具有不同名字的变量，也就是说，如果某个变量在不同的程序点被赋值，那么在这些程序点上，该变量在静态单赋值形式的表示中应该使用不同的名字。在使用下标的赋值表示中，变量的名字用于区分程序中的不同的变量，下标用于区分不同程序点上变量的赋值情况。另外，如果在一个程序中，同一个变量可能在两个不同的控制流路径中被赋值，并且在<strong>路径交汇</strong>后，该变量被使用，那么就需要一种被称为 <strong>Φ 函数</strong>的的表示规则将变量的赋值合并起来</p>
-<div align="center">
-    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa1.png">
-    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa2.png">
-</div>
-
-
-
-<p><strong>作用：</strong>静态单赋值形式对于数据流分析的意义在于，可以简单而直接地<strong>发现变量的赋值和使用情况</strong>，以此分析数据的流向并发现程序不安全的行为</p>
-<h5 id="控制流图（CFG）"><a href="#控制流图（CFG）" class="headerlink" title="控制流图（CFG）"></a>控制流图（CFG）</h5><p>是指用于描述程序过程内的控制流的有向图。控制流由节点和有向边组成。典型的节点是基本块（BB），即程序语句的线性序列。有向边表示节点之间存在潜在的控制流路径，通常都带有属性（如if语句的true分支和false分支）</p>
-<h5 id="调用图（CG）"><a href="#调用图（CG）" class="headerlink" title="调用图（CG）"></a>调用图（CG）</h5><p>是描述程序中过程之间的调用和被调用关系的有向图。控制图是一个节点和边的集合，并满足如下原则</p>
-<ul>
-<li>对程序中的每个过程都有一个节点</li>
-<li>对每个调用点都有一个节点</li>
-<li>如果调用点 c 调用了过程 p，就存在一条从 c 的节点到 p 的节点的边</li>
-</ul>
-<h5 id="静态漏洞分析"><a href="#静态漏洞分析" class="headerlink" title="静态漏洞分析"></a>静态漏洞分析</h5><p>数据流分析检测漏洞是利用分析规则按照一定的顺序分析代码中间表示的过程</p>
-<ul>
-<li><strong>过程内分析：</strong>对于抽象语法树的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析。对于三地址码的分析，则可以直接识别其操作以及操作相关的变量</li>
-<li><strong>过程间分析：</strong>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析。另一种思路是借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件</li>
-</ul>
-<blockquote>
-<p><a href="https://firmianay.gitbooks.io/ctf-all-in-one/content/doc/5.4_dataflow_analysis.html">原文链接</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>程序分析</category>
-      </categories>
-      <tags>
-        <tag>程序分析</tag>
-        <tag>数据流</tag>
-        <tag>Def-Use</tag>
-        <tag>中间表示（IR）</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOSIO-Vulneribilities</title>
-    <url>/2021/12/07/EOSIO-Vulneribilities/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="EOSIO漏洞复现"><a href="#EOSIO漏洞复现" class="headerlink" title="EOSIO漏洞复现"></a><a href="https://github.com/lwy0518/blog_files">EOSIO漏洞复现</a></h4><h5 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h5><ul>
-<li>nodeos ：2.0.12</li>
-<li>EOSIO.CDT（编译器）：1.2.1</li>
-<li><a href="https://github.com/gongbell/EOSFuzzer">实验数据</a></li>
-</ul>
-<hr>
-<span id="more"></span>
-
-<h5 id="准备（前一篇文章已经介绍如何创建账户等等操作）"><a href="#准备（前一篇文章已经介绍如何创建账户等等操作）" class="headerlink" title="准备（前一篇文章已经介绍如何创建账户等等操作）"></a>准备（<a href="https://lwy0518.github.io/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/#more">前一篇文章已经介绍如何创建账户等等操作</a>）</h5><ul>
-<li><p>解锁账户（默认锁定时间较短，可以自己修改配置文件使得时间更长）</p>
-<blockquote>
-<p> yourcount：指你自己创建的钱包名</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n yourcount --password</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="EOS-Fake-Transfer复现过程"><a href="#EOS-Fake-Transfer复现过程" class="headerlink" title="EOS Fake Transfer复现过程"></a>EOS Fake Transfer复现过程</h5><ul>
-<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( code == self || action == ::eosio::<span class="built_in">string_to_name</span>(<span class="string">&quot;onerror&quot;</span>) || code == <span class="built_in">N</span>(eosio.token)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;receiver:&quot;</span>, name&#123;receiver&#125;, <span class="string">&quot;, code:&quot;</span>, name&#123;code&#125;, <span class="string">&quot;, action:&quot;</span>, name&#123;action&#125;, <span class="string">&quot;\n&quot;</span>); </span><br><span class="line">	<span class="function">notified <span class="title">thiscontract</span><span class="params">( self )</span></span>; </span><br><span class="line">	<span class="built_in"><span class="keyword">switch</span></span>( action ) &#123; </span><br><span class="line">		<span class="keyword">case</span> ::eosio::<span class="built_in">string_to_name</span>( <span class="string">&quot;transfer&quot;</span> ): </span><br><span class="line">			eosio::<span class="built_in">execute_action</span>( &amp;thiscontract, &amp;notified::transfer ); </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>漏洞产生的原因</p>
-<blockquote>
-<p>由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人（<strong>issuer</strong>）。或者直接调用漏洞合约的transfer函数进行转账</p>
-</blockquote>
-</li>
-<li><p>过程</p>
-<ul>
-<li><p>创建受害者账户</p>
-<blockquote>
-<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim4 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>部署测试合约<em>test.cpp</em></p>
-<blockquote>
-<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim4 <span class="built_in">test</span>/ -p  victim4</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>开始模拟攻击</p>
-<ul>
-<li><p>直接调用<em>test.cpp</em>合约的<em>transfer</em>（主要目的看是否<em>trasnfer</em>中的<em>print</em>是否有输出）</p>
-<blockquote>
-<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action victim4 transfer <span class="string">&#x27;[&quot;eosio&quot;,&quot;victim4&quot;,&quot;10.0000 EOS&quot;,&quot;inlined call&quot;]&#x27;</span> -p  eosio -j</span><br></pre></td></tr></table></figure>
-
-<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
-<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
-<img src="/2021/12/07/EOSIO-Vulneribilities/inlined_call.png" class="" title="inlined_call"></li>
-</ul>
-</li>
-<li><p>查询账户余额</p>
-<blockquote>
-<p> cleos get currency balance eosio.token + 查询账户 + token名（EOS)</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get currency balance eosio.token victim4 EOS</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="Forged-Transfer-Notification复现过程"><a href="#Forged-Transfer-Notification复现过程" class="headerlink" title="Forged Transfer Notification复现过程"></a>Forged Transfer Notification复现过程</h5><ul>
-<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(account_name from, account_name to, asset quantity, string memo)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n Receiving transfer message: from &quot;</span>, name&#123;from&#125;, <span class="string">&quot; to &quot;</span>, name&#123;to&#125;, <span class="string">&quot;,&quot;</span>, quantity, <span class="string">&quot;,&quot;</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (from == _self) &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;have a vulnerability!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;in eosbet transfer,&quot;</span>, name&#123; from &#125;, <span class="string">&quot;,&quot;</span>, name&#123; to &#125;);</span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>漏洞产生的原因</p>
-<blockquote>
-<p>攻击者在 EOS 网络中控制两个账户 A（发起攻击的账户） 和 B（将收到的通知立即转发给账户C）。通过账户 A 向账户 B 发送真正的 EOS，如图所示，eosio.token 合约在转账成功后会向 账户A、B 发送 notification。当账户 B 收到 notification后，通过调用require_recipient(C)随即将收到的通知转发给部署受害者智能合约的账户C。</p>
-</blockquote>
-</li>
-<li><p>过程</p>
-<ul>
-<li><p>创建攻击者账户<strong>sender</strong>，用于向另一个由攻击者控制的账户<strong>notifier</strong></p>
-<blockquote>
-<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio sender <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>创建账户<strong>notifier</strong>，用于将收到的转账通知转发给受害者</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio notifier <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>创建受害者账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim5 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>账户<strong>notifier</strong>部署攻击合约<em>eosbethack.cpp</em></p>
-<blockquote>
-<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract notifier eosbethack/ -p notifier</span><br></pre></td></tr></table></figure></li>
-<li><p>账户<strong>victim5</strong>部署攻击合约<em>eosbet.cpp</em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim5 eosbet/ -p victim5</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>开始模拟攻击</p>
-<ul>
-<li><p>账户<strong>sender</strong>（攻击者）向账户notifier（攻击者）发送<strong>EOS</strong>（主要目的看是否<em><strong>trasnfer</strong></em>中的<em>print</em>是否有输出）</p>
-<blockquote>
-<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action eosio.token transfer <span class="string">&#x27;[&quot;sender&quot;,&quot;notifier&quot;,&quot;10.0000 EOS&quot;,&quot;transfer himself&quot;]&#x27;</span> -p sender -j</span><br></pre></td></tr></table></figure>
-
-<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
-<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
-<p>结果显示：</p>
-<img src="/2021/12/07/EOSIO-Vulneribilities/export.png" class="" title="export"></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>EOSIO</category>
-      </categories>
-      <tags>
-        <tag>EOSIO</tag>
-        <tag>漏洞</tag>
-        <tag>智能合约</tag>
-        <tag>防护</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>构建hexo博客过程</title>
-    <url>/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h4 id="环境（Windows）"><a href="#环境（Windows）" class="headerlink" title="环境（Windows）"></a>环境（Windows）</h4><ul>
-<li>git（git version 2.29.2.windows.3）</li>
-<li>node（v14.17.0）</li>
-</ul>
-<hr>
-<span id="more"></span>
-
-<h4 id="本地部署"><a href="#本地部署" class="headerlink" title="本地部署"></a>本地部署</h4><ul>
-<li><p>安装cnpm（国内镜像源很慢）</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p> “-g”：表示全局安装</p>
-<p> 验证是否安装成功：</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm -v</span><br></pre></td></tr></table></figure>
-
-<p> 设置源：</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org </span><br></pre></td></tr></table></figure></li>
-<li><p>安装hexo</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p> 验证是否安装成功：</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个目录（出错直接删掉目录即可）</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir myBlog</span><br><span class="line">$ <span class="built_in">cd</span> myBlog</span><br></pre></td></tr></table></figure></li>
-<li><p>初始化</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure></li>
-<li><p>启动hexo</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<p> 访问地址:localhost:4000</p>
-</li>
-</ul>
-<h4 id="GitHub部署"><a href="#GitHub部署" class="headerlink" title="GitHub部署"></a>GitHub部署</h4><ul>
-<li><p>创建一个仓库，仓库名必须为：</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yourname.github.io</span><br></pre></td></tr></table></figure></li>
-<li><p>安装插件</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure></li>
-<li><p>修改配置文件（在文件最下面修改）</p>
-<ul>
-<li><p>Windows 下直接可以用文本打开</p>
-</li>
-<li><p>其他系统可以用vim</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p> 添加以下内容</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deploy:                                                      </span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo: https://github.com:yourname/yourname.github.io.git</span><br><span class="line">	branch: master</span><br></pre></td></tr></table></figure></li>
-<li><p>部署到远端（可以提前配置好git账号和密码）</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
-<li><p>访问远程博客</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://yourname.github.io.git</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="换主题"><a href="#换主题" class="headerlink" title="换主题"></a>换主题</h4><ul>
-<li><p>下载主题（下载到themes目录下）</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/litten/hexo-theme-yilia.git themes.yilia</span><br></pre></td></tr></table></figure></li>
-<li><p>修改</p>
-<ul>
-<li><p>Windows 下直接可以用文本打开</p>
-</li>
-<li><p>其他系统可以用vim</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p> 修改以下内容</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">theme: yilia</span><br></pre></td></tr></table></figure></li>
-<li><p>重新生成</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp; hexo g &amp; hexo s</span><br></pre></td></tr></table></figure></li>
-<li><p>远程部署到github</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><ol>
-<li>如遇到这个问题，先检查是否是网络的原因 ，多部署几次，如果还是不行，则采用以下方式：</li>
-</ol>
-<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209184952522.png" class="" title="image-20211209184952522">
-
-<ul>
-<li><p>方法一：在当前目录下操作</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 删除git提交内容文件夹</span></span><br><span class="line">$ rm -rf .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##执行</span></span><br><span class="line">$ git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
-<li><p>方法二：有可能是你的git repo配置地址不正确,可以将http方式变更为ssh方式，在当前目录下操作</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##删除git提交内容文件夹</span></span><br><span class="line">$ vim _config.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">##修改</span></span><br><span class="line">deploy:</span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo:https://github.com/yourname/yourname.github.io.git -&gt;</span><br><span class="line">			git@github.com:a956551943/weixiaohui.github.io.git</span><br><span class="line">	branch: master</span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
-<li><p>方法三：备选，在当前目录下操作</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##进入depoly文件夹</span></span><br><span class="line">$ <span class="built_in">cd</span> .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##强制推送</span></span><br><span class="line">$ git push -f</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="2">
-<li><p>遇到新建博客文章部署之后图片不显示的问题</p>
-<blockquote>
-<p>在Typora中的工具栏中的“格式” –&gt; “图像” –&gt; “全局图像设置”中设置如下，此后会在当前目录下生成包含图片同名的文件</p>
-</blockquote>
-<p>另外，在文章开始部分加上以上命令即可解决图片不显示的问题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;meta name=<span class="string">&quot;referrer&quot;</span> content=<span class="string">&quot;no-referrer&quot;</span> </span><br></pre></td></tr></table></figure>
-
-<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209185640095.png" class="" title="image-20211209185640095"></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Blog</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>Blog</tag>
       </tags>
   </entry>
 </search>
