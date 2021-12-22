@@ -1,0 +1,1250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo NexT 主题更新</title>
+    <url>/2021/12/22/Hexo-NexT-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h3 id="更新Next主题"><a href="#更新Next主题" class="headerlink" title="更新Next主题"></a>更新Next主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ rm -rf ./themes/next</span><br><span class="line">$ cnpm install hexo-theme-next</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装第三方插件"><a href="#安装第三方插件" class="headerlink" title="安装第三方插件"></a>安装第三方插件</h3><h4 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install @next-theme/plugins</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.next.yml</span><br></pre></td></tr></table></figure>
+
+<p>复制以下代码到_config.next.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vendors:</span><br><span class="line">  plugins: local</span><br></pre></td></tr></table></figure>
+
+<hr>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora快捷键</title>
+    <url>/2021/12/21/Typora%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="Typora快捷键"><a href="#Typora快捷键" class="headerlink" title="Typora快捷键"></a>Typora快捷键</h4><p><img src="https://img2018.cnblogs.com/blog/443934/201810/443934-20181012170211920-1988294604.png"></p>
+<hr>
+<span id="more"></span>
+
+<blockquote>
+<p><a href="https://www.cnblogs.com/hongdada/p/9776547.html">原文链接</a></p>
+</blockquote>
+<h5 id="源码模式"><a href="#源码模式" class="headerlink" title="源码模式"></a>源码模式</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+/</span><br></pre></td></tr></table></figure>
+
+<h5 id="生成目录"><a href="#生成目录" class="headerlink" title="生成目录"></a>生成目录</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[TOC]按回车</span><br></pre></td></tr></table></figure>
+
+<h5 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+alt+f</span><br></pre></td></tr></table></figure>
+
+<h5 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+<span class="built_in">shift</span>+`</span><br></pre></td></tr></table></figure>
+
+<h5 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+数字</span><br></pre></td></tr></table></figure>
+
+<h5 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+t</span><br></pre></td></tr></table></figure>
+
+<h5 id="选中一行"><a href="#选中一行" class="headerlink" title="选中一行"></a>选中一行</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+l</span><br></pre></td></tr></table></figure>
+
+<h5 id="选中单词"><a href="#选中单词" class="headerlink" title="选中单词"></a>选中单词</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+d</span><br></pre></td></tr></table></figure>
+
+<h5 id="选中相同格式的文字"><a href="#选中相同格式的文字" class="headerlink" title="选中相同格式的文字"></a>选中相同格式的文字</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+e</span><br></pre></td></tr></table></figure>
+
+<h5 id="跳转到文章开头"><a href="#跳转到文章开头" class="headerlink" title="跳转到文章开头"></a>跳转到文章开头</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+home</span><br></pre></td></tr></table></figure>
+
+<h5 id="跳转到文章结尾"><a href="#跳转到文章结尾" class="headerlink" title="跳转到文章结尾"></a>跳转到文章结尾</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+end</span><br></pre></td></tr></table></figure>
+
+<h5 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+f</span><br></pre></td></tr></table></figure>
+
+<h5 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+h</span><br></pre></td></tr></table></figure>
+
+<h5 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+u</span><br></pre></td></tr></table></figure>
+
+<h5 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">alt+<span class="built_in">shift</span>+5</span><br></pre></td></tr></table></figure>
+
+<h5 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">直接拖动到指定位置即可或者ctrl+<span class="built_in">shift</span>+i</span><br></pre></td></tr></table></figure>
+
+<h5 id="插入链接"><a href="#插入链接" class="headerlink" title="插入链接"></a>插入链接</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl + k</span><br></pre></td></tr></table></figure>
+
+<h5 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="加粗"><a href="#加粗" class="headerlink" title="加粗"></a>加粗</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl + b</span><br></pre></td></tr></table></figure>
+
+<h5 id="倾斜"><a href="#倾斜" class="headerlink" title="倾斜"></a>倾斜</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl + i</span><br></pre></td></tr></table></figure>
+
+<h5 id="添加参考文献"><a href="#添加参考文献" class="headerlink" title="添加参考文献"></a>添加参考文献</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[^1] <span class="comment"># ^ 后面添加数字</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Markdown</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>污点分析</title>
+    <url>/2021/12/21/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<hr>
+<meta name="referrer" content="no-referrer" />
+
+<ul>
+<li><a href="#%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">污点分析技术</a><ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86">基本原理</a><ul>
+<li><a href="#%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E5%AE%9A%E4%B9%89">污点分析定义</a></li>
+<li><a href="#%E8%AF%86%E5%88%AB%E6%B1%A1%E7%82%B9%E6%BA%90%E5%92%8C%E6%B1%87%E8%81%9A%E7%82%B9">识别污点源和汇聚点</a></li>
+<li><a href="#%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">污点传播分析</a><ul>
+<li><a href="#%E6%98%BE%E7%A4%BA%E6%B5%81%E5%88%86%E6%9E%90">显示流分析</a></li>
+<li><a href="#%E9%9A%90%E5%BC%8F%E6%B5%81%E5%88%86%E6%9E%90">隐式流分析</a></li>
+</ul>
+</li>
+<li><a href="#%E6%97%A0%E5%AE%B3%E5%A4%84%E7%90%86">无害处理</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF">污点传播分析的关键技术</a><ul>
+<li><a href="#%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E4%B8%AD%E7%9A%84%E6%98%BE%E7%A4%BA%E6%B5%81%E5%88%86%E6%9E%90">污点传播中的显示流分析</a><ul>
+<li><a href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">静态分析技术</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">动态分析技术</a><ul>
+<li><a href="#%E7%A1%AC%E4%BB%B6">硬件</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E8%BD%AF%E4%BB%B6">基于软件</a></li>
+<li><a href="#%E6%B7%B7%E5%90%88%E5%9E%8B">混合型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E4%B8%AD%E7%9A%84%E9%9A%90%E5%BC%8F%E6%B5%81%E5%88%86%E6%9E%90">污点传播中的隐式流分析</a><ul>
+<li><a href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">静态分析技术</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">动态分析技术</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><p><a href="#%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90">污点分析方法实现实例分析</a></p>
+<ul>
+<li><p><a href="%E9%9D%99%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">静态污点分析技术</a></p>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90">基于数据流的污点分析</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E7%9A%84%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90">基于依赖关系的污点分析</a></li>
+<li><a href="#%E9%9D%99%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90">静态污点分析实例分析</a></li>
+</ul>
+</li>
+<li><p><a href="#%E5%8A%A8%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF">动态污点分析技术</a></p>
+<ul>
+<li><p><a href="#%E5%8A%A8%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E7%9A%84%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0">动态污点分析的方法实现</a></p>
+<ul>
+<li><a href="#%E6%B1%A1%E7%82%B9%E6%95%B0%E6%8D%AE%E6%A0%87%E8%AE%B0">污点数据标记</a></li>
+<li><a href="#%E6%B1%A1%E7%82%B9%E5%8A%A8%E6%80%81%E8%B7%9F%E8%B8%AA">污点动态跟踪</a></li>
+<li><a href="#%E6%B1%A1%E7%82%B9%E8%AF%AF%E7%94%A8%E6%A3%80%E6%9F%A5">污点误用检查</a></li>
+</ul>
+</li>
+<li><p><a href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90">实例分析</a></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="#%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E5%9C%A8%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF">污点分析在实际应用中的关键技术</a></p>
+<ul>
+<li><a href="#%E6%A3%80%E6%B5%8B%E6%99%BA%E8%83%BD%E6%89%8B%E6%9C%BA%E9%9A%90%E7%A7%81%E6%B3%84%E9%9C%B2">检测智能手机隐私泄露</a><ul>
+<li><a href="#%E9%9D%99%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90">静态污点分析</a><ul>
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%86%85%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">组件内污点传播分析</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E9%97%B4%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">组件间污点传播分析</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%BA%93%E5%87%BD%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">组件与库函数之间的污点传播分析</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90">动态污点分析</a><ul>
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%86%85%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">组件内污点传播分析</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E9%97%B4%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD%E5%88%86%E6%9E%90">组件间污点传播分析</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%9C%AC%E5%9C%B0%E5%BA%93%E5%87%BD%E6%95%B0%E9%97%B4%E7%9A%84%E6%B1%A1%E7%82%B9%E4%BC%A0%E6%92%AD">组件与本地库函数间的污点传播</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="#%E6%80%BB%E7%BB%93">总结</a></p>
+</li>
+<li><p><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="污点分析技术"><a href="#污点分析技术" class="headerlink" title="污点分析技术"></a>污点分析技术</h2><h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><h4 id="污点分析定义"><a href="#污点分析定义" class="headerlink" title="污点分析定义"></a>污点分析定义</h4><p>污点分析可以抽象成一个**三元组<code>&lt;sources,sinks,sanitizers&gt;</code>**的形式，其中，<code>source</code> 即污点源，代表直接引入不受信任的数据或者机密数据到系统中；<code>sink</code> 即污点汇聚点，代表直接产生安全敏感操作(违反数据完整性)或者泄露隐私数据到外界(违反数据保密性)；<code>sanitizer</code> 即无害处理，代表通过数据加密或者移除危害操作等手段使数据传播不再对软件系统的信息安全产生危害。</p>
+<p>污点分析就是分析程序中由污点源引入的数据是否能够不经无害处理，而直接传播到污点汇聚点。如果不能，说明系统是信息流安全的；否则，说明系统产生了隐私数据泄露或危险数据操作等安全问题。</p>
+<p>在漏洞分析中，使用污点分析技术将所感兴趣的数据(通常来自程序的外部输入，假定所有输入都是危险的)标记为污点数据，然后通过跟踪和污点数据相关的信息的流向，可以知道它们是否会影响某些关键的程序操作，进而挖掘程序漏洞。即将程序是否存在某种漏洞的问题转化为污点信息是否会被 Sink 点上的操作所使用的问题。</p>
+<p>污点分析常常包括以下几个部分(如图 2 所示)：</p>
+<ul>
+<li>识别污点信息在程序中的产生点（Source点）并对污点信息进行标记(根据所分析的系统的不同使用定制的识别策略)</li>
+<li>污点传播分析(利用特定的规则跟踪分析污点信息在程序中的传播过程)</li>
+<li>漏洞检测、无害处理(在一些关键的程序点（Sink点）检测关键的操作是否会受到污点信息的影响)</li>
+</ul>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF1.png" alt="污点分析过程"></p>
+<h4 id="识别污点源和汇聚点"><a href="#识别污点源和汇聚点" class="headerlink" title="识别污点源和汇聚点"></a>识别污点源和汇聚点</h4><p>识别污点源和污点汇聚点是污点分析的前提。目前，在不同的应用程序中识别污点源和汇聚点的方法各不相同。缺乏通用方法的原因一方面来自系统模型、编程语言之间的差异。另一方面，污点分析关注的安全漏洞类型不同，也会导致对污点源和污点汇聚点的收集方法迥异。表 1 所示为在 Web 应用程序漏洞检测中的污点源示例[^1]，它们是 Web 框架中关键对象的属性。</p>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF2.png" alt="污点源示例"></p>
+<p><strong>现有的识别污点源和汇聚点的方法可以大致分成 3 类:</strong></p>
+<ul>
+<li>使用启发式的策略进行标记,例如把来自程序外部输入的数据统称为“污点”数据,保守地认为这些数据有可能包含恶意的攻击数据(如 PHP Aspis)；</li>
+<li>根据具体应用程序调用的 API 或者重要的数据类型,手工标记源和汇聚点(如 DroidSafe[^2])；</li>
+<li>使用统计或机器学习技术自动地识别和标记污点源及汇聚点[^3]。</li>
+</ul>
+<h4 id="污点传播分析"><a href="#污点传播分析" class="headerlink" title="污点传播分析"></a>污点传播分析</h4><p>污点传播分析就是分析污点标记数据在程序中的传播途径.按照分析过程中关注的程序依赖关系的不同, 可以将污点传播分析分为<strong>显式流分析</strong>和<strong>隐式流分析</strong>。</p>
+<h5 id="显示流分析"><a href="#显示流分析" class="headerlink" title="显示流分析"></a>显示流分析</h5><p>污点传播分析中的显式流分析就是分析污点标记如何随程序中变量之间的<strong>数据依赖关系传播</strong></p>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF3.png" alt="显示污点分析示例代码"></p>
+<p>以图 3 所 示的程序为例,变量 a 和 b 被预定义的污点源函数 source 标记为污点源.假设 a 和 b 被赋予的污点标记分别为taint_a 和 taint_b.由于第 5 行的变量 x 直接数据依赖于变量 a,第 6 行的变量 y 直接数据依赖于变量 b,显式流分析会分别将污点标记 taint_a 和 taint_b 传播给第 5 行的变量 x 和第 6 行的变量 y.又由于 x 和 y 分别可以到达第 7 行和第 8 行的污点汇聚点(用预定义的污点汇聚点函数 sink 标识),图 3 所示的代码存在信息泄漏的问题.我们将在后面具体介绍目前污点传播分析中显式流分析面临的主要挑战和解决方法。</p>
+<h5 id="隐式流分析"><a href="#隐式流分析" class="headerlink" title="隐式流分析"></a>隐式流分析</h5><p>污点传播分析中的隐式流分析是分析污点标记如何随程序中变量之间的**控制依赖关系传播,**也就是分析污点标记如何从条件指令传播到其所控制的语句。</p>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF4.png" alt="隐式污点分析示例代码"></p>
+<p>在图 4 所示的程序中,变量 X 是被污点标记的字符串类型变量,变量 Y 和变量 X 之间并<strong>没有直接或间接的数据依赖关系(显式流关系),但 X 上的污点标记可以经过控制依赖隐式地传播到 Y</strong>。</p>
+<p>具体来说,由第 4 行的循环条件控制的外层循环顺序地取出 X 中的每一个字符,转化成整型后赋给变量 x,再由第 7 行的循环条件控制的内层循环以累加的方式将 x 的值赋给 y,最后由外层循环将 y 逐一传给 Y.最终,第 12 行的 Y 值和 X 值相同,程序存在信息泄漏问题.但是,如果不进行隐式流污点传播分析,第 12 行 的变量 Y 将不会被赋予污点标记,程序的信息泄漏问题被掩盖.</p>
+<p>隐式流污点传播一直以来都是一个重要的问题,和显式流一样,如果不被正确处理,会使污点分析的结果不精确.由于对隐式流污点传播处理不当导致本应被标记的变量没有被标记的问题称为欠污染(under-taint)问题.相反地,由于污点标记的数量过多而导致污点变量大量扩散的问题称为过污染(over-taint)问题.目前,针对隐式流问题的研究重点是尽量减少欠污染和过污染的情况.我们将在后面具体介绍现有技术是如何解决上述问题的。</p>
+<h4 id="无害处理"><a href="#无害处理" class="headerlink" title="无害处理"></a>无害处理</h4><p>污点数据在传播的过程中可能会经过无害处理模块,<strong>无害处理模块是指污点数据经过该模块的处理后,数据本身不再携带敏感信息或者针对该数据的操作不会再对系统产生危害</strong>.换言之,带污点标记的数据在经过无害处理模块后,污点标记可以被移除.<strong>正确地使用无害处理可以降低系统中污点标记的数量,提高污点分析的效率,并且避免由于污点扩散导致的分析结果不精确的问题</strong></p>
+<p>在应用过程中,为了防止敏感数据被泄露(保护保密性),通常会对敏感数据进行加密处理.此时,<strong>加密库函数应该被识别成无害处理模块</strong>.这一方面是由于库函数中使用了大量的加密算法,导致攻击者很难有效地计算出密码的可能范围;另一方面是加密后的数据不再具有威胁性,继续传播污点标记没有意义。</p>
+<p>此外,为了防止外界数据因为携带危险操作而对系统关键区域产生危害(保护完整性),通常会对输入的数据进行验证。</p>
+<p>综上,目前对<strong>污点源、污点汇聚点以及无害处理模块的识别通常根据系统或漏洞类型使用定制的方法</strong>.由于这些方法都比较直接,本文将不再进行更深入的探讨.下一节将重点介绍污点传播中的关键技术。</p>
+<p>总结，使用污点分析检测程序漏洞的工作原理如下图所示：</p>
+<p><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.5_overview.png" alt="污点分析检测程序漏洞的工作原理"></p>
+<ul>
+<li>基于数据流的污点分析。在不考虑隐式信息流的情况下，可以将污点分析看做针对污点数据的数据流分析。根据污点传播规则跟踪污点信息或者标记路径上的变量污染情况，进而检查污点信息是否影响敏感操作。</li>
+<li>基于依赖关系的污点分析。考虑隐式信息流，在分析过程中，根据程序中的语句或者指令之间的依赖关系，检查 Sink 点处敏感操作是否依赖于 Source 点处接收污点信息的操作。</li>
+</ul>
+<h3 id="污点传播分析的关键技术"><a href="#污点传播分析的关键技术" class="headerlink" title="污点传播分析的关键技术"></a>污点传播分析的关键技术</h3><p>污点传播分析是当前污点分析领域的研究重点.<strong>与程序分析技术相结合,可以获得更加高效、精确的污点分析结果</strong>.根据<strong>分析过程中是否需要运行程序,可以将污点传播分析分为静态污点分析和动态污点分析</strong>.本节主要介绍如何使用动/静态程序分析技术来解决污点传播中的显式流分析和隐式流分析问题</p>
+<blockquote>
+<p>显式流分析和隐式流分析是从两种不同的角度(数据流和控制流)来观察污点传播</p>
+</blockquote>
+<h4 id="污点传播中的显式流分析"><a href="#污点传播中的显式流分析" class="headerlink" title="污点传播中的显式流分析"></a>污点传播中的显式流分析</h4><h5 id="静态分析技术"><a href="#静态分析技术" class="headerlink" title="静态分析技术"></a>静态分析技术</h5><p><strong>静态污点传播分析(简称静态污点分析)是指在不运行且不修改代码的前提下,通过分析程序变量间的数据依赖关系来检测数据能否从污点源传播到污点汇聚点</strong>.</p>
+<p>静态污点分析的对象一般是<strong>程序的源码</strong>或<strong>中间表示</strong>.可以将对污点传播中<strong>显式流的静态分析问题</strong>转化为对程序中<strong>静态数据依赖的分析</strong>:</p>
+<ul>
+<li>首先,根据程序中的函数调用关系构建调用图(call graph,简称CG);</li>
+<li>然后,在函数内或者函数间根据不同的程序特性进行具体的数据流传播分析.常见的显式流污点传播方式包括<strong>直接赋值传播、通过函数(过程)调用传播以及通过别名(指针)传播</strong></li>
+</ul>
+<p><strong>以图 5 所示的 Java 程序为例:</strong></p>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF5.png" alt="静态污点传播示例代码"></p>
+<p>第 3 行的变量 b 为初始的污点标记变量,程序第 4 行将一个包含变量 b 的算术表达式的计算结果直接赋给变量 c.由于变量 c 和变量 b 之间具有直接的赋值关系,污点标记可直接从赋值语句右部的变量传播到左部,也就是上述 3种显式流污点传播方式中的<strong>直接赋值传播</strong></p>
+<p>接下来,变量 c 被作为实参传递给程序第 5 行的函数 foo,c 上的污点标记也通过<strong>函数调用传播</strong>到 foo 的形参 z,z 的污点标记又通过直接赋值传播到程序第 8 行的 x.f.由于 foo 的另外两个参数对象 x 和 y 都是对对象 a 的引用,二者之间存在别名,因此,x.f的污点标记可以通过<strong>别名传播</strong>到第 9 行的污点汇聚点,程序存在泄漏问题.</p>
+<p>目前,<strong>利用数据流分析解决显式污点传播分析中的直接赋值传播和函数调用传播已经相当成熟</strong>,研究的重点是如何为别名传播的分析提供更精确、高效的解决方案.由于精确度越高(上下文敏感、流敏感、域敏感、对象敏感等)的程序静态分析技术往往伴随着越大的时空开销,追求全敏感且高效的别名分析难度较大.又由于静态污点传播分析关注的是从污点源到污点汇聚点之间的数据流关系,分析对象并非完整的程序,而是确定的入口和出口之间的程序片段.这就意味着可<strong>以尝试采用按需(on-demand)定制的别名分析方法来解决显式流态污点分析中的别名传播问题</strong></p>
+<h5 id="动态分析技术"><a href="#动态分析技术" class="headerlink" title="动态分析技术"></a>动态分析技术</h5><p>动态污点传播分析(简称动态污点分析)<strong>是指在程序运行过程中,通过实时监控程序的污点数据在系统程序中的传播来检测数据能否从污点源传播到污点汇聚点</strong>.动态污点传播分析首先需要为污点数据扩展一个污点标记(tainted tag)的标签并将其存储在存储单元(内存、寄存器、缓存等)中,然后根据指令类型和指令操作数设计相应的传播逻辑传播污点标记</p>
+<p><strong>动态污点传播分析按照实现层次被分为基于硬件、基于软件以及混合型的污点传播分析这3类</strong></p>
+<h6 id="1-硬件"><a href="#1-硬件" class="headerlink" title="1.硬件"></a>1.硬件</h6><p><strong>基于硬件的污点传播分析需要定制的硬件支持</strong>,一般需要在原有体系结构上为寄存器或者内存扩展一个标记位,用来存储污点标记</p>
+<h6 id="2-基于软件"><a href="#2-基于软件" class="headerlink" title="2.基于软件"></a>2.基于软件</h6><p><strong>基于软件的污点传播分析通过修改程序的二进制代码来进行污点标记位的存储与传播</strong></p>
+<p>基于软件的污点传播的<strong>优点在于不必更改处理器等底层的硬件,并且可以支持更高的语义逻辑的安全策略</strong>(利用其更贴近源程序层次的特点),但缺点是使用插桩(instrumentation <strong>在保证被测程序原有逻辑完整性的基础上在程序中插入一些探针</strong>)或代码重写(code rewriting)修改程序往往会给分析系统带来巨大的开销.相反地,基于硬件的污点传播分析虽然可以利用定制硬件降低开销,但通常不能支持更高的语义逻辑的安全策略,并且需要对处理器结构进行重新设计</p>
+<h6 id="3-混合型"><a href="#3-混合型" class="headerlink" title="3.混合型"></a>3.混合型</h6><p>混合型的污点分析是对上述两类方法的折中,即,<strong>通过尽可能少的硬件结构改动以保证更高的语义逻辑的安全策略</strong></p>
+<p>目前,针对动态污点传播分析的研究工作关注的<strong>首要问题是如何设计有效的污点传播逻辑,以确保精确的污点传播分析</strong></p>
+<h4 id="污点传播中的隐式流分析"><a href="#污点传播中的隐式流分析" class="headerlink" title="污点传播中的隐式流分析"></a>污点传播中的隐式流分析</h4><p>污点传播分析中的隐式流分析就是<strong>分析污点数据如何通过控制依赖进行传播</strong>,如果忽略了对隐式流污点传播的分析,则会导致欠污染的情况;如果对隐式流分析不当,那么除了欠污染之外,还可能出现过污染的情况.与显式流分析类似,<strong>隐式流分析技术同样也可以分为静态分析和动态分析两类</strong></p>
+<h5 id="静态分析技术-1"><a href="#静态分析技术-1" class="headerlink" title="静态分析技术"></a>静态分析技术</h5><p><strong>静态隐式流分析面临的核心问题是精度与效率不可兼得的问题</strong>.精确的隐式流污点传播分析需要分析每一个分支控制条件是否需要传播污点标记.<strong>路径敏感的数据流分析往往会产生路径爆炸问题</strong>,导致开销难以接受.为了降低开销,一种简单的静态传播(标记)分支语句的污点标记方法<strong>是将控制依赖于它的语句全部进行污点标记</strong>,但该方法会导致一些并不携带隐私数据的变量被标记,导致过污染情况的发生.过污染会引起污点的大量扩散,最终导致用户得到的报告中信息过多,难以使用</p>
+<h5 id="动态分析技术-1"><a href="#动态分析技术-1" class="headerlink" title="动态分析技术"></a>动态分析技术</h5><p><strong>动态隐式流分析关注的首要问题是如何确定污点控制条件下需要标记的语句的范围</strong>.由于动态执行轨迹并不能反映出被执行的指令之间的控制依赖关系,<strong>目前的研究多采用离线的静态分析辅助判断动态污点传播中的隐式流标记范围</strong>.Clause等人提出,利用离线静态分析得到的控制流图节点间的后支配(post-dominate)关系来解决动态污点传播中的隐式流标记问题</p>
+<p><strong>例如,如图 6(a)所示</strong>,程序第 3 行的分支语句被标记为污点源,当document.cookie 的值为 abc 时,会发生污点数据泄露.根据基于后支配关系的标记算法,会对该示例第 4 行语句的指令目的地,即 x 的值进行污点标记.(ps:因为根据该分支控制下的语句的执行结果可以判定污染源document.cookie的值,造成污点数据泄露)</p>
+<p><img src="https://ch3nye.top/images/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF7.png" alt="隐式流污点分析示例代码"></p>
+<p><strong>动态分析面临的第 2 个问题是由于部分泄漏(partially leaked)导致的漏报</strong>.部分泄漏是指污点信息通过<strong>动态未执行部分进行传播并泄漏</strong>.Vogt等人发现,只动态地标记分支条件下的语句会发生这种情况</p>
+<p><strong>仍以图 6(a)中的程序为例</strong>:当第 3 行的控制条件被执行时,对应的 x 会被标记.此时,x 的值为 true,而 y 值没有变化,仍然为 false.在后续执行过程中,由于第 9行的污点汇聚点不可达,而第 12 行的汇聚点可达,动态分析没有检测到污点数据泄漏.但攻击者由第 11 行 y 等于 false 的条件能够反推出程序执行了第 3 行的分支条件,程序实际上存在信息泄漏的问题.这个信息泄露是由第 6 行未被执行到的 y 的赋值语句所触发的.因此,y 应该被动态污点传播分析所标记.为了解决部分泄漏问题,Vogt等人在传统的动态污点分析基础上增加了离线的静态分析,以跟踪动态执行过程中的控制依赖关系,<strong>对污点分支控制范围内的所有赋值语句中的变量都进行标记</strong>.具体到图 6(a)所示的例子,就是第 4 行和第 6 行中的变量均会被污点标记.但是,Vogt 等人的方法仍然会产生过污染的情况.</p>
+<p><strong>动态分析需要解决的第 3 个问题是如何选择合适的污点标记分支进行污点传播</strong>.鉴于单纯地将所有包含污点标记的分支进行传播会导致过污染的情况,可以根据信息泄漏范围的不同,定量地设计污点标记分支的选择策略.</p>
+<p><strong>以图 6(b)所示的程序为例</strong>,第 2 行的变量 a 为初始的污点标记变量.第 5 行、第 7 行、第 9 行均为以 a作为源操作数的污点标记的分支.如果传播策略为只要分支指令中包含污点标记就对其进行传播,那么第 5 行、第 7 行、第 9 行将分别被传播给第 6 行、第 8 行、第 10 行,并最终传播到第 12 行的污点汇聚点.如果对这段程序进行深入分析会发现,3个分支条件所提供的信息值(所能泄露的信息范围)并不相同,分别是 a 等于 10、a大于 10 且小于或等于 13(将 w 值代入计算)以及 a 小于 10.对于 a 等于 10 的情况,攻击者可以根据第 12 行泄漏的 x 的值直接还原出污点源处 a 的值(<strong>这类分支也被称为能够保存完整信息的分支</strong>);对于 a 大于 10 且小于或等于 13 的情况,攻击者也只需要尝试 3 次就可以还原信息;而对于 a 小于 10 的情况,攻击者所获得的不确定性较大,成功还原信息的几率显著低于前两种,对该分支进行污点传播的实际意义不大.</p>
+<p>Bao等人<strong>只将严格控制依赖(strict control dependence)识别成需要污点传播的分支</strong>,其中,<strong>严格控制依赖即分支条件表达式的两端具有常数差异的分支</strong>.但是,Bao 的方法只适用于能够在编译阶段计算出常数差异的分支.</p>
+<h3 id="污点分析方法实现"><a href="#污点分析方法实现" class="headerlink" title="污点分析方法实现"></a>污点分析方法实现</h3><h4 id="静态污点分析技术"><a href="#静态污点分析技术" class="headerlink" title="静态污点分析技术"></a>静态污点分析技术</h4><p>静态污点分析系统首先对程序代码进行解析，获得程序代码的中间表示，然后在中间表示的基础上对程序代码进行控制流分析等辅助分析，以获得需要的控制流图、调用图等。在辅助分析的过程中，系统可以利用污点分析规则在中间表示上识别程序中的 Source 点和 Sink 点。最后检测系统根据污点分析规则，利用静态污点分析检查程序是否存在污点类型的漏洞。</p>
+<h5 id="基于数据流的污点分析"><a href="#基于数据流的污点分析" class="headerlink" title="基于数据流的污点分析"></a>基于数据流的污点分析</h5><p>在基于数据流的污点分析中，常常需要一些辅助分析技术，例如别名分析、取值分析等，来提高分析精度。辅助分析和污点分析交替进行，通常沿着程序路径的方向分析污点信息的流向，检查 Source 点处程序接收的污点信息是否会影响到 Sink 点处的敏感操作。</p>
+<p><strong>过程内的分析</strong>中，按照一定的顺序分析过程内的每一条语句或者指令，进而分析污点信息的流向。</p>
+<ul>
+<li>记录污点信息。在静态分析层面，程序变量的污染情况为主要关注对象。为记录污染信息，通常为变量添加一个污染标签。最简单的就是一个布尔型变量，表示变量是否被污染。更复杂的标签还可以记录变量的污染信息来自哪些 Source 点，甚至精确到 Source 点接收数据的哪一部分。当然也可以不使用污染标签，这时我们通过对变量进行跟踪的方式达到分析污点信息流向的目的。例如使用栈或者队列来记录被污染的变量。</li>
+<li>程序语句的分析。在确定如何记录污染信息后，将对程序语句进行静态分析。通常我们主要关注赋值语句、控制转移语句以及过程调用语句三类。<ul>
+<li>赋值语句。<ul>
+<li>对于简单的赋值语句，形如 <code>a = b</code> 这样的，记录语句左端的变量和右端的变量具有相同的污染状态。程序中的常量通常认为是未污染的，如果一个变量被赋值为常量，在不考虑隐式信息流的情况下，认为变量的状态在赋值后是未污染的。</li>
+<li>对于形如 <code>a = b + c</code> 这样带有二元操作的赋值语句，通常规定如果右端的操作数只要有一个是被污染的，则左端的变量是污染的（除非右端计算结果为常量）。</li>
+<li>对于和数组元素相关的赋值，如果可以通过静态分析确定数组下标的取值或者取值范围，那么就可以精确地判断数组中哪个或哪些元素是污染的。但通常静态分析不能确定一个变量是污染的，那么就简单地认为整个数组都是污染的。</li>
+<li>对于包含字段或者包含指针操作的赋值语句，常常需要用到指向分析的分析结果。</li>
+</ul>
+</li>
+<li>控制转移语句。<ul>
+<li>在分析条件控制转移语句时，首先考虑语句中的路径条件可能是包含对污点数据的限制，在实际分析中常常需要识别这种限制污点数据的条件，以判断这些限制条件是否足够包含程序不会受到攻击。如果得出路径条件的限制是足够的，那么可以将相应的变量标记为未污染的。</li>
+<li>对于循环语句，通常规定循环变量的取值范围不能受到输入的影响。例如在语句 <code>for (i = 1； i &lt; k； i++)&#123;&#125;</code> 中，可以规定循环的上界 k 不能是污染的。</li>
+</ul>
+</li>
+<li>过程调用语句。<ul>
+<li>可以使用过程间的分析或者直接应用过程摘要进行分析。污点分析所使用的过程摘要主要描述怎样改变与该过程相关的变量的污染状态，以及对哪些变量的污染状态进行检测。这些变量可以是过程使用的参数、参数的字段或者过程的返回值等。例如在语句 <code>flag = obj。method(str)；</code> 中，str 是污染的，那么通过过程间的分析，将变量 obj 的字段 str 标记为污染的，而记录方法的返回值的变量 flag 标记为未污染的。</li>
+<li>在实际的过程间分析中，可以对已经分析过的过程构建过程摘要。例如前面的语句，其过程摘要描述为：方法 method 的参数污染状态决定其接收对象的实例域 str 的污染状态，并且它的返回值是未受污染的。那么下一次分析需要时，就可以直接应用摘要进行分析。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码的遍历。一般情况下，常常使用流敏感的方式或者路径敏感的方式进行遍历，并分析过程中的代码。如果使用流敏感的方式，可以通过对不同路径上的分析结果进行汇集，以发现程序中的数据净化规则。如果使用路径敏感的分析方式，则需要关注路径条件，如果路径条件中涉及对污染变量取值的限制，可认为路径条件对污染数据进行了净化，还可以将分析路径条件对污染数据的限制进行记录，如果在一条程序路径上，这些限制足够保证数据不会被攻击者利用，就可以将相应的变量标记为未污染的。</li>
+</ul>
+<p><strong>过程间的分析</strong>与数据流过程间分析类似，使用自底向上的分析方法，分析调用图中的每一个过程，进而对程序进行整体的分析。</p>
+<h5 id="基于依赖关系的污点分析"><a href="#基于依赖关系的污点分析" class="headerlink" title="基于依赖关系的污点分析"></a>基于依赖关系的污点分析</h5><p>在基于依赖关系的污点分析中，首先利用程序的中间表示、控制流图和过程调用图构造程序完整的或者局部的程序的依赖关系。在分析程序依赖关系后，根据污点分析规则，检测 Sink 点处敏感操作是否依赖于 Source 点。</p>
+<p>分析程序依赖关系的过程可以看做是构建程序依赖图的过程。程序依赖图是一个有向图。它的节点是程序语句，它的有向边表示程序语句之间的依赖关系。程序依赖图的有向边常常包括数据依赖边和控制依赖边。在构建有一定规模的程序的依赖图时，需要按需地构建程序依赖关系，并且优先考虑和污点信息相关的程序代码。</p>
+<h5 id="静态污点分析实例分析"><a href="#静态污点分析实例分析" class="headerlink" title="静态污点分析实例分析"></a>静态污点分析实例分析</h5><p>在使用污点分析方法检测程序漏洞时，污点数据相关的程序漏洞是主要关注对象，如 SQL 注入漏洞、命令注入漏洞和跨站脚本漏洞等。</p>
+<p>下面是一个存在 SQL 注入漏洞 ASP 程序的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    Set pwd = &quot;bar&quot;</span><br><span class="line">    Set sql1 = &quot;SELECT companyname FROM &quot; &amp; Request。Cookies(&quot;hello&quot;)</span><br><span class="line">    Set sql2 = Request。QueryString(&quot;foo&quot;)</span><br><span class="line">    MySqlStuff pwd， sql1， sql2</span><br><span class="line">    Sub MySqlStuff(password， cmd1， cmd2)</span><br><span class="line">    Set conn = Server。CreateObject(&quot;ADODB。Connection&quot;)</span><br><span class="line">    conn。Provider = &quot;Microsoft。Jet。OLEDB。4。0&quot;</span><br><span class="line">    conn。Open &quot;c：/webdata/foo。mdb&quot;， &quot;foo&quot;， password</span><br><span class="line">    Set rs = conn。Execute(cmd2)</span><br><span class="line">    Set rs = Server。CreateObject(&quot;ADODB。recordset&quot;)</span><br><span class="line">    rs。Open cmd1， conn</span><br><span class="line">    End Sub</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>首先对这段代码表示为一种三地址码的形式，例如第 3 行可以表示为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = &quot;SELECT companyname FROM &quot;</span><br><span class="line">b = &quot;hello&quot;</span><br><span class="line">param0 Request</span><br><span class="line">param1 b</span><br><span class="line">callCookies</span><br><span class="line">return c</span><br><span class="line">sql1 = a &amp; c</span><br></pre></td></tr></table></figure>
+
+<p>解析完毕后，需要对程序代码进行控制流分析，这里只包含了一个调用关系（第 5 行）。</p>
+<p>接下来，需要识别程序中的 Source 点和 Sink 点以及初始的被污染的数据。</p>
+<p>具体的分析过程如下：</p>
+<ul>
+<li>调用 Request。Cookies(“hello”) 的返回结果是污染的，所以变量 sql1 也是污染的。</li>
+<li>调用 Request。QueryString(“foo”) 的返回结果 sql2 是污染的。</li>
+<li>函数 MySqlStuff 被调用，它的参数 sql1，sql2 都是污染的。分了分析函数的处理过程，根据第 6 行函数的声明，标记其参数 cmd1，cmd2 是污染的。</li>
+<li>第 10 行是程序的 Sink 点，函数 conn。Execute 执行 SQL 操作，其参数 cmd2 是污染的，进而发现污染数据从 Source 点传播到 Sink 点。因此，认为程序存在 SQL 注入漏洞</li>
+</ul>
+<h4 id="动态污点分析技术"><a href="#动态污点分析技术" class="headerlink" title="动态污点分析技术"></a>动态污点分析技术</h4><p>动态污点分析是在程序运行的基础上，对数据流或控制流进行监控，从而实现对数据在内存中的显式传播、数据误用等进行跟踪和检测。动态污点分析与静态污点分析的唯一区别在于静态污点分析技术在检测时并不真正运行程序，而是通过模拟程序的执行过程来传播污点标记，而动态污点分析技术需要运行程序，同时实时传播并检测污点标记。</p>
+<p>动态污点分析技术可分为三个部分：</p>
+<ul>
+<li>污点数据标记：程序攻击面是程序接受输入数据的接口集，一般由程序入口点和外部函数调用组成。在污点分析中，来自外部的输入数据会被标记为污点数据。根据输入数据来源的不同，可分为三类：网络输入、文件输入和输入设备输入。</li>
+<li>污点动态跟踪：在污点数据标记的基础上，对进程进行指令粒度的动态跟踪分析，分析每一条指令的效果，直至覆盖整个程序的运行过程，跟踪数据流的传播。<ul>
+<li>动态污点跟踪通常基于以下三种机制<ul>
+<li>动态代码插桩：可以跟踪单个进程的污点数据流动，通过在被分析程序中插入分析代码，跟踪污点信息流在进程中的流动方向。</li>
+<li>全系统模拟：利用全系统模拟技术，分析模拟系统中每条指令的污点信息扩散路径，可以跟踪污点数据在操作系统内的流动。</li>
+<li>虚拟机监视器：通过在虚拟机监视器中增加分析污点信息流的功能，跟踪污点数据在整个客户机中各个虚拟机之间的流动。</li>
+</ul>
+</li>
+<li>污点动态跟踪通常需要影子内存（shadow memory）来映射实际内存的污染情况，从而记录内存区域和寄存器是否是被污染的。对每条语句进行分析的过程中，污点跟踪攻击根据影子内存判断是否存在污点信息的传播，从而对污点信息进行传播并将传播结果保存于影子内存中，进而追踪污点数据的流向。</li>
+<li>一般情况下，数据移动类和算数类指令都将造成显示的信息流传播。为了跟踪污点数据的显示传播，需要在每个数据移动指令和算数指令执行前做监控，当指令的结果被其中一个操作数污染后，把结果数据对应的影子内存设置为一个指针，指向源污染点操作数指向的数据结构。</li>
+</ul>
+</li>
+<li>污点误用检查：在正确标记污点数据并对污点数据的传播进行实时跟踪后，就需要对攻击做出正确的检测即检测污点数据是否有非法使用的情况。</li>
+</ul>
+<p>动态污点分析的优缺点：</p>
+<ul>
+<li>优点：误报率较低，检测结果的可信度较高。</li>
+<li>缺点：<ul>
+<li>漏报率较高：由于程序动态运行时的代码覆盖率决定的。</li>
+<li>平台相关性较高：特定的动态污点分析工具只能够解决在特定平台上运行的程序。</li>
+<li>资源消耗大：包括空间上和时间上。</li>
+</ul>
+</li>
+</ul>
+<h5 id="动态污点分析的方法实现"><a href="#动态污点分析的方法实现" class="headerlink" title="动态污点分析的方法实现"></a>动态污点分析的方法实现</h5><h6 id="1-污点数据标记"><a href="#1-污点数据标记" class="headerlink" title="1.污点数据标记"></a>1.污点数据标记</h6><p>污点数据通常主要是指软件系统所接受的外部输入数据，在计算机中，这些数据可能以内存临时数据的形式存储，也可能以文件的形式存储。当程序需要使用这些数据时，一般通过函数或系统调用来进行数据访问和处理，因此只需要对这些关键函数进行监控，即可得到程序读取或输出了什么污点信息。另外对于网络输入，也需要对网络操作函数进行监控。</p>
+<p>识别出污点数据后，需要对污点进行标记。污点生命周期是指在该生命周期的时间范围内，污点被定义为有效。污点生命周期开始于污点创建时刻，生成污点标记，结束于污点删除时刻，清除污点标记。</p>
+<ul>
+<li>污点创建<ul>
+<li>将来自于非可靠来源的数据分配给某寄存器或内存操作数时</li>
+<li>将已经标记为污点的数据通过运算分配给某寄存器或内存操作数时</li>
+</ul>
+</li>
+<li>污点删除<ul>
+<li>将非污点数据指派给存放污点的寄存器或内存操作数时</li>
+<li>将污点数据指派给存放污点的寄存器或内存地址时，此时会删除原污点，并创建新污点</li>
+<li>一些会清除污点痕迹的算数运算或逻辑运算操作时</li>
+</ul>
+</li>
+</ul>
+<h6 id="2-污点动态跟踪"><a href="#2-污点动态跟踪" class="headerlink" title="2.污点动态跟踪"></a>2.污点动态跟踪</h6><p>当污点数据从一个位置传递到另一个位置时，则认为产生了污点传播。污点传播规则：</p>
+<table>
+<thead>
+<tr>
+<th>指令类型</th>
+<th>传播规则</th>
+<th>举例说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>拷贝或移动指令</td>
+<td>T(a)&lt;-T(b)</td>
+<td>mov a， b</td>
+</tr>
+<tr>
+<td>算数运算指令</td>
+<td>T(a)&lt;-T(b)</td>
+<td>add a， b</td>
+</tr>
+<tr>
+<td>堆栈操作指令</td>
+<td>T(esp)&lt;-T(a)</td>
+<td>push a</td>
+</tr>
+<tr>
+<td>拷贝或移动类函数调用指令</td>
+<td>T(dst)&lt;-T(src)</td>
+<td>call memcpy</td>
+</tr>
+<tr>
+<td>清零指令</td>
+<td>T(a)&lt;-false</td>
+<td>xor a， a</td>
+</tr>
+</tbody></table>
+<p>注：T(x) 的取值分为 true 和 false 两种，取值为 true 时表示 x 为污点，否则 x 不是污点。</p>
+<p>对于污点信息流，通过污点跟踪和函数监控，已经能够进行污点信息流流动方向的分析。但由于缺少对象级的信息，仅靠指令级的信息流动并不能完全给出要分析的软件的确切行为。因此，需要在函数监控的基础上进行视图重建，如获取文件对象和套接字对象的详细信息，以方便进一步的分析工作。</p>
+<p>根据漏洞分析的实际需求，污点分析应包括两方面的信息：</p>
+<ul>
+<li>污点的传播关系，对于任一污点能够获知其传播情况。</li>
+<li>对污点数据进行处理的所有指令信息，包括指令地址、操作码、操作数以及在污点处理过程中这些指令执行的先后顺序等。</li>
+</ul>
+<p>污点动态跟踪的实现通常使用：</p>
+<ul>
+<li>影子内存：真实内存中污点数据的镜像，用于存放程序执行的当前时刻所有的有效污点。</li>
+<li>污点传播树：用于表示污点的传播关系。</li>
+<li>污点处理指令链：用于按时间顺序存储与污点数据处理相关的所有指令。</li>
+</ul>
+<p>当遇到会引起污点传播的指令时，首先对指令中的每个操作数都通过污点快速映射查找影子内存中是否存在与之对应的影子污点从而确定其是否为污点数据，然后根据污点传播规则得到该指令引起的污点传播结果，并将传播产生的新污点添加到影子内存和污点传播树中，同时将失效污点对应的影子污点删除。同时由于一条指令是否涉及污点数据的处理，需要在污点分析过程中动态确定，因此需要在污点处理指令链中记录污点数据的指令信息。</p>
+<h6 id="3-污点误用检查"><a href="#3-污点误用检查" class="headerlink" title="3.污点误用检查"></a>3.污点误用检查</h6><p>污点敏感点，即 Sink 点，是污点数据有可能被误用的指令或系统调用点，主要分为：</p>
+<ul>
+<li>跳转地址：检查污点数据是否用于跳转对象，如返回地址、函数指针、函数指针偏移等。具体操作是在每个跳转类指令（如call、ret、jmp等）执行前进行监控分析，保证跳转对象不是污点数据所在的内存地址。</li>
+<li>格式化字符串：检查污点数据是否用作printf系列函数的格式化字符串参数。</li>
+<li>系统调用参数：检查特殊系统调用的特殊参数是否为污点数据。</li>
+<li>标志位：跟踪标志位是否被感染，及被感染的标志位是否用于改变程序控制流。</li>
+<li>地址：检查数据移动类指令的地址是否被感染。</li>
+</ul>
+<p>在进行污点误用检查时，通常需要根据一些漏洞模式来进行检查，首先需要明确常见漏洞在二进制代码上的表现形式，然后将其提炼成漏洞模式，以更有效地指导自动化的安全分析。</p>
+<h5 id="动态污点分析的实例分析"><a href="#动态污点分析的实例分析" class="headerlink" title="动态污点分析的实例分析"></a>动态污点分析的实例分析</h5><p>下面我们来看一个使用动态污点分析的方法检测缓冲区溢出漏洞的例子。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> temp[<span class="number">15</span>]；</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;in strncpy， source： %s\n&quot;</span>， str)；</span><br><span class="line">    <span class="built_in">strncpy</span>(temp， str， <span class="built_in">strlen</span>(str))；        <span class="comment">// Sink 点</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc， <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> source[<span class="number">30</span>]；</span><br><span class="line">    gets(source)；                           <span class="comment">// Source 点</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strlen</span>(source) &lt; <span class="number">30</span>)</span><br><span class="line">        fun(source)；</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;too long string， %s\n&quot;</span>， source)；</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>漏洞很明显， 调用 strncpy 函数存在缓冲区溢出。</p>
+<p>程序接受外部输入字符串的二进制代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x08048609 &lt;+51&gt;：    lea    eax，[ebp-0x2a]</span><br><span class="line">0x0804860c &lt;+54&gt;：    push   eax</span><br><span class="line">0x0804860d &lt;+55&gt;：    call   0x8048400 &lt;gets@plt&gt;</span><br><span class="line">...</span><br><span class="line">0x0804862c &lt;+86&gt;：    lea    eax，[ebp-0x2a]</span><br><span class="line">0x0804862f &lt;+89&gt;：    push   eax</span><br><span class="line">0x08048630 &lt;+90&gt;：    call   0x8048566 &lt;fun&gt;</span><br></pre></td></tr></table></figure>
+
+<p>程序调用 strncpy 函数的二进制代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x080485a1 &lt;+59&gt;：    push   DWORD PTR [ebp-0x2c]</span><br><span class="line">0x080485a4 &lt;+62&gt;：    call   0x8048420 &lt;strlen@plt&gt;</span><br><span class="line">0x080485a9 &lt;+67&gt;：    add    esp，0x10</span><br><span class="line">0x080485ac &lt;+70&gt;：    sub    esp，0x4</span><br><span class="line">0x080485af &lt;+73&gt;：    push   eax</span><br><span class="line">0x080485b0 &lt;+74&gt;：    push   DWORD PTR [ebp-0x2c]</span><br><span class="line">0x080485b3 &lt;+77&gt;：    lea    eax，[ebp-0x1b]</span><br><span class="line">0x080485b6 &lt;+80&gt;：    push   eax</span><br><span class="line">0x080485b7 &lt;+81&gt;：    call   0x8048440 &lt;strncpy@plt&gt;</span><br></pre></td></tr></table></figure>
+
+<p>首先，在扫描该程序的二进制代码时，能够扫描到 <code>call &lt;gets@plt&gt;</code>，该函数会读入外部输入，即程序的攻击面。确定了攻击面后，我们将分析污染源数据并进行标记，即将 <code>[ebp-0x2a]</code> 数组（即源程序中的source）标记为污点数据。程序继续执行，该污染标记会随着该值的传播而一直传递。在进入 <code>fun()</code> 函数时，该污染标记通过形参实参的映射传递到参数 <code>str</code> 上。然后运行到 Sink 点函数 <code>strncpy()</code>。该函数的第二个参数即 <code>str</code> 和 第三个参数 <code>strlen(str)</code> 都是污点数据。最后在执行 <code>strncpy()</code> 函数时，若设定了相应的漏洞规则（目标数组小于源数组），则漏洞规则将被触发，检测出缓冲区溢出漏洞。</p>
+<h3 id="污点分析在实际应用中的关键技术"><a href="#污点分析在实际应用中的关键技术" class="headerlink" title="污点分析在实际应用中的关键技术"></a>污点分析在实际应用中的关键技术</h3><p>污点分析被广泛地应用在系统隐私数据泄露、安全漏洞等问题的检测中.在实际应用过程中,由于系统框架、语言特性等方面的差异,通用的污点分析技术往往难以适用.比如:系统框架的高度模块化以及各模块之间复杂的调用关系导致污点源到汇聚点的传播路径变得复杂、庞大,采用通用的污点分析技术可能面临开销难以接受的问题;通用的污点分析技术对新的语言特性支持有限等.为此,需要针对不同的应用场景,对通用的污点分析技术进行扩展或定制</p>
+<p>本节以两个代表性的应用场景——智能手机的隐私泄漏检测和Web应用安全漏洞检测为切入点,总结近10年来污点分析技术在上述领域的应用实践过程中所面临的问题和关键解决技术</p>
+<h4 id="检测智能手机隐私泄露"><a href="#检测智能手机隐私泄露" class="headerlink" title="检测智能手机隐私泄露"></a>检测智能手机隐私泄露</h4><p>针对Android的污点传播分析也围绕组件展开,按照传播可能通过的模块的不同,分为<strong>组件内污点传播、组件间污点传播、组件与库函数之间的污点传播这3类</strong>(如图7所示).接下来将分别介绍针对这3类传播问题的静态和动态污点传播分析技术</p>
+<p><img src="https://ch3nye.top/images/image-20201222115622305.png" alt="Android上的污点传播分类"></p>
+<h5 id="静态污点分析"><a href="#静态污点分析" class="headerlink" title="静态污点分析"></a>静态污点分析</h5><h6 id="1-组件内污点传播分析"><a href="#1-组件内污点传播分析" class="headerlink" title="1.组件内污点传播分析"></a>1.组件内污点传播分析</h6><p>组件内部污点分析面临的主要问题是如何构建完整的分析模型.不同于传统的C/C++程序(有唯一的Main函数入口),Android应用程序存在有多个入口函数的情况.这个情况源于Android应用程序复杂的运行生命周期(例如onCreate,onStart,onResume,onPause等)以及程序中大量存在的回调函数和异步函数调用.由于任何的程序入口都有可能是隐私数据的来源,在静态的污点分析开始之前必须构建完整的应用程序模型,以确保程序中每一种可能的执行路径都会被静态污点传播分析覆盖到</p>
+<p>LeakMiner[^4]和CHEX[^5]尝试使用增量的方法构建系统调用图.</p>
+<p>Arzt等人设计的FlowDroid[^6]提出了一种更系统的构建Android程序完整分析模型的方法:首先,通过XML配置文件提取与Android生命周期相关的入口函数,将这些方法作为节点,并根据Android生命周期构建调用图(如图8所示);其次,对于生命周期内的回调函数,在该调用图的基础上增加不透明谓词节点(即图8中菱形的P节点);然后,增量式地将回调函数加入这个函数调用图;最后,将调用图上所有的执行入口连接到一个虚假的Main函数上.FlowDroid中的一次合法的执行,就是对调用图进行的一次遍历</p>
+<p><img src="https://ch3nye.top/images/image-20201222154039907.png" alt="FlowDroid使用控制流图示例"></p>
+<p>Gordon等人[^7]提出的DroidSafe使用Android设备实现(Android device implementation)来构建Android的完整分析模型.Android设备实现是对Android运行环境的一个简单模拟,它使用Java语言,结合Android Open Source Porject(AOSP),实现了与原Android接口语义等价的模型,并使用精确分析存根(accurate analysis stub)将AOSP代码之外的函数加入到模型中</p>
+<h6 id="2-组件间污点传播分析"><a href="#2-组件间污点传播分析" class="headerlink" title="2.组件间污点传播分析"></a>2.组件间污点传播分析</h6><p>即使正确分析了组件内的数据流关系,污点数据仍然可能通过组件间的数据流来传递,从而造成信息泄露.如上图7左侧所示,即使保证了对组件A内部污点传播的精确分析,组件A仍然可能通过调用方法startActivityforResult()将信息传递给组件B,再通过组件B产生泄露.因此,针对Android应用的污点分析还需要分析出组件间所有可能的数据流信息.组件间通信是通过组件发送Intent消息对象完成的.<strong>Intent按照参数字段是否包含目标组件名称分为显式Intent和隐式Intent</strong>.如图9所示:显式Intent对象使用一个包含目标组件名称的参数显式地指定通信的下一个组件;隐式Intent使用action,category等域隐式地让Android系统通过Intent Filter自动选择一个组件调用.目前,解决该问题的主要思想是利用Intent参数信息分析组件间的数据流</p>
+<p><img src="https://ch3nye.top/images/image-20201222154544009.png" alt="显示和隐式Intent组件间通信"></p>
+<p><strong>解决组件间数据流的前提是解析Intent的目的地</strong>,解析Intent目的地包括解析显式Intent的目的地和隐式Intent的目的地.由于显式Intent的目的地可以直接通过初始化Intent的地址字符串参数获得,目前,<strong>解析显式Intent目的地的常用方法是使用字符串分析</strong>工具提取Intent中字符串参数的信息.</p>
+<p>解析隐式Intent目的地的主要方法是<strong>分析配置文件信息与Intent Filter注册器之间的映射关系,建立发送Intent组件和接受Intent组件之间的配对关系</strong>.在解析出Intent目的地之后,问题的重点转移到如何提高组件间数据流分析的精度上.</p>
+<p>Klieber等人尝试在已经建立好的组件内污点分析的基础上,结合推导规则来分析组件间数据流.在分析之前,需要收集组件内部的污点源和汇聚点以及组件内Intent的发送目的地标签等信息.表4和表5给出了推导规则的前提定义和具体的推导规则,其中,一次完整的分析是指根据已知组件内部的信息src→sink<em>s<strong>r</strong>c</em>→<em>s<strong>i</strong>n**k</em>以及推导规则识别所有src′→sink′<em>s<strong>r</strong>c</em>′→<em>s<strong>i</strong>n**k</em>′的流集合</p>
+<p>Octeau等人尝试使用现有的程序分析方法提高组件间数据流分析的精度,他们将组件间数据流分析问题转化成IDE(interprocedural distributive environment)问题[58]进行求解.DroidSafe设计了一种对象敏感的别名分析技术,在此基础上提供的精度优化方法包括:提取Intent的目的地的字符串参数、将Intent目的地的初始化函数嵌入到目的组件当中以提高别名分析的精度,同时,增加处理Android Service的支持</p>
+<p><img src="https://ch3nye.top/images/image-20201222120307884.png" alt="推导规则前提定义"></p>
+<p><img src="https://ch3nye.top/images/image-20201222120316977.png" alt="污点分析推到规则"></p>
+<h6 id="组件与库函数之间的污点传播分析"><a href="#组件与库函数之间的污点传播分析" class="headerlink" title="组件与库函数之间的污点传播分析"></a>组件与库函数之间的污点传播分析</h6><p>组件与库函数之间的污点传播分析面临的<strong>主要问题</strong>包括对Android库函数自身庞大的代码量的分析以及组件和某些库函数使用的实现语言不同(Android组件通常用Java实现,而本地库则采用C/C++代码编写)这两方面</p>
+<h5 id="动态污点分析"><a href="#动态污点分析" class="headerlink" title="动态污点分析"></a>动态污点分析</h5><p><strong>Android系统中的动态污点同样需要分析组件内污点传播、组件间污点传播以及组件代码与本地库之间的污点传播</strong>.动态污点分析面临的<strong>主要挑战是系统信息除了在系统内部通过DEX指令传播以外,还会经过其他的通道,如本地库、网络、文件等</strong>.</p>
+<h6 id="1-组件内的污点传播"><a href="#1-组件内的污点传播" class="headerlink" title="1.组件内的污点传播"></a>1.组件内的污点传播</h6><h6 id="2-组件间的污点传播"><a href="#2-组件间的污点传播" class="headerlink" title="2.组件间的污点传播"></a>2.组件间的污点传播</h6><h6 id="3-组件与本地库函数间的污点传播"><a href="#3-组件与本地库函数间的污点传播" class="headerlink" title="3.组件与本地库函数间的污点传播"></a>3.组件与本地库函数间的污点传播</h6><p>包括污点数据通过本地库代码或文件进行传播.TaintDroid通过设计后置条件对本地代码的函数进行污点传播.后置条件为:</p>
+<p>(a) 所有本地代码访问的外部变量都会被标记上污点标签;</p>
+<p>(b) 根据预定义规则将被赋值的函数返回值也标记上污点标签</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>污点分析作为信息流分析的一种实践技术,被广泛应用于互联网及移动终端平台上应用程序的信息安全保障中.本文介绍了污点分析的基本原理和通用技术,并针对近年来污点分析在解决实际应用程序安全问题时遇到的问题和关键解决技术进行了分析综述.不同于基于安全类型系统的信息流分析技术,污点分析可以不改变程序现有的编程模型或语言特性,并提供精确信息流传播跟踪.在实际应用过程中,污点分析还需要借助传统的程序分析技术的支持,例如静态分析中的数据流分析、动态分析中的代码重写等技术.另外,结合测试用例生成技术、符号执行技术以及虚拟机技术,也会给污点分析带来更多行之有效的解决方案</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[^1]:Vogt P, Nentwich F, Jovanovic N, Kirda E, Kruegel C, Vigna G. Cross site scripting prevention with dynamic data tainting and static analysis. In: Proc. of the NDSS 2007. 2007. 12. <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.72.4505">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.72.4505</a><br>[^2]:Gordon MI, Kim D, Perkins JH, Gilham L, Nguyen N, Rinard MC. Information flow analysis of Android applications in DroidSafe. In: Proc. of the NDSS 2015. 2015. [doi: 10.14722/ndss.2015.23089]<br>[^3]:Rasthofer S, Arzt S, Bodden E. A machine-learning approach for classifying and categorizing android sources and sinks. In: Proc. of the Network and Distributed System Security Symp. (NDSS). 2014. [doi: 10.14722/ndss.2014.23039]</p>
+<p>[^4]:Yang Z, Yang M. Leakminer: Detect information leakage on Android with static taint analysis. In: Proc. of the Software Engineering. IEEE, 2012. 101−104. [doi: 10.1109/WCSE.2012.26]<br>[^5]:Lu L, Li Z, Wu Z, Lee W, Jiang G. Chex: Statically vetting Android apps for component hijacking vulnerabilities. In: Proc. of the 2012 ACM Conf. on Computer and Communications Security. ACM Press, 2012. 229−240. [doi: 10.1145/2382196.2382223]<br>[^6]:Arzt S, Rasthofer S, Fritz C, Bodden E, Bartel A, Klein J, Le Traon Y, Octeau D, McDaniel P. Flowdroid: Precise context, flow, field, object-sensitive and lifecycle-aware taint analysis for Android apps. ACM SIGPLAN Notices, 2014,49(6):259−269. [doi: 10.1145/2594291.2594299]<br>[^7]:Gordon MI, Kim D, Perkins JH, Gilham L, Nguyen N, Rinard MC. Information flow analysis of Android applications in DroidSafe. In: Proc. of the NDSS 2015. 2015. [doi: 10.14722/ndss.2015.23089]</p>
+<blockquote>
+<p><a href="https://ch3nye.top/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">原文链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>程序分析</category>
+      </categories>
+      <tags>
+        <tag>数据流</tag>
+        <tag>污点分析</tag>
+        <tag>依赖关系</tag>
+        <tag>Source/Sink</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIOAnalyzer架构</title>
+    <url>/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h1 id="EOSIOAnalyzer"><a href="#EOSIOAnalyzer" class="headerlink" title="EOSIOAnalyzer"></a>EOSIOAnalyzer</h1><p><strong>目录</strong></p>
+<ul>
+<li><p><a href="#0">EOSIOAnalyzer 框架</a></p>
+<ul>
+<li><p><a href="#1">Control flow graph builder</a></p>
+</li>
+<li><p><a href="#2">Static analyzer</a></p>
+<ul>
+<li><a href="#2.1">将得到的Wasm CFG转为IR CFG</a></li>
+<li><a href="#2.2">对IR CFG基本块进行数据流分析</a></li>
+<li><a href="#2.3">输出所有的EDB文件</a></li>
+<li><a href="#2.4">程序介绍</a></li>
+<li><a href="#2.5">分析脚本</a></li>
+<li><a href="#2.6">Datalog规范</a></li>
+</ul>
+</li>
+<li><p><a href="#3">Vulnerability detector</a></p>
+<ul>
+<li><a href="#3.1">Fake EOS Transfer</a></li>
+<li><a href="#3.2">Forged Transfer Notification</a></li>
+<li><a href="#3.3">Block Information Dependency</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h3 id="EOSIOAnalyzer-1"><a href="#EOSIOAnalyzer-1" class="headerlink" title=" EOSIOAnalyzer"></a><span id="0"> EOSIOAnalyzer</span></h3><hr>
+<p>EOSIOAnalyzer是一个用于分析EOSIO智能合约字节码的分析框架。分析框架由三个部分组成：</p>
+<ul>
+<li>Control flow graph builder</li>
+<li>Static analyzer</li>
+<li>Vulnerability detector</li>
+</ul>
+<p>以上是该框架的主要部分。除了<strong>Vulnerability detector</strong>部分是通过 Datalog编写的（执行引擎为<a href="https://souffle-lang.github.io/">Souffle</a>)，其他部分均用python编写。</p>
+<blockquote>
+<p>Datalog大约900行，python大约3000行</p>
+</blockquote>
+<p>下图是其框架图：</p>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213160448317.png" class="" title="EOSIOAnalyzer框架">
+
+<h4 id="Control-flow-graph-builder"><a href="#Control-flow-graph-builder" class="headerlink" title=" Control flow graph builder"></a><span id="1"> Control flow graph builder</span></h4><p>​    输入为Wasm字节码，如果是源代码，可以用现有的编译器（<a href="https://github.com/llvm/llvm-project">llvm</a>，<a href="https://github.com/EOSIO/eosio.cdt">eosio.cdt</a>，<a href="https://github.com/emscripten-core/emscripten">emscripten</a>，<a href="https://github.com/rust-lang/rustup">rustup</a>等等）编译为字节码，然后基于现有开源工具<a href="https://github.com/lwy0518/octopus">Octopus</a>将Wasm字节码构造对应的控制流图，作为下一步的输入</p>
+<h4 id="Static-analyzer"><a href="#Static-analyzer" class="headerlink" title="Static analyzer"></a><span id="2">Static analyzer</span></h4><blockquote>
+<p> 这是EOSIOAnalyzer的核心。由于EOS VM的基于堆栈的紧凑执行模型混淆了跳转地址，所以将 Wasm字节码转换为中间表示，其中执行堆栈被寄存器变量替换，然后构建合约的过程间控制流图（ICFG）以进行漏洞分析</p>
+</blockquote>
+<h5 id="将得到的Wasm-CFG转为IR-CFG"><a href="#将得到的Wasm-CFG转为IR-CFG" class="headerlink" title="将得到的Wasm CFG转为IR CFG"></a><span id="2.1">将得到的Wasm CFG转为IR CFG</span></h5><p>​    将上一步得到的Wasm CFG进行转换，将低级的wasm指令转为更高级中间表示（IR）</p>
+<h5 id="对IR-CFG基本块进行数据流分析"><a href="#对IR-CFG基本块进行数据流分析" class="headerlink" title="对IR CFG基本块进行数据流分析"></a><span id="2.2">对IR CFG基本块进行数据流分析</span></h5><p>​    对得到的IR CFG进行数据流分析，得到完整的数据传播关系（Def_Use）</p>
+<blockquote>
+<p>细粒度分析得到过程内CFG（intra-procedural control flow graph）以及粗粒度分析得到调用图（call graph），结合得到过程间控制流图（ICFG，inter-procedural control flow graph）</p>
+</blockquote>
+<p>​    具体过程如下：</p>
+<ul>
+<li>将 Wasm字节码转为Wasm基本块（在<a href="#1">Control flow graph builder</a>中已经实现）</li>
+<li>将每个Wasm基本块转为对应的IR基本块</li>
+<li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
+</ul>
+<h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
+<li>edge：包含块内与块间之间的边</li>
+<li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
+<li>use：每个语句需要使用之前定义的变量</li>
+<li>op：wasm操作码</li>
+<li>value：程序中的常量</li>
+<li>imm：操作码需要的立即数</li>
+<li>block_in_function：每个函数包含的块名</li>
+<li>func_call_edge：包含所有直接调用（call）以及间接调用（call_indirect）之间的边</li>
+<li>in_function：每个函数包含的语句（statement）</li>
+<li>is_function：程序中的所有函数（包括import、export、local）</li>
+<li>function_types：只包含export和local函数的签名（参数及返回值）</li>
+<li>static_datas：程序中的常量及字符串</li>
+<li>block_dom：包含块内与块间的dominator关系</li>
+<li>types：间接调用对应的函数类型（call_indirect的第一个立即数）</li>
+</ul>
+<h5 id="程序介绍"><a href="#程序介绍" class="headerlink" title="程序介绍"></a><span id="2.4">程序介绍</span></h5><blockquote>
+<p>实现：目录<em>src</em>下包含大部分python程序，下面将介绍这些程序功能 </p>
+</blockquote>
+<ul>
+<li><code>src/cfg.py</code>：定义基类<code>ControlFlowGraph</code>和<code>BasicBlock</code></li>
+<li><code>src/wasm_cfg.py</code>：专门的<code>cfg.ControlFlowGraph</code>和<code>cfg.BasicBlock</code>用于表示Wasm字节码的控制流图</li>
+<li><code>src/ir_cfg.py</code>：专门<code>wasm_cfg.*</code>用于在我们的中间表示中表示合约的类。实现定义<code>ir_cfg.Destackifier</code>了一个将单个<code>wasm_cfg.EVMBasicBlock</code>实例转换为<code>ir_cfg.IRBasicBlock</code>实例的类；和辅助类<code>IROp</code>, <code>IRAssignOp</code>, <code>IRArg</code>,<code>IRCallOp</code> 以及<code>IRLocRef</code>我们的中间表示</li>
+<li><code>src/exporter.py</code>：定义了从给定的控制流图生成 EOSIOAnalyzer输出表示的类。在其构造函数中接受一个 CFG 实例，并包含一个产生输出的<code>export()</code>函数，输出所有<a href="#2.3">EDB文件</a></li>
+<li><code>src/dataflow.py</code>：</li>
+<li><code>src/lattice.py</code>：实现<a href="https://en.wikipedia.org/wiki/Lattice_(order)">lattice</a>类，用于定点数据流分析</li>
+<li><code>src/memtypes.py</code>：用于表示和使用我们的 IR 中使用的寄存器变量的类。变量可以是常数、设定值或未知</li>
+<li><code>src/wasm_inst.py</code>：使用<a href="https://webassembly.github.io/spec/core/appendix/index-instructions.html">官方文档</a>中的信息定义 Wasm指令集</li>
+<li><code>src/number.py</code>：包含所有与<em>number</em>相关的函数和类</li>
+<li><code>src/requirement.txt</code>：包含程序运行所需要的包</li>
+</ul>
+<h5 id="分析脚本"><a href="#分析脚本" class="headerlink" title="分析脚本"></a><span id="2.5">分析脚本</span></h5><blockquote>
+<p>我们的分析脚本<code>tools/bulk_analysis.py</code>可以分析单个合约字节码目录，也可以分析包含多个智能合约字节码目录（可以多线程运行），只需修改路径即可。结合Souffle 引擎以及编写的<a href="#3">漏洞规则</a>，最终会输出一个<strong>json</strong>格式的文件，包含最终的漏洞分析结果</p>
+</blockquote>
+<h5 id="Datalog规范"><a href="#Datalog规范" class="headerlink" title="Datalog规范"></a><span id="2.6">Datalog规范</span></h5><blockquote>
+<p>我们编写的Datalog规则在目录<code>tools/spec.dl</code>、<code>tools/instructions.dl</code>中</p>
+</blockquote>
+<p>例如，以下规则用于检测<strong>Fake EOS Transfer</strong>漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.decl DetectFakedEosTransfer(call_stmt: Statement)</span><br><span class="line">.output DetectFakedEosTransfer</span><br><span class="line"></span><br><span class="line">DetectFakedEosTransfer(call_stmt) :-</span><br><span class="line">    NotEosioToken(true_stmt),</span><br><span class="line">    Call_Transfer(call_stmt),</span><br><span class="line">    Dominates(call_stmt, true_stmt).</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Vulnerability-detector"><a href="#Vulnerability-detector" class="headerlink" title="Vulnerability detector"></a><span id="3">Vulnerability detector</span></h4><img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172803305.png" class="" title="漏洞特征组合">
+
+<h5 id="Fake-EOS-Transfer"><a href="#Fake-EOS-Transfer" class="headerlink" title="Fake EOS Transfer"></a><span id="3.1">Fake EOS Transfer</span></h5><blockquote>
+<p>描述：由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人。或者直接调用漏洞合约的transfer函数进行转账</p>
+</blockquote>
+<blockquote>
+<p>规则：<em>code == N(eosio.token)  –&gt;  action == N(transfer)</em><br>     在apply函数中，看是否存在这样一条验证路径，如存在则不存在该漏洞，反之则存在；</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172533141.png" class="" title="Fake EOS Transfer检测规则">
+
+<h5 id="Forged-Transfer-Notification"><a href="#Forged-Transfer-Notification" class="headerlink" title="Forged Transfer Notification"></a><span id="3.2">Forged Transfer Notification</span></h5><blockquote>
+<p>描述：攻击者在 EOS 网络中控制两个账户 A 和 B，通过账户 A 向账户 B 发送真正的 EOS，eosio.token 合约在转账成功后会向 B 发送 notification。当账户 B 收到 notification后随即转发到受害者智能合约 C</p>
+</blockquote>
+<blockquote>
+<p> <em>Transfer  –&gt;  _self == to</em><br>      在找到的所以可能“transfer”函数中，看是否存在*_self*与to的比较，如存在则不存在该漏洞，反之则存在；</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172547651.png" class="" title="Forged Transfer Notification检测规则">
+
+<h5 id="Block-Information-Dependency"><a href="#Block-Information-Dependency" class="headerlink" title="Block Information Dependency"></a><span id="3.3">Block Information Dependency</span></h5><blockquote>
+<p>描述：开发者一般调用tapos_block_prefix或tapos_block_number获得区块链信息，并将其返回值作为控制流的判断条件，并最后触发调用send_inline函数进行转账行为</p>
+</blockquote>
+<blockquote>
+<p><em>tapos_block_prefix/tapos_block_num  –&gt;  send_inline</em><br>     如果存在一条由<em>tapos_block_prefix/tapos_block_num</em>函数作为控制条件并最后触发<em>send_inline</em>函数的调用，则存在该漏洞，反之不存在</p>
+</blockquote>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png" class="" title="Block Information Dependency检测规则">
+
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>数据流</tag>
+        <tag>EOSIO</tag>
+        <tag>编译器</tag>
+        <tag>漏洞检测</tag>
+        <tag>静态分析</tag>
+        <tag>Datalog</tag>
+        <tag>CFG</tag>
+        <tag>IR</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序分析之中间表示（Intermediate Representation）</title>
+    <url>/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a><a href="https://baike.baidu.com/item/%E7%A8%8B%E5%BA%8F%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90">静态分析</a></h4><p>程序静态分析（Program Static Analysis）是指在不运行<a href="https://baike.baidu.com/item/%E4%BB%A3%E7%A0%81/86048">代码</a>的方式下，通过<a href="https://baike.baidu.com/item/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/8853461">词法分析</a>、<a href="https://baike.baidu.com/item/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/8853407">语法分析</a>、<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81/854473">控制流</a>、<a href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/21496987">数据流分析</a>等技术对程序代码进行扫描，验证代码是否满足规范性、安全性、可靠性、可维护性等指标的一种代码分析技术。静态分析技术向模拟执行的技术发展以能够发现更多传统意义上动态测试才能发现的缺陷，从而提高开发效率和软件质量。本文介绍部分在静态代码分析中使用的<a href="https://bbs.huaweicloud.com/blogs/detail/227535">中间表示</a>的概念，主要包括<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>、<a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>、<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">SSA形式</a>，及<a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">CFG</a>和<a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">RTL</a>等概念</p>
+<hr>
+<span id="more"></span>
+
+<h4 id="中间表示（Intermediate-Representation）"><a href="#中间表示（Intermediate-Representation）" class="headerlink" title="中间表示（Intermediate Representation）"></a>中间表示（Intermediate Representation）</h4><h5 id="抽象语法树（Abstract-Syntax-Tree，AST）"><a href="#抽象语法树（Abstract-Syntax-Tree，AST）" class="headerlink" title="抽象语法树（Abstract Syntax Tree，AST）"></a><a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952">抽象语法树</a>（Abstract Syntax Tree，AST）</h5><p>在介绍AST时，我们用一个简单的例子：x = 3 + 4 * y 这个表达式作为例子来进行介绍：</p>
+<ul>
+<li>AST：<ul>
+<li>是源代码的抽象语法结构的树状表示，树上的每个节点都表示源代码中的一种结构，之所以说是抽象的，是因为抽象语法树并不会表示出真实语法出现的每一个细节</li>
+<li>抽象语法树，其实就是用树状结构表示语法结构，也没有说必须是什么形式，只要能忠实地反映出源码的格式即可</li>
+</ul>
+</li>
+</ul>
+<p>当然，一般资料中在进行介绍时，都是以操作符作为根节点，画个树状的结构来表示，这里咱们也简单画一个意思一下，如下图：</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646488430032435.png" alt="AST示例"></p>
+<h5 id="三地址码（Three-Address-Code，TAC-3AC）"><a href="#三地址码（Three-Address-Code，TAC-3AC）" class="headerlink" title="三地址码（Three Address Code，TAC/3AC）"></a><a href="https://baike.baidu.com/item/%E4%B8%89%E5%9C%B0%E5%9D%80%E7%A0%81">三地址码</a>（Three Address Code，TAC/3AC）</h5><p>三地址码是一种有意思的中间表示，当前也是编译原理中用得最火的。这里我给大家梳理一种我的理解上的概念，那就是，<strong>刨掉赋值操作，最多只有一个操作符</strong>，先看下面的几个例子</p>
+<ul>
+<li>x = y bop z</li>
+<li>x = uop y</li>
+<li>x = y</li>
+<li>goto L</li>
+</ul>
+<p>如上，第一个，除了赋值之外，只有 bop 一个操作符，第二个，只有 uop 一个操作符，第三个没有操作符，同时，操作符的概念可以进一步扩展到函数调用等，例如 call fun(a, b, c, d)，虽然有四个操作数，但是我们认为 call fun只是一个操作符。</p>
+<p>如上面 x = 3 + 4 * y 转换为三地址码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span></span><br><span class="line">t2 = y</span><br><span class="line">t3 = t1 * t2</span><br><span class="line">t4 = <span class="number">3</span></span><br><span class="line">t5 = t4 + t3</span><br><span class="line">x = t5</span><br></pre></td></tr></table></figure>
+
+<p>当然，有些形式下会减少临时变量的使用，尽量复用原来的变量或者常量，形成的三地址码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">t1 = <span class="number">4</span> * y</span><br><span class="line">x = <span class="number">3</span> + t1</span><br></pre></td></tr></table></figure>
+
+<p>三地址码最初只是处理类似于 x = y bop z 这种形式的语句，而提出来的“三个操作数”的意思，随着语法的扩充，也并不是完全就是“三地址”。</p>
+<h5 id="AST和三地址码对比"><a href="#AST和三地址码对比" class="headerlink" title="AST和三地址码对比"></a>AST和三地址码对比</h5><p>以下介绍几点AST和三地址码的对比特点：</p>
+<ul>
+<li><p>源码相关性</p>
+<p>AST中的节点与输入源代码中的各个语法元素一一对应，忠实地体现了源码的内容和语法特性，因此AST与源码强相关；三地址码就是从AST进一步抽象的一种中间表示，更接近机器语言，可以认为和语言无关，是连接前后端的一种中间表示</p>
+</li>
+<li><p>变化频繁程度</p>
+<p>因为AST需要忠实地体现出源代码的语法元素，因此在对应的编程语言升级时，对应的AST必然会跟着发生变化，比如Java，从Java7变成Java8，增加了大量的Lambda表达式、函数引用等特性，所以AST节点也需要增加这些语法节点，所以AST的版本需要随着语言发布而不断变化。</p>
+<p>但是三地址码是一种经过处理的语言无关的中间表示，即使源代码结构变化，AST结构变化，但是转换后的三地址码是稳定的，不会经常发生变化，构造在三地址码上面的分析算法就相对比较稳定</p>
+</li>
+<li><p>结构</p>
+<p>AST体现源码的结构，需要匹配源码的语法，因此一般结构比较复杂，而三地址经过处理，一般比较紧凑，简单。例如，Java中，对 for，while，do while 有多种不同的循环方式，但是，其实内容大同小异，但是在AST层面，就是不一样的，但是转换为三地址码后，所表达的控制语义是完全一样的</p>
+</li>
+<li><p>表达信息</p>
+<p>AST表达了源码的信息，因此可以在AST上做程序结构的检查，但是三地址码中，可以更好地包含了程序控制流和数据流信息，能进行更深层次的流敏感分析，过程间分析，上下文敏感分析和对象敏感分析等等，从而实现各种更高难度的程序漏洞检查。</p>
+<p>同时，三地址码因为是语言无关的， 所以在部分静态代码分析工具实现时，会对不同的三地址码，实现一个分析引擎，只是通过开发不同语言的规则，实现对不同语言的能力的覆盖，而AST是无法做到这一点的。因此，三地址码也被认为是静态代码分析的基础</p>
+</li>
+</ul>
+<h5 id="静态单赋值形式-（Static-Single-Assignment-Form，SSA）"><a href="#静态单赋值形式-（Static-Single-Assignment-Form，SSA）" class="headerlink" title="**静态单赋值形式**（Static Single Assignment Form，SSA）"></a>**<a href="https://baike.baidu.com/item/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F">静态单赋值形式</a>**（Static Single Assignment Form，SSA）</h5><p><a href="https://github.com/lwy0518/blog_files/tree/master/%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%E6%96%87%E4%BB%B6">文件地址</a></p>
+<h6 id="SSA概念及分类"><a href="#SSA概念及分类" class="headerlink" title="SSA概念及分类"></a>SSA概念及分类</h6><ul>
+<li><p>SSA概念</p>
+<blockquote>
+<p>在编译器的设计中，<strong>静态单赋值形式</strong>通常简写为<strong>SSA form</strong>或是<strong>SSA</strong>，是中介码的特性，每个变数仅被赋值一次。在原始的IR中，已存在的变数可被分割成许多不同的<strong>版本</strong>，在许多教科书当中通常会将旧的变数名称加上一个下标而成为新的变数名称，以至于标明每个变数及其不同版本。在SSA中，<strong>UD链</strong>（use-define chain，赋值代表define，使用变数代表use）是非常明确，而且每个仅包含单一元素</p>
+</blockquote>
+<p>以下面的代码为例：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">3</span>) &#123;</span><br><span class="line">        y = x + <span class="number">4</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> z = y + <span class="number">3</span>;</span><br><span class="line">    System.out.println(z);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下图为例，左图是原始代码，里面有分支， y 变量在不同路径中有不同赋值，最后打印 z的值。右图是等价的 SSA 形式，y 变量在两个分支中被改写为 y2, y3，在控制流交汇处插入φ函数，合并了来自不同边的 y2, y3值, 赋给 y4 最后z由y4生成</p>
+<img src="/2021/12/10/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E4%B9%8B%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88Intermediate-Representation%EF%BC%89/1608646522321044418.png" class="" title="原始代码与SSA形式及相应CFG控制流图">
+
+<p>其实要讲SSA形式，就不能离开对DU Chain（Define-Use Chain）和UD Chain（Use-Define Chain）的介绍，因为很多地方对SSA的概念的介绍，都是从DU Chain和UD Chain引起的。Use-Define Chain 是一个数据结构，包含一个Define变量，以及它的全部Use的集合。相对的，Define-Use Chain 包含一个Use变量，以及它的全部 Define的集合。</p>
+<p>另外一种SSA的描述，就是在 Define-Use Chain中，每一个Use变量，只会有一个Define，例如，在前面例子中，z = y + 3 中，因为此时 y可能在两个分支中赋值，因此，对于变量 z = y + 3 中，y 的Use来说，有两个 Define，但是，通过更改为 SSA形式，z = y + 3 中，y只有一个 Define，那就是 y4。因此，通过将三地址码转为SSA形式，可以很大程度上，简化Use-Define Chain和Define-Use Chain。</p>
+</li>
+<li><p>SSA分类</p>
+<blockquote>
+<p>SSA 有几种不同分类（主要是最小SSA、剪枝SSA、半剪枝SSA，另外两种严格SSA和最大SSA，大部分资料上都没有看到，只是在少部分资料中有见到，所以简单提一下）</p>
+</blockquote>
+<ul>
+<li><p>最小SSA</p>
+<p>最小SSA有以下特点：同一原始名字的两个不同定义的路径汇合处都插入一个φ函数。这样得到符合两大特征的且拥有最少φ函数数量的 SSA 形式。但是这里的最小不包含优化效果，比如死代码消除。如上面图2.1节，就是一个最小SSA形式</p>
+</li>
+<li><p>剪枝SSA</p>
+<p>如果变量在基本块的入口处不是活跃 (live) 的，就不必插入φ函数。一种方法是在插入 φ函数的时候计算活跃变量分析。另一种剪枝方式是在最小SSA上做死代码消除，删掉多余的φ函数。如下面的例子，y在分支执行完后，在最后的BB块中不再使用，y已经不再活跃，此时没必要在这个节点添加φ函数，如下面右图红色标出来的位置（说明：虽然不是剪枝SSA，但是仍然是最小SSA）</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646556674025089.png" alt="剪枝SSA和最小SSA说明"></p>
+</li>
+<li><p>半剪枝SSA</p>
+<p>鉴于剪枝 SSA 的成本，可以稍微折衷一点。插入φ函数前先去掉非跨越基本块的变量名。这样既减少了名字空间也没有计算活跃变量集的开销。如下图所示，y变量除了Define，并没有Use，所以，变量y其实可以去掉，如下右图</p>
+<p><img src="https://bbs-img.huaweicloud.com/blogs/img/1608646587998085989.png" alt="半剪枝SSA形式"></p>
+</li>
+<li><p>严格SSA</p>
+<p>如果一个 SSA中，每个Use被其Define支配（如果从程序入口到一个结点 A 的所有路径，都先经过结点B，则称A被B支配），那么称为严格 SSA（实际上，在强类型语言中，这种情况比较少，因为没有定义，就不允许使用，在少数动态类型语言中，允许没有定义就可以使用的才有这类问题）</p>
+</li>
+<li><p>最大SSA</p>
+<p>最大SSA是相对最小SSA而言的，就是在每个汇合点处为每个变量放置一个φ函数。很显然，这种方法会导致SSA的使用效率最差，用户体验也很差，我估计谁生成的SSA是这样的形式，会被使用的人打死的</p>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="SSA形式和普通三地址码对比"><a href="#SSA形式和普通三地址码对比" class="headerlink" title="SSA形式和普通三地址码对比"></a>SSA形式和普通三地址码对比</h6><p>其实对比SSA形式和普通的三地址码形式，只有一个区别，那就是，SSA形式，对于每个Use，只会有一个Define。两者在一定程度上，还是非常类似的。那么主要对比在于两种形式的各自的优缺点：</p>
+<ul>
+<li>SSA形式相对于三地址码，会引入大量的额外的临时变量，同时需要插入φ函数，还需要维护这些临时变量到原始变量的映射关系（当然，仁者见仁，智者见智，也有资料觉得这些额外的临时变量可以忽略，驳斥这个观点为谬论，不过的确还是有其不舒服的地方的）</li>
+<li>SSA形式的优势在于，SSA形式简化了DU Chain和UD chain，构建了一种稀疏结构，可以简化数据流分析（一般基于三地址码，需要基于传统的数据流分析来进行分析，称为dense分析，基于SSA形式，可以构造值依赖关系，基于值流分析，也称为sparse分析，同时，SSA形式也隐含了一定的程序流信息）</li>
+<li>SSA形式相比于普通三地址码，可以优化常量传播、值依赖分析、死代码、重复代码删除等</li>
+</ul>
+<h5 id="控制流图（Control-Flow-Graph，CFG）"><a href="#控制流图（Control-Flow-Graph，CFG）" class="headerlink" title="控制流图（Control Flow Graph，CFG）"></a><a href="https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE?fromtitle=CFG&fromid=1070246">控制流图</a>（Control Flow Graph，CFG）</h5><blockquote>
+<p>也叫控制<a href="https://baike.baidu.com/item/%E6%B5%81%E7%A8%8B%E5%9B%BE/206961">流程图</a>，是一个过程或程序的抽象表现，是用在<a href="https://baike.baidu.com/item/%E7%BC%96%E8%AF%91%E5%99%A8/8853067">编译器</a>中的一个<a href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/22093090">抽象数据结构</a>，由编译器在内部维护，代表了一个程序执行过程中会遍历到的所有路径。它用图的形式表示一个过程内所有基本块执行的可能流向, 也能反映一个过程的实时执行过程</p>
+</blockquote>
+<ol>
+<li><p>基本块（Basic Block）</p>
+<ul>
+<li>特点：<ul>
+<li>单入口、单出口、每个块内的语句都是按顺序执行的，不能有分支和跳转</li>
+<li>只能从第一条语句进入该基本块，不能够以某种方式跳入该基本块的中间</li>
+<li>基本块内的语句在执行时必须从最后一条语句离开，不能够执行到一半跳转到其它的基本块</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CFG</p>
+<p>CFG是一个由基本块组成的有向图，每个节点都是一个基本块。如果程序的执行路径可能从一个基本块$B_1$进入另一个基本块**$B_2$<strong>，</strong>$B_1$<strong>有一条指向</strong>$ B_2 $**的边</p>
+<p>其中：</p>
+<p>$N:$表示所有基本块节点的集合</p>
+<p>$E:$表示所有边的集合</p>
+<p>$n_0:$表示首节点</p>
+<p>CFG具有如下的两条性质：</p>
+<ul>
+<li>CFG 必然有唯一的一个入口点</li>
+<li>首节点必然支配CFG中其他的所有节点（即从首节点到CFG上其他任何一个节点都有一条路可以连通）</li>
+</ul>
+</li>
+</ol>
+<h5 id="寄存器传输语言（Register-Transfer-Language，RFL）"><a href="#寄存器传输语言（Register-Transfer-Language，RFL）" class="headerlink" title="寄存器传输语言（Register Transfer Language，RFL）"></a><a href="https://baike.baidu.com/item/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E8%AF%AD%E8%A8%80/20870434">寄存器传输语言</a>（Register Transfer Language，RFL）</h5><blockquote>
+<p>又译为<strong>暂存器转换语言</strong>、<strong>寄存器转换语言</strong>，一种中间语言，使用于<a href="https://zh.wikipedia.org/wiki/%E7%B7%A8%E8%AD%AF%E5%99%A8">编译器</a>中。与<a href="https://zh.wikipedia.org/wiki/%E7%B5%84%E5%90%88%E8%AA%9E%E8%A8%80">汇编语言</a>很接近。寄存器传递语言被用于描述一个架构中<a href="https://zh.wikipedia.org/wiki/%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E8%BE%93%E7%BA%A7">寄存器传输级</a>上的数据流。 在学术论文和教科书中，寄存器传递语言被认为是一种与架构无关的汇编语言。<a href="https://zh.wikipedia.org/wiki/GCC">GCC</a>的中间语言，也被称为寄存器传递语言，风格类似于<a href="https://zh.wikipedia.org/wiki/LISP">LISP</a>。GCC的前端（front-end）会先将编程语言转译成RTL，之后再利用后端（back-end）转化成机器代码</p>
+</blockquote>
+<p>以下一些文章用到相关技术：</p>
+<ul>
+<li><a href="https://github.com/usyd-blockchain/vandal">Vandal</a></li>
+<li><a href="https://github.com/eth-sri/securify2">Securify2</a></li>
+<li><a href="https://github.com/nevillegrech/MadMax">MadMax</a></li>
+<li><a href="https://github.com/nevillegrech/gigahorse-toolchain">Gigahorse</a></li>
+<li><a href="https://yanniss.github.io/ethainter-pldi20.pdf">Ethainter</a></li>
+</ul>
+<blockquote>
+<p><a href="https://bbs.huaweicloud.com/blogs/detail/227535">原文链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>程序分析</category>
+      </categories>
+      <tags>
+        <tag>中间表示（IR）</tag>
+        <tag>CFG</tag>
+        <tag>AST</tag>
+        <tag>TAC</tag>
+        <tag>SSA</tag>
+        <tag>RTL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客迁移到另外一台电脑</title>
+    <url>/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="复制原电脑上的数据"><a href="#复制原电脑上的数据" class="headerlink" title="复制原电脑上的数据"></a>复制原电脑上的数据</h4><p> <strong>注：</strong>不需要全部复制</p>
+<blockquote>
+<ul>
+<li>_config.yml：站点配置文件</li>
+<li>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</li>
+<li>scaffolds/：layout模板文件目录，其中的md文件可以添加编辑</li>
+<li>source/：</li>
+<li>文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<ul>
+<li>drafts：草稿文章</li>
+<li>posts：发布文章</li>
+</ul>
+</li>
+<li>themes/：主题文件</li>
+</ul>
+</blockquote>
+<hr>
+<span id="more"></span>
+
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><ol>
+<li>安装node</li>
+<li>安装git</li>
+<li><a href="https://lwy0518.github.io/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/#more">再参考上一篇文章</a></li>
+</ol>
+<h5 id="下载相关插件"><a href="#下载相关插件" class="headerlink" title="下载相关插件"></a>下载相关插件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将文章部署到github上的模块</span></span><br><span class="line">$ cnpm install hexo-deployer-git --save</span><br><span class="line"><span class="comment"># 安装RSS插件</span></span><br><span class="line">$ cnpm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 添加Sitemap,加速网页收录速度</span></span><br><span class="line">$ cnpm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO环境搭建及创建账户</title>
+    <url>/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p><a href="https://developers.eos.io/manuals/eos/latest/install/install-prebuilt-binaries">官方文档</a></p>
+<h4 id="钱包和账户"><a href="#钱包和账户" class="headerlink" title="钱包和账户"></a>钱包和账户</h4><img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-01.png" class="" title="EOS架构图">
+
+<hr>
+<span id="more"></span>
+
+<ul>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/nodeos/index">Nodeos</a>（node + eos = nodeos）</strong>：运行节点的核心服务守护进程，用于区块生产、API 端点或本地开发</li>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/cleos/index">Cleos</a> (cli + eos = cleos)</strong> ： 与区块链交互的命令行界面 (via <code>nodeos</code>) 和管理钱包 (via <code>keosd</code>)</li>
+<li><strong><a href="https://developers.eos.io/manuals/eos/latest/keosd/index">Keosd</a> (key + eos = keosd)</strong> ： 管理钱包中的 EOSIO 密钥并为数字签名提供安全飞地的组件</li>
+</ul>
+<p>可以参考下列解读图：</p>
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/eost02-02.png" class="" title="eos解读图">
+
+<h5 id="创建钱包"><a href="#创建钱包" class="headerlink" title="创建钱包"></a>创建钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet create -n wallet_name --to-console</span><br></pre></td></tr></table></figure>
+
+<p>其中：**-n<strong>是指定钱包名称（如果不指定则会默认生成一个default钱包）， <strong>wallet_name</strong>是你需要创建的钱包名（以下用lwy代替），</strong>–to-console**是将密钥输出到控制台（记得一定要保存这个密钥，因为要用于钱包的解锁）</p>
+<h5 id="查看创建的钱包"><a href="#查看创建的钱包" class="headerlink" title="查看创建的钱包"></a>查看创建的钱包</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet list</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094122334.png" class="" title="image-20211210094122334">
+
+<p>其中带**”*”**号指已解锁的钱包</p>
+<h5 id="钱包的解锁与加锁"><a href="#钱包的解锁与加锁" class="headerlink" title="钱包的解锁与加锁"></a>钱包的解锁与加锁</h5><ul>
+<li><p><strong>解锁</strong>（会提示你输入钱包密钥）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n lwy --password</span><br></pre></td></tr></table></figure></li>
+<li><p>加锁（不需要输入密钥）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet lock -n lwy</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094458277.png" class="" title="image-20211210094458277"></li>
+</ul>
+<h4 id="生成和导入公钥-私钥对"><a href="#生成和导入公钥-私钥对" class="headerlink" title="生成和导入公钥-私钥对"></a>生成和导入公钥-私钥对</h4><h5 id="生成公钥-私钥对"><a href="#生成公钥-私钥对" class="headerlink" title="生成公钥-私钥对"></a>生成公钥-私钥对</h5><blockquote>
+<p>为了简单可以直接用一个公钥-私钥对（记得保存私钥，一定！一定 ！）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create key --to-console</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210094807129.png" class="" title="image-20211210094807129">
+
+<h5 id="导入公钥-私钥对"><a href="#导入公钥-私钥对" class="headerlink" title="导入公钥-私钥对"></a>导入公钥-私钥对</h5><blockquote>
+<p>如果lwy钱包还没解锁，记得先解锁</p>
+</blockquote>
+<p>将生成的公钥-私钥对导入lwy钱包内</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/image-20211210095118841.png" class="" title="image-20211210095118841">
+
+<h4 id="创建和管理账户"><a href="#创建和管理账户" class="headerlink" title="创建和管理账户"></a>创建和管理账户</h4><h5 id="命令行及参数说明"><a href="#命令行及参数说明" class="headerlink" title="命令行及参数说明"></a>命令行及参数说明</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account authorizing_account NEW_ACCOUNT OWNER_KEY ACTIVE_KEY</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注：</strong>在这OWNER_KEY与ACTIVE_KEY是同一个，因为我为了简单只生成了一个公钥-私钥对</p>
+<ul>
+<li>authorizing_account 是为帐户创建提供资金的帐户的名称</li>
+<li>new_account 是您要创建的帐户的名称</li>
+<li>owner_key是分配给帐户owner权限的公钥</li>
+<li>active_key是分配给您帐户的active权限的公钥</li>
+</ul>
+</blockquote>
+<p>新帐户名称必须符合以下准则：</p>
+<blockquote>
+<ul>
+<li>必须在12个字符以内，包括12字符。</li>
+<li>只能包含以下符号：.12345abcdefghijklmnopqrstuvwxyz</li>
+<li>请注意，账户名称不允许使用6,7,8,9,0。</li>
+</ul>
+</blockquote>
+<h5 id="使用eosio初始账户创建新账户"><a href="#使用eosio初始账户创建新账户" class="headerlink" title="使用eosio初始账户创建新账户"></a>使用eosio初始账户创建新账户</h5><p>eosio帐户是用于引导EOSIO节点的特殊帐户。<br>由于我们没有其他账户，所以用初始eosio账户来创建新帐户</p>
+<blockquote>
+<p>eosio帐户的密钥可以在nodeos配置文件中找到，位于~/.local/share/eosio/nodeos/config/config.ini。 同时，记得解锁lwy钱包</p>
+</blockquote>
+<p>首先，需要将默认账号eosio的私钥导入lwy钱包内：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet import -n lwy --private-key 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<p>然后，用初始eosio账户来创建新帐户<strong>testaccount</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio testaccount 5J9rzfgPNLuCL9j4AEc4RYcchvJQPaPNUtWuToRSeFAEayitM8v</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看账户信息"><a href="#查看账户信息" class="headerlink" title="查看账户信息"></a>查看账户信息</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get account testaccount -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>-j</strong> 指信息以json格式输出</p>
+<p><strong>至此，EOSIO环境搭建以及账户创建已完成！！</strong></p>
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>智能合约</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO部署全过程</title>
+    <url>/2021/12/10/EOSIO%E9%83%A8%E7%BD%B2%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+
+
+<hr>
+<span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>数据流</tag>
+        <tag>EOSIO</tag>
+        <tag>编译器</tag>
+        <tag>漏洞检测</tag>
+        <tag>静态分析</tag>
+        <tag>Datalog</tag>
+        <tag>CFG</tag>
+        <tag>IR</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据流分析</title>
+    <url>/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h4><p>数据流分析是一种用来获取相关数据沿着程序执行路径流动的信息分析技术。分析对象是程序执行路径上的数据流动或可能的取值</p>
+<ul>
+<li>优点：具有更强的分析能力，适合需要考虑控制流信息且变量属性之操作十分简单的静态分析问题</li>
+<li>缺点：分析效率低，过程间分析和优化算法复杂，编程工作量大，容易出错且效率低</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h5 id="数据流分析的分类"><a href="#数据流分析的分类" class="headerlink" title="数据流分析的分类"></a>数据流分析的分类</h5><ul>
+<li>对程序路径的分析精度分类<ul>
+<li>流不敏感分析（flow insensitive）：不考虑语句的先后顺序，按照程序语句的物理位置从上往下顺序分析每一语句，忽略程序中存在的分支</li>
+<li>流敏感分析（flow sensitive）：考虑程序语句可能的执行顺序，通常需要利用程序的控制流图（CFG）</li>
+<li>路径敏感分析（path sensitive）：不仅考虑语句的先后顺序，还对程序执行路径条件加以判断，以确定分析使用的语句序列是否对应着一条可实际运行的程序执行路径</li>
+</ul>
+</li>
+<li>分析程序路径的深度分类<ul>
+<li>过程内分析（intra-procedure analysis）：只针对程序中函数内的代码</li>
+<li>过程间分析（inter-procedure analysis）：考虑函数之间的数据流，即需要跟踪分析目标数据在函数之间的传递过程<ul>
+<li>上下文不敏感分析（context-insensitive）：将每个调用或返回看做一个 “goto” 操作，忽略调用位置和函数参数取值等函数调用的相关信息</li>
+<li>上下文敏感分析（context-sensitive）：对不同调用位置调用的同一函数加以区分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="检测程序漏洞"><a href="#检测程序漏洞" class="headerlink" title="检测程序漏洞"></a>检测程序漏洞</h5><p>基于数据流的源代码漏洞分析的原理如下图所示：</p>
+<p><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_overview.png" alt="数据流分析原理"></p>
+<ul>
+<li>代码建模<ul>
+<li>该过程通过一系列的程序分析技术获得程序代码模型。首先通过词法分析生成词素的序列，然后通过语法分析将词素组合成抽象语法树。如果需要三地址码，则利用中间代码生成过程解析抽象语法树生成三地址码。如果采用流敏感或路径敏感的方式，则可以通过分析抽象语法树得到程序的控制流图。构造控制流图的过程是过程内的控制流分析过程。控制流还包含分析各个过程之间的调用关系的部分。通过分析过程之间的调用关系，还可以构造程序的调用图。另外，该过程还需要一些辅助支持技术，例如变量的别名分析，Java 反射机制分析，C/C++ 的函数指针或虚函数调用分析等<ul>
+<li>代码解析：指词法分析、语法分析、中间代码生成以及过程内的控制流分析等基础的分析过程</li>
+<li>辅助分析：包括控制流分析等为数据流分析提供支持的分析过程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>程序代码建模<ul>
+<li>漏洞分析系统通常使用树型结构的抽象语法树或者线性的三地址码来描述程序代码的语义。控制流图描述了过程内程序的控制流路径，较为精确的数据流分析通常利用控制流图分析程序执行路径上的某些行为。调用图描述了过程之间的调用关系，是过程间分析需要用到的程序结构</li>
+</ul>
+</li>
+<li>漏洞分析规则<ul>
+<li>漏洞分析规则是检测程序漏洞的依据。对于分析变量状态的规则，可以使用状态自动机来描述。对于需要分析变量取值的情况，则需要指出应该怎样记录变量的取值，以及在怎样的情况下对变量的取值进行何种的检测<ul>
+<li>程序漏洞通常和程序中变量的状态或者变量的取值相关。状态自动机可以描述和程序变量状态相关的漏洞分析规则，自动机的状态和变量相应的状态对应</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>静态漏洞分析<ul>
+<li>数据流分析可以看做一个根据检测规则在程序的可执行路径上跟踪变量的状态或者变量取值的过程。在该过程中，如果待分析的程序语句是函数调用语句，则需要利用调用图进行过程间的分析，以分析被调用函数的内部代码。另外，数据流分析还可以作为辅助技术，用于完善程序调用图和分析变量别名等<ul>
+<li><strong>赋值语句</strong>、<strong>控制转移语句</strong>和<strong>过程调用语句</strong>是数据流分析最关心的三类语句</li>
+<li>过程内分析<ul>
+<li>对于<strong>抽象语法树</strong>的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析</li>
+<li>对于<strong>三地址码</strong>的分析，则可以直接识别其操作以及操作相关的变量</li>
+<li>在<strong>流不敏感分析</strong>中，常常使用线性扫描的方式依次分析每一条中间表示形式的语句</li>
+<li><strong>流敏感的分析</strong>或<strong>路径敏感的分析</strong>，则根据控制流图进行分析。对控制流图的遍历主要是<strong>深度优先</strong>和<strong>广度优先</strong>两种方式</li>
+</ul>
+</li>
+<li><div align="center">
+    <src img=https://github.com/lwy0518/blog_files/tree/master/images>
+</div>
+
+<ul>
+<li>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析</li>
+<li>借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件<ul>
+<li>前置条件记录对基本块分析前已有的相关分析结果</li>
+<li>后置条件是分析基本块后得到的结果</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理分析结果<ul>
+<li>对检测出的漏洞进行危害程度分类等</li>
+</ul>
+</li>
+</ul>
+<h4 id="方法实现"><a href="#方法实现" class="headerlink" title="方法实现"></a>方法实现</h4><p>数据流分析使用的程序代码模型主要包括程序代码的中间表示以及一些关键的数据结构，利用程序代码的中间表示可以对程序语句的指令语义进行分析</p>
+<h5 id="抽象语法树（AST）"><a href="#抽象语法树（AST）" class="headerlink" title="抽象语法树（AST）"></a>抽象语法树（AST）</h5><p>是程序抽象语法结构的树状表现形式，其每个内部节点代表一个运算符，该节点的子节点代表这个运算符的运算分量。通过描述控制转移语句的语法结构，抽象语法树在一定程度上也描述了程序的过程内代码的控制流结构</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> b ≠ <span class="number">0</span></span><br><span class="line">	<span class="keyword">if</span> a &gt; b</span><br><span class="line">		a := a − b</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		b := b − a</span><br><span class="line"><span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
+
+<p>对应的抽象语法树为：</p>
+<h5 id=""><a href="#" class="headerlink" title=""></a><img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ast.png" alt="TAC"></h5><p>由一组类似于汇编语言的指令组成，每个指令具有不多于三个的运算分量。每个运算分量都像是一个<strong>寄存器</strong></p>
+<h5 id="静态单赋值形式（SSA）"><a href="#静态单赋值形式（SSA）" class="headerlink" title="静态单赋值形式（SSA）"></a>静态单赋值形式（SSA）</h5><p>是一种程序语句或者指令的表示形式，在这种表示形式中，所有的赋值都是针对具有不同名字的变量，也就是说，如果某个变量在不同的程序点被赋值，那么在这些程序点上，该变量在静态单赋值形式的表示中应该使用不同的名字。在使用下标的赋值表示中，变量的名字用于区分程序中的不同的变量，下标用于区分不同程序点上变量的赋值情况。另外，如果在一个程序中，同一个变量可能在两个不同的控制流路径中被赋值，并且在<strong>路径交汇</strong>后，该变量被使用，那么就需要一种被称为 <strong>Φ 函数</strong>的的表示规则将变量的赋值合并起来</p>
+<div align="center">
+    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa1.png">
+    <img src="https://firmianay.gitbooks.io/ctf-all-in-one/content/pic/5.4_ssa2.png">
+</div>
+
+
+
+<p><strong>作用：</strong>静态单赋值形式对于数据流分析的意义在于，可以简单而直接地<strong>发现变量的赋值和使用情况</strong>，以此分析数据的流向并发现程序不安全的行为</p>
+<h5 id="控制流图（CFG）"><a href="#控制流图（CFG）" class="headerlink" title="控制流图（CFG）"></a>控制流图（CFG）</h5><p>是指用于描述程序过程内的控制流的有向图。控制流由节点和有向边组成。典型的节点是基本块（BB），即程序语句的线性序列。有向边表示节点之间存在潜在的控制流路径，通常都带有属性（如if语句的true分支和false分支）</p>
+<h5 id="调用图（CG）"><a href="#调用图（CG）" class="headerlink" title="调用图（CG）"></a>调用图（CG）</h5><p>是描述程序中过程之间的调用和被调用关系的有向图。控制图是一个节点和边的集合，并满足如下原则</p>
+<ul>
+<li>对程序中的每个过程都有一个节点</li>
+<li>对每个调用点都有一个节点</li>
+<li>如果调用点 c 调用了过程 p，就存在一条从 c 的节点到 p 的节点的边</li>
+</ul>
+<h5 id="静态漏洞分析"><a href="#静态漏洞分析" class="headerlink" title="静态漏洞分析"></a>静态漏洞分析</h5><p>数据流分析检测漏洞是利用分析规则按照一定的顺序分析代码中间表示的过程</p>
+<ul>
+<li><strong>过程内分析：</strong>对于抽象语法树的分析，可以按照程序执行语句的过程从右向左、自底向上地进行分析。对于三地址码的分析，则可以直接识别其操作以及操作相关的变量</li>
+<li><strong>过程间分析：</strong>如果在分析某段程序中遇到过程调用语句，就分析其调用过程的内部的代码，完成分析之后再回到原来的程序段继续分析。另一种思路是借鉴基本块的分析，给过程设置上摘要，也包含前置条件和后置条件</li>
+</ul>
+<blockquote>
+<p><a href="https://firmianay.gitbooks.io/ctf-all-in-one/content/doc/5.4_dataflow_analysis.html">原文链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>程序分析</category>
+      </categories>
+      <tags>
+        <tag>程序分析</tag>
+        <tag>数据流</tag>
+        <tag>Def-Use</tag>
+        <tag>中间表示（IR）</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOSIO-Vulneribilities</title>
+    <url>/2021/12/07/EOSIO-Vulneribilities/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="EOSIO漏洞复现"><a href="#EOSIO漏洞复现" class="headerlink" title="EOSIO漏洞复现"></a><a href="https://github.com/lwy0518/blog_files">EOSIO漏洞复现</a></h4><h5 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h5><ul>
+<li>nodeos ：2.0.12</li>
+<li>EOSIO.CDT（编译器）：1.2.1</li>
+<li><a href="https://github.com/gongbell/EOSFuzzer">实验数据</a></li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h5 id="准备（前一篇文章已经介绍如何创建账户等等操作）"><a href="#准备（前一篇文章已经介绍如何创建账户等等操作）" class="headerlink" title="准备（前一篇文章已经介绍如何创建账户等等操作）"></a>准备（<a href="https://lwy0518.github.io/2021/12/10/EOSIO%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7/#more">前一篇文章已经介绍如何创建账户等等操作</a>）</h5><ul>
+<li><p>解锁账户（默认锁定时间较短，可以自己修改配置文件使得时间更长）</p>
+<blockquote>
+<p> yourcount：指你自己创建的钱包名</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos wallet unlock -n yourcount --password</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="EOS-Fake-Transfer复现过程"><a href="#EOS-Fake-Transfer复现过程" class="headerlink" title="EOS Fake Transfer复现过程"></a>EOS Fake Transfer复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( code == self || action == ::eosio::<span class="built_in">string_to_name</span>(<span class="string">&quot;onerror&quot;</span>) || code == <span class="built_in">N</span>(eosio.token)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;receiver:&quot;</span>, name&#123;receiver&#125;, <span class="string">&quot;, code:&quot;</span>, name&#123;code&#125;, <span class="string">&quot;, action:&quot;</span>, name&#123;action&#125;, <span class="string">&quot;\n&quot;</span>); </span><br><span class="line">	<span class="function">notified <span class="title">thiscontract</span><span class="params">( self )</span></span>; </span><br><span class="line">	<span class="built_in"><span class="keyword">switch</span></span>( action ) &#123; </span><br><span class="line">		<span class="keyword">case</span> ::eosio::<span class="built_in">string_to_name</span>( <span class="string">&quot;transfer&quot;</span> ): </span><br><span class="line">			eosio::<span class="built_in">execute_action</span>( &amp;thiscontract, &amp;notified::transfer ); </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>由于eosio.token源代码完全公开的，所以任何人都能复制其源代码，并发布一个token（相同的名字、符号和代码），虚假的EOS和官方的唯一不同就是具有不同的发布人（<strong>issuer</strong>）。或者直接调用漏洞合约的transfer函数进行转账</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建受害者账户</p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim4 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>部署测试合约<em>test.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim4 <span class="built_in">test</span>/ -p  victim4</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>直接调用<em>test.cpp</em>合约的<em>transfer</em>（主要目的看是否<em>trasnfer</em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action victim4 transfer <span class="string">&#x27;[&quot;eosio&quot;,&quot;victim4&quot;,&quot;10.0000 EOS&quot;,&quot;inlined call&quot;]&#x27;</span> -p  eosio -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/inlined_call.png" class="" title="inlined_call"></li>
+</ul>
+</li>
+<li><p>查询账户余额</p>
+<blockquote>
+<p> cleos get currency balance eosio.token + 查询账户 + token名（EOS)</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos get currency balance eosio.token victim4 EOS</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="Forged-Transfer-Notification复现过程"><a href="#Forged-Transfer-Notification复现过程" class="headerlink" title="Forged Transfer Notification复现过程"></a>Forged Transfer Notification复现过程</h5><ul>
+<li><p>存在漏洞的合约示例（<em>test.cpp</em>）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(account_name from, account_name to, asset quantity, string memo)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n Receiving transfer message: from &quot;</span>, name&#123;from&#125;, <span class="string">&quot; to &quot;</span>, name&#123;to&#125;, <span class="string">&quot;,&quot;</span>, quantity, <span class="string">&quot;,&quot;</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (from == _self) &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;have a vulnerability!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;in eosbet transfer,&quot;</span>, name&#123; from &#125;, <span class="string">&quot;,&quot;</span>, name&#123; to &#125;);</span><br><span class="line">	<span class="comment">// doSomething()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>漏洞产生的原因</p>
+<blockquote>
+<p>攻击者在 EOS 网络中控制两个账户 A（发起攻击的账户） 和 B（将收到的通知立即转发给账户C）。通过账户 A 向账户 B 发送真正的 EOS，如图所示，eosio.token 合约在转账成功后会向 账户A、B 发送 notification。当账户 B 收到 notification后，通过调用require_recipient(C)随即将收到的通知转发给部署受害者智能合约的账户C。</p>
+</blockquote>
+</li>
+<li><p>过程</p>
+<ul>
+<li><p>创建攻击者账户<strong>sender</strong>，用于向另一个由攻击者控制的账户<strong>notifier</strong></p>
+<blockquote>
+<p>your key：是你自己创建的公钥，需要把公钥导入到你的钱包以及官方钱包eosio</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio sender <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建账户<strong>notifier</strong>，用于将收到的转账通知转发给受害者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio notifier <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建受害者账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos create account eosio victim5 <span class="string">&quot;your key&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>notifier</strong>部署攻击合约<em>eosbethack.cpp</em></p>
+<blockquote>
+<p>cleos set contract + 账户名 + 测试合约的wasm字节码所在目录 + -p + 账户@active（默认权限为active，故可加可不加）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract notifier eosbethack/ -p notifier</span><br></pre></td></tr></table></figure></li>
+<li><p>账户<strong>victim5</strong>部署攻击合约<em>eosbet.cpp</em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos <span class="built_in">set</span> contract victim5 eosbet/ -p victim5</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>开始模拟攻击</p>
+<ul>
+<li><p>账户<strong>sender</strong>（攻击者）向账户notifier（攻击者）发送<strong>EOS</strong>（主要目的看是否<em><strong>trasnfer</strong></em>中的<em>print</em>是否有输出）</p>
+<blockquote>
+<p>cleos push action + 账户名 + 需要调用的action + ‘调用action的参数’ + -p + 转账账户 （+ -j）</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cleos push action eosio.token transfer <span class="string">&#x27;[&quot;sender&quot;,&quot;notifier&quot;,&quot;10.0000 EOS&quot;,&quot;transfer himself&quot;]&#x27;</span> -p sender -j</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：加了一个 <strong>-j</strong> ，说明结果以json的格式进行输出的</p>
+<p>结果显示：测试合约的<strong>transfer</strong>函数被调用了</p>
+<p>结果显示：</p>
+<img src="/2021/12/07/EOSIO-Vulneribilities/export.png" class="" title="export"></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>EOSIO</category>
+      </categories>
+      <tags>
+        <tag>EOSIO</tag>
+        <tag>漏洞</tag>
+        <tag>智能合约</tag>
+        <tag>防护</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>构建hexo博客过程</title>
+    <url>/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h4 id="环境（Windows）"><a href="#环境（Windows）" class="headerlink" title="环境（Windows）"></a>环境（Windows）</h4><ul>
+<li>git（git version 2.29.2.windows.3）</li>
+<li>node（v14.17.0）</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h4 id="本地部署"><a href="#本地部署" class="headerlink" title="本地部署"></a>本地部署</h4><ul>
+<li><p>安装cnpm（国内镜像源很慢）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p> “-g”：表示全局安装</p>
+<p> 验证是否安装成功：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm -v</span><br></pre></td></tr></table></figure>
+
+<p> 设置源：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org </span><br></pre></td></tr></table></figure></li>
+<li><p>安装hexo</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p> 验证是否安装成功：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个目录（出错直接删掉目录即可）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir myBlog</span><br><span class="line">$ <span class="built_in">cd</span> myBlog</span><br></pre></td></tr></table></figure></li>
+<li><p>初始化</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure></li>
+<li><p>启动hexo</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<p> 访问地址:localhost:4000</p>
+</li>
+</ul>
+<h4 id="GitHub部署"><a href="#GitHub部署" class="headerlink" title="GitHub部署"></a>GitHub部署</h4><ul>
+<li><p>创建一个仓库，仓库名必须为：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yourname.github.io</span><br></pre></td></tr></table></figure></li>
+<li><p>安装插件</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure></li>
+<li><p>修改配置文件（在文件最下面修改）</p>
+<ul>
+<li><p>Windows 下直接可以用文本打开</p>
+</li>
+<li><p>其他系统可以用vim</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p> 添加以下内容</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deploy:                                                      </span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo: https://github.com:yourname/yourname.github.io.git</span><br><span class="line">	branch: master</span><br></pre></td></tr></table></figure></li>
+<li><p>部署到远端（可以提前配置好git账号和密码）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>访问远程博客</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://yourname.github.io.git</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="换主题"><a href="#换主题" class="headerlink" title="换主题"></a>换主题</h4><ul>
+<li><p>下载主题（下载到themes目录下）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/litten/hexo-theme-yilia.git themes.yilia</span><br></pre></td></tr></table></figure></li>
+<li><p>修改</p>
+<ul>
+<li><p>Windows 下直接可以用文本打开</p>
+</li>
+<li><p>其他系统可以用vim</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p> 修改以下内容</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">theme: yilia</span><br></pre></td></tr></table></figure></li>
+<li><p>重新生成</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp; hexo g &amp; hexo s</span><br></pre></td></tr></table></figure></li>
+<li><p>远程部署到github</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><ol>
+<li>如遇到这个问题，先检查是否是网络的原因 ，多部署几次，如果还是不行，则采用以下方式：</li>
+</ol>
+<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209184952522.png" class="" title="image-20211209184952522">
+
+<ul>
+<li><p>方法一：在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 删除git提交内容文件夹</span></span><br><span class="line">$ rm -rf .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##执行</span></span><br><span class="line">$ git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>方法二：有可能是你的git repo配置地址不正确,可以将http方式变更为ssh方式，在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##删除git提交内容文件夹</span></span><br><span class="line">$ vim _config.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">##修改</span></span><br><span class="line">deploy:</span><br><span class="line">	<span class="built_in">type</span>: git</span><br><span class="line">	repo:https://github.com/yourname/yourname.github.io.git -&gt;</span><br><span class="line">			git@github.com:a956551943/weixiaohui.github.io.git</span><br><span class="line">	branch: master</span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<li><p>方法三：备选，在当前目录下操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##进入depoly文件夹</span></span><br><span class="line">$ <span class="built_in">cd</span> .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##强制推送</span></span><br><span class="line">$ git push -f</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><p>遇到新建博客文章部署之后图片不显示的问题</p>
+<blockquote>
+<p>在Typora中的工具栏中的“格式” –&gt; “图像” –&gt; “全局图像设置”中设置如下，此后会在当前目录下生成包含图片同名的文件</p>
+</blockquote>
+<p>另外，在文章开始部分加上以上命令即可解决图片不显示的问题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;meta name=<span class="string">&quot;referrer&quot;</span> content=<span class="string">&quot;no-referrer&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<img src="/2021/12/07/%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E8%BF%87%E7%A8%8B/image-20211209185640095.png" class="" title="image-20211209185640095"></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+</search>
