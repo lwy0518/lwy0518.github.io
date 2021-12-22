@@ -136,13 +136,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
+        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
-        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -736,8 +736,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>CFG</tag>
         <tag>中间表示（IR）</tag>
+        <tag>CFG</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
@@ -779,8 +779,8 @@
         <category>博客</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>博客</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -891,13 +891,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
+        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
-        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -1020,8 +1020,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>数据流</tag>
         <tag>程序分析</tag>
+        <tag>数据流</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
