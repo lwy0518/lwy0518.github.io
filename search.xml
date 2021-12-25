@@ -63,7 +63,10 @@
 <li>将每个Wasm基本块转为对应的IR基本块</li>
 <li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
 </ul>
-<p><strong>状态转换函数：</strong><br>$$<br>\frac{\splitfrac{\qquad \quad s_{op1}:x=s_{op}.pop()}{z=op(x)\quad s_{op2}:s_{op1}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow UNARY_{OP} \quad<br>                \frac{\splitfrac{\quad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{z=op(y,x)\quad s_{op3}:s_{op2}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow BINARY_{OP}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{s_{op3}:n=s_{op2}.pop()\quad z=op(n,y,x)\quad s_{op4}:s_{op3}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op4}}\leftarrow TERNARY_{OP} \quad<br>                \frac{s_{op1}:p=s_{op}.push(x)}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow const \nonumber \<br>                \frac{\splitfrac{\qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{v=m[p+offset] \quad s_{op2}:s_{op1}.push(v)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow Load \quad<br>                \frac{\splitfrac{\qquad \qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{s_{op2}:v=s_{op1}.pop() \quad m_{1}:m[p+offset]=v}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}\quad m \mapsto m_{1}}\leftarrow Store\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \neq 0}{pc \mapsto pc_{label} \quad s_{op} \mapsto s_{op1}}\leftarrow br_if_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v = 0}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} }\leftarrow br_if_{false} \quad \frac{}{pc \mapsto pc+1}\leftarrow br\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v &lt; len(table)}{pc \mapsto pc_{L[v]} \quad s_{op} \mapsto s_{op1}}\leftarrow br_table_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \ge len(table)}{pc \mapsto pc_{L[default]} \quad s_{op} \mapsto s_{op1} }\leftarrow br_table_{false}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:params=s_{op}.pop(n)}{s_{call1}:s_{call}.push((ret,callee_{index},params))} }{pc \mapsto ret \quad s_{op} \mapsto s_{op1} \quad s_{call} \mapsto s_{call1}}\leftarrow call\nonumber \quad<br>                \frac{\splitfrac{s_{op1}:index=s_{op}.pop()\quad s_{op2}:params=s_{op}.pop(n)}<br>                    {s_{call1}:s_{call}.push((ret,callee_{index},params))}}{pc \mapsto ret \quad s_{op} \mapsto s_{op3} \quad s_{call} \mapsto s_{call1}}\leftarrow call_indirect\nonumber \<br>                \frac{s_{op1}:p=s_{op}.push(m[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_local \quad<br>                \frac{s_{op1}:p=s_{op}.pop()\quad m_{1}:m[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad m \mapsto m_{1}}\leftarrow set_local\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad m_{1}:m[x]=v\quad s_{op2}:s_{op1}.push(v)}{pc \mapsto pc+1 \quad m \mapsto m_{1}\quad s_{op} \mapsto s_{op2}}\leftarrow tee_local \quad<br>                \frac{s_{op1}:p=s_{op}.push(g[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_global\nonumber \<br>                \frac{s_{op1}:p=s_{op}.pop()\quad g_{1}:g[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad g \mapsto g_{1}}\leftarrow set_global \quad<br>                \frac{s_{call1}:s_{call}.pop()}{s_{call} \mapsto s_{call1}}\leftarrow return\nonumber<br>$$</p>
+<p><strong>状态转换函数：</strong></p>
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211225222909830.png" class="" title="Wasm操作码的语义">
+
+
 <h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
 <li>edge：包含块内与块间之间的边</li>
 <li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
@@ -136,13 +139,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
+        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
-        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -736,8 +739,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>CFG</tag>
         <tag>中间表示（IR）</tag>
+        <tag>CFG</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
@@ -779,8 +782,8 @@
         <category>博客</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>博客</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -891,13 +894,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
+        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
-        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -1029,8 +1032,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>数据流</tag>
         <tag>程序分析</tag>
+        <tag>数据流</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
