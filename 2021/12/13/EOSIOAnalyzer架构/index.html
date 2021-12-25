@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172547651.png">
 <meta property="og:image" content="https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png">
 <meta property="article:published_time" content="2021-12-13T11:00:39.000Z">
-<meta property="article:modified_time" content="2021-12-22T06:35:49.846Z">
+<meta property="article:modified_time" content="2021-12-25T12:43:33.309Z">
 <meta property="article:author" content="lwy">
 <meta property="article:tag" content="EOSIO">
 <meta property="article:tag" content="编译器">
@@ -281,7 +281,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-22 14:35:49" itemprop="dateModified" datetime="2021-12-22T14:35:49+08:00">2021-12-22</time>
+                <time title="修改时间：2021-12-25 20:43:33" itemprop="dateModified" datetime="2021-12-25T20:43:33+08:00">2021-12-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -327,14 +327,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>5.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -406,6 +406,7 @@
 <li>将每个Wasm基本块转为对应的IR基本块</li>
 <li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
 </ul>
+<p><strong>状态转换函数：</strong><br>$$<br>\frac{\splitfrac{\qquad \quad s_{op1}:x=s_{op}.pop()}{z=op(x)\quad s_{op2}:s_{op1}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow UNARY_{OP} \quad<br>                \frac{\splitfrac{\quad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{z=op(y,x)\quad s_{op3}:s_{op2}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow BINARY_{OP}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{s_{op3}:n=s_{op2}.pop()\quad z=op(n,y,x)\quad s_{op4}:s_{op3}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op4}}\leftarrow TERNARY_{OP} \quad<br>                \frac{s_{op1}:p=s_{op}.push(x)}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow const \nonumber \<br>                \frac{\splitfrac{\qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{v=m[p+offset] \quad s_{op2}:s_{op1}.push(v)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow Load \quad<br>                \frac{\splitfrac{\qquad \qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{s_{op2}:v=s_{op1}.pop() \quad m_{1}:m[p+offset]=v}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}\quad m \mapsto m_{1}}\leftarrow Store\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \neq 0}{pc \mapsto pc_{label} \quad s_{op} \mapsto s_{op1}}\leftarrow br_if_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v = 0}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} }\leftarrow br_if_{false} \quad \frac{}{pc \mapsto pc+1}\leftarrow br\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v &lt; len(table)}{pc \mapsto pc_{L[v]} \quad s_{op} \mapsto s_{op1}}\leftarrow br_table_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \ge len(table)}{pc \mapsto pc_{L[default]} \quad s_{op} \mapsto s_{op1} }\leftarrow br_table_{false}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:params=s_{op}.pop(n)}{s_{call1}:s_{call}.push((ret,callee_{index},params))} }{pc \mapsto ret \quad s_{op} \mapsto s_{op1} \quad s_{call} \mapsto s_{call1}}\leftarrow call\nonumber \quad<br>                \frac{\splitfrac{s_{op1}:index=s_{op}.pop()\quad s_{op2}:params=s_{op}.pop(n)}<br>                    {s_{call1}:s_{call}.push((ret,callee_{index},params))}}{pc \mapsto ret \quad s_{op} \mapsto s_{op3} \quad s_{call} \mapsto s_{call1}}\leftarrow call_indirect\nonumber \<br>                \frac{s_{op1}:p=s_{op}.push(m[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_local \quad<br>                \frac{s_{op1}:p=s_{op}.pop()\quad m_{1}:m[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad m \mapsto m_{1}}\leftarrow set_local\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad m_{1}:m[x]=v\quad s_{op2}:s_{op1}.push(v)}{pc \mapsto pc+1 \quad m \mapsto m_{1}\quad s_{op} \mapsto s_{op2}}\leftarrow tee_local \quad<br>                \frac{s_{op1}:p=s_{op}.push(g[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_global\nonumber \<br>                \frac{s_{op1}:p=s_{op}.pop()\quad g_{1}:g[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad g \mapsto g_{1}}\leftarrow set_global \quad<br>                \frac{s_{call1}:s_{call}.pop()}{s_{call} \mapsto s_{call1}}\leftarrow return\nonumber<br>$$</p>
 <h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
 <li>edge：包含块内与块间之间的边</li>
 <li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
@@ -472,7 +473,6 @@
 <p><em>tapos_block_prefix/tapos_block_num  –&gt;  send_inline</em><br>     如果存在一条由<em>tapos_block_prefix/tapos_block_num</em>函数作为控制条件并最后触发<em>send_inline</em>函数的调用，则存在该漏洞，反之不存在</p>
 </blockquote>
 <img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png" class="" title="Block Information Dependency检测规则">
-
 
     </div>
 
@@ -1064,13 +1064,13 @@ if(canvas.getContext){
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">35k</span>
+    <span title="站点总字数">38k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">32 分钟</span>
+    <span title="站点阅读时长">34 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

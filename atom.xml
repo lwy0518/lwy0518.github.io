@@ -136,7 +136,7 @@
     <link href="https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/"/>
     <id>https://lwy0518.github.io/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/</id>
     <published>2021-12-13T11:00:39.000Z</published>
-    <updated>2021-12-22T06:35:49.846Z</updated>
+    <updated>2021-12-25T12:43:33.309Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -330,7 +330,7 @@
     <link href="https://lwy0518.github.io/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/"/>
     <id>https://lwy0518.github.io/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</id>
     <published>2021-12-07T07:31:36.000Z</published>
-    <updated>2021-12-22T02:58:38.815Z</updated>
+    <updated>2021-12-23T03:00:11.231Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -340,6 +340,15 @@
 &lt;li&gt;优点：具有更强的分析能力，适合需要考虑控制流信息且变量属性之操作十分简单的静态分析问题&lt;/li&gt;
 &lt;li&gt;缺点：分析效率低，过程间分析和优化算法复杂，编程工作量大，容易出错且效率低&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;一个数据流分析框架(D, L, F)包含:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;D：数据流的方向，前向或者后向&lt;/li&gt;
+&lt;li&gt;L：包含数值作用域V和操作符meet ⊓ 或 join ⊔ 的lattice&lt;/li&gt;
+&lt;li&gt;F：一系列V to V的传递函数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tips: 数据流分析可以看成在一个lattice的数值域上，迭代地使用传递函数和操作符&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;hr&gt;</summary>
     
     

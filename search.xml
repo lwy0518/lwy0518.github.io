@@ -63,6 +63,7 @@
 <li>将每个Wasm基本块转为对应的IR基本块</li>
 <li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
 </ul>
+<p><strong>状态转换函数：</strong><br>$$<br>\frac{\splitfrac{\qquad \quad s_{op1}:x=s_{op}.pop()}{z=op(x)\quad s_{op2}:s_{op1}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow UNARY_{OP} \quad<br>                \frac{\splitfrac{\quad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{z=op(y,x)\quad s_{op3}:s_{op2}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow BINARY_{OP}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:x=s_{op}.pop()\quad s_{op2}:y=s_{op1}.pop()}{s_{op3}:n=s_{op2}.pop()\quad z=op(n,y,x)\quad s_{op4}:s_{op3}.push(z)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op4}}\leftarrow TERNARY_{OP} \quad<br>                \frac{s_{op1}:p=s_{op}.push(x)}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow const \nonumber \<br>                \frac{\splitfrac{\qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{v=m[p+offset] \quad s_{op2}:s_{op1}.push(v)}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}}\leftarrow Load \quad<br>                \frac{\splitfrac{\qquad \qquad \qquad \quad s_{op1}:p=s_{op}.pop()}{s_{op2}:v=s_{op1}.pop() \quad m_{1}:m[p+offset]=v}}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op2}\quad m \mapsto m_{1}}\leftarrow Store\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \neq 0}{pc \mapsto pc_{label} \quad s_{op} \mapsto s_{op1}}\leftarrow br_if_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v = 0}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} }\leftarrow br_if_{false} \quad \frac{}{pc \mapsto pc+1}\leftarrow br\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v &lt; len(table)}{pc \mapsto pc_{L[v]} \quad s_{op} \mapsto s_{op1}}\leftarrow br_table_{true} \quad<br>                \frac{s_{op1}:v=s_{op}.pop()\quad v \ge len(table)}{pc \mapsto pc_{L[default]} \quad s_{op} \mapsto s_{op1} }\leftarrow br_table_{false}\nonumber \<br>                \frac{\splitfrac{\qquad \qquad s_{op1}:params=s_{op}.pop(n)}{s_{call1}:s_{call}.push((ret,callee_{index},params))} }{pc \mapsto ret \quad s_{op} \mapsto s_{op1} \quad s_{call} \mapsto s_{call1}}\leftarrow call\nonumber \quad<br>                \frac{\splitfrac{s_{op1}:index=s_{op}.pop()\quad s_{op2}:params=s_{op}.pop(n)}<br>                    {s_{call1}:s_{call}.push((ret,callee_{index},params))}}{pc \mapsto ret \quad s_{op} \mapsto s_{op3} \quad s_{call} \mapsto s_{call1}}\leftarrow call_indirect\nonumber \<br>                \frac{s_{op1}:p=s_{op}.push(m[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_local \quad<br>                \frac{s_{op1}:p=s_{op}.pop()\quad m_{1}:m[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad m \mapsto m_{1}}\leftarrow set_local\nonumber \<br>                \frac{s_{op1}:v=s_{op}.pop()\quad m_{1}:m[x]=v\quad s_{op2}:s_{op1}.push(v)}{pc \mapsto pc+1 \quad m \mapsto m_{1}\quad s_{op} \mapsto s_{op2}}\leftarrow tee_local \quad<br>                \frac{s_{op1}:p=s_{op}.push(g[x])}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1}}\leftarrow get_global\nonumber \<br>                \frac{s_{op1}:p=s_{op}.pop()\quad g_{1}:g[x]=p}{pc \mapsto pc+1 \quad s_{op} \mapsto s_{op1} \quad g \mapsto g_{1}}\leftarrow set_global \quad<br>                \frac{s_{call1}:s_{call}.pop()}{s_{call} \mapsto s_{call1}}\leftarrow return\nonumber<br>$$</p>
 <h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
 <li>edge：包含块内与块间之间的边</li>
 <li>def：新赋值的变量，每个变量都是一个寄存器变量（唯一）</li>
@@ -129,7 +130,6 @@
 <p><em>tapos_block_prefix/tapos_block_num  –&gt;  send_inline</em><br>     如果存在一条由<em>tapos_block_prefix/tapos_block_num</em>函数作为控制条件并最后触发<em>send_inline</em>函数的调用，则存在该漏洞，反之不存在</p>
 </blockquote>
 <img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211213172702557.png" class="" title="Block Information Dependency检测规则">
-
 ]]></content>
       <categories>
         <category>EOSIO</category>
@@ -910,6 +910,15 @@
 <li>优点：具有更强的分析能力，适合需要考虑控制流信息且变量属性之操作十分简单的静态分析问题</li>
 <li>缺点：分析效率低，过程间分析和优化算法复杂，编程工作量大，容易出错且效率低</li>
 </ul>
+<p>一个数据流分析框架(D, L, F)包含:</p>
+<ol>
+<li>D：数据流的方向，前向或者后向</li>
+<li>L：包含数值作用域V和操作符meet ⊓ 或 join ⊔ 的lattice</li>
+<li>F：一系列V to V的传递函数</li>
+</ol>
+<blockquote>
+<p>Tips: 数据流分析可以看成在一个lattice的数值域上，迭代地使用传递函数和操作符</p>
+</blockquote>
 <hr>
 <span id="more"></span>
 
