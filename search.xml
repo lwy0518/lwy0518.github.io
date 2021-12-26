@@ -64,7 +64,7 @@
 <li>构造对应的IR CFG，作为程序<code>src/exporter.py</code>的输入，输出以下内容</li>
 </ul>
 <p><strong>状态转换函数：</strong></p>
-<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211225222909830.png" class="" title="Wasm操作码的语义">
+<img src="/2021/12/13/EOSIOAnalyzer%E6%9E%B6%E6%9E%84/image-20211226152046580.png" class="" title="Wasm操作码的语义">
 
 
 <h5 id="输出所有的EDB（-facts）文件"><a href="#输出所有的EDB（-facts）文件" class="headerlink" title="输出所有的EDB（.facts）文件"></a><span id="2.3">输出所有的EDB（.facts）文件</span></h5><ul>
@@ -139,13 +139,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
-        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
+        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -739,8 +739,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>中间表示（IR）</tag>
         <tag>CFG</tag>
+        <tag>中间表示（IR）</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
@@ -782,8 +782,8 @@
         <category>博客</category>
       </categories>
       <tags>
-        <tag>博客</tag>
         <tag>hexo</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
   <entry>
@@ -894,13 +894,13 @@
       </categories>
       <tags>
         <tag>EOSIO</tag>
-        <tag>数据流</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
+        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -1032,8 +1032,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>程序分析</tag>
         <tag>数据流</tag>
+        <tag>程序分析</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
