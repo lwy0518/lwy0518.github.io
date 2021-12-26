@@ -138,7 +138,6 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>数据流</tag>
         <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
@@ -146,6 +145,7 @@
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
+        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -157,18 +157,18 @@
 <ul>
 <li><p><a href="#gcc%E4%B8%ADSSA%E5%8C%96%E7%9A%84%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0">gcc中SSA化的算法描述</a></p>
 <ul>
-<li><a href="#1.%E8%AE%A1%E7%AE%97%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%AF%E9%85%8D%E7%BB%93%E7%82%B9%E8%BE%B9%E7%95%8C">1.计算当前函数的支配结点边界</a></li>
-<li><a href="#2.%E9%81%8D%E5%8E%86%E5%B9%B6%E8%AE%B0%E5%BD%95%E5%87%BD%E6%95%B0%E6%AF%8F%E6%9D%A1%E6%8C%87%E4%BB%A4%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E5%8F%98%E9%87%8F%E7%9A%84defs/uses%E4%BF%A1%E6%81%AF">2.遍历并记录函数每条指令中出现的变量的defs/uses信息</a></li>
-<li><a href="#3.%E4%B8%BA%E6%AF%8F%E4%B8%AA%E5%8F%98%E9%87%8F%E8%AE%A1%E7%AE%97phi%E5%87%BD%E6%95%B0%E7%9A%84%E6%8F%92%E5%85%A5%E7%82%B9">3.为每个变量计算phi函数的插入点</a></li>
-<li><a href="#4.%E6%8C%89%E7%85%A7%E6%94%AF%E9%85%8D%E6%A0%91%E7%9A%84DFS%E9%81%8D%E5%8E%86%E9%87%8D%E5%86%99%E6%AF%8F%E4%B8%AAbb%E7%9A%84%E6%AF%8F%E6%9D%A1%E6%8C%87%E4%BB%A4%E5%B9%B6%E5%B0%86%E6%95%B4%E4%B8%AA%E5%87%BD%E6%95%B0SSA%E5%8C%96">4.按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化</a></li>
+<li><a href="#%E8%AE%A1%E7%AE%97%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%AF%E9%85%8D%E7%BB%93%E7%82%B9%E8%BE%B9%E7%95%8C">计算当前函数的支配结点边界</a></li>
+<li><a href="#%E9%81%8D%E5%8E%86%E5%B9%B6%E8%AE%B0%E5%BD%95%E5%87%BD%E6%95%B0%E6%AF%8F%E6%9D%A1%E6%8C%87%E4%BB%A4%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E5%8F%98%E9%87%8F%E7%9A%84defs/uses%E4%BF%A1%E6%81%AF">遍历并记录函数每条指令中出现的变量的defs/uses信息</a></li>
+<li><a href="#%E4%B8%BA%E6%AF%8F%E4%B8%AA%E5%8F%98%E9%87%8F%E8%AE%A1%E7%AE%97phi%E5%87%BD%E6%95%B0%E7%9A%84%E6%8F%92%E5%85%A5%E7%82%B9">为每个变量计算phi函数的插入点</a></li>
+<li><a href="#%E6%8C%89%E7%85%A7%E6%94%AF%E9%85%8D%E6%A0%91%E7%9A%84DFS%E9%81%8D%E5%8E%86%E9%87%8D%E5%86%99%E6%AF%8F%E4%B8%AAbb%E7%9A%84%E6%AF%8F%E6%9D%A1%E6%8C%87%E4%BB%A4%E5%B9%B6%E5%B0%86%E6%95%B4%E4%B8%AA%E5%87%BD%E6%95%B0SSA%E5%8C%96">按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化</a></li>
 </ul>
 </li>
 <li><p><a href="#gcc%E4%B8%ADssa%E5%8C%96%E7%9A%84%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B">gcc中ssa化的整体流程</a></p>
 <ul>
-<li><a href="#1.pass_build_ssa">1.pass_build_ssa</a></li>
-<li><a href="#2.%E5%87%BD%E6%95%B0%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97%E7%9A%84def/use%E5%88%86%E6%9E%90">2.函数指令序列的def/use分析</a></li>
-<li><a href="#3.%E4%B8%BA%E6%AF%8F%E4%B8%AA%E5%8F%98%E9%87%8F%E6%8F%92%E5%85%A5phi%E5%87%BD%E6%95%B0">3.为每个变量插入phi函数</a></li>
-<li><a href="#4.%E6%8C%87%E4%BB%A4%E9%87%8D%E5%86%99(SSA%E5%8C%96)">4.指令重写(SSA化)</a></li>
+<li><a href="#pass_build_ssa">pass_build_ssa</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97%E7%9A%84def/use%E5%88%86%E6%9E%90">函数指令序列的def/use分析</a></li>
+<li><a href="#%E4%B8%BA%E6%AF%8F%E4%B8%AA%E5%8F%98%E9%87%8F%E6%8F%92%E5%85%A5phi%E5%87%BD%E6%95%B0">为每个变量插入phi函数</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E9%87%8D%E5%86%99(SSA%E5%8C%96)">指令重写(SSA化)</a></li>
 </ul>
 </li>
 </ul>
@@ -179,13 +179,13 @@
 <p><strong>(1)对所有变量插入必要的phi函数</strong></p>
 <p><strong>(2)依次重写各个变量的定值/使用(转化为SSA格式)</strong></p>
 <p>而具体到gcc中则大体分为4个步骤:</p>
-<h5 id="1-计算当前函数的支配结点边界"><a href="#1-计算当前函数的支配结点边界" class="headerlink" title="1.计算当前函数的支配结点边界"></a>1.计算当前函数的支配结点边界</h5><p>​        按照迭代的必经结点边界算法, 要想确定phi函数插入的位置,必须要先根据函数的CFG确定函数的支配结点边界(支配结点边界的定义和算法见[2]), 在gcc中则是</p>
+<h5 id="计算当前函数的支配结点边界"><a href="#计算当前函数的支配结点边界" class="headerlink" title="计算当前函数的支配结点边界"></a>计算当前函数的支配结点边界</h5><p>​        按照迭代的必经结点边界算法, 要想确定phi函数插入的位置,必须要先根据函数的CFG确定函数的支配结点边界(支配结点边界的定义和算法见[2]), 在gcc中则是</p>
 <pre><code>  1) 先通过calculate_dominance_info计算当前函数的支配结点信息
 
   2) 再通过compute_dominance_frontiers计算当前函数的支配结点边界信息
 </code></pre>
-<h5 id="2-遍历并记录函数每条指令中出现的变量的defs-uses信息"><a href="#2-遍历并记录函数每条指令中出现的变量的defs-uses信息" class="headerlink" title="2.遍历并记录函数每条指令中出现的变量的defs/uses信息"></a>2.遍历并记录函数每条指令中出现的变量的defs/uses信息</h5><p>​        此步主要是收集函数每条指令中出现的变量的defs/uses信息,这些信息保存在标量的bitmap中, 故可以按照任意的顺序遍历指令,而在gcc中则是采用基于支配树的深度优先遍历(DFS)顺序遍历各个基本块(bb)中的一条条指令</p>
-<h5 id="3-为每个变量计算phi函数的插入点"><a href="#3-为每个变量计算phi函数的插入点" class="headerlink" title="3.为每个变量计算phi函数的插入点"></a>3.为每个变量计算phi函数的插入点</h5><p>​        1)中已经计算出了每个bb的支配结点边界信息；2)中计算出了每个变量的defs/uses信息, 按照迭代的必经结点边界算法, 此变量每一个def出现的结点的必经结点边界结点均需要插入一个phi函数, 插入后的phi函数作为此变量的一个新定值(def)点参与迭代计算.</p>
+<h5 id="遍历并记录函数每条指令中出现的变量的defs-uses信息"><a href="#遍历并记录函数每条指令中出现的变量的defs-uses信息" class="headerlink" title="遍历并记录函数每条指令中出现的变量的defs/uses信息"></a>遍历并记录函数每条指令中出现的变量的defs/uses信息</h5><p>​        此步主要是收集函数每条指令中出现的变量的defs/uses信息,这些信息保存在标量的bitmap中, 故可以按照任意的顺序遍历指令,而在gcc中则是采用基于支配树的深度优先遍历(DFS)顺序遍历各个基本块(bb)中的一条条指令</p>
+<h5 id="为每个变量计算phi函数的插入点"><a href="#为每个变量计算phi函数的插入点" class="headerlink" title="为每个变量计算phi函数的插入点"></a>为每个变量计算phi函数的插入点</h5><p>​        1)中已经计算出了每个bb的支配结点边界信息；2)中计算出了每个变量的defs/uses信息, 按照迭代的必经结点边界算法, 此变量每一个def出现的结点的必经结点边界结点均需要插入一个phi函数, 插入后的phi函数作为此变量的一个新定值(def)点参与迭代计算.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">针对当前函数中的每个变量均需要通过此算法计算出其需要插入phi函数的结点信息,并在对应结点为每个变量分别插入phi函数</span><br></pre></td></tr></table></figure>
 <h5 id="按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化"><a href="#按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化" class="headerlink" title="按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化"></a>按照支配树的DFS遍历重写每个bb的每条指令并将整个函数SSA化</h5><p>​        这里和步骤2)不同, SSA化的过程必须按照支配树的深度优先算法遍历结点,</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1)对于每个结点顺序需遍历所有语句,对于每条语句:</span><br><span class="line"></span><br><span class="line">   	A.若发现一个操作数中涉及变量使用(use)时,需要将此操作数改为对此变量在DFS上最新定义(SSA_NAME)的使用</span><br><span class="line">   	</span><br><span class="line"> 		B.若发现一个操作数中涉及变量定值(def)时,需要为此变量新创建一个SSA_NAME作为此变量的最新定义, 并将此此操作数改为新创建的SSA_NAME</span><br><span class="line"> 		</span><br><span class="line">   (2) 语句处理完毕后续为此结点的每个后继结点的所有phi函数确定一个参数(phi函数的第x个参数来自其第x个前驱结点)</span><br><span class="line">   </span><br><span class="line">    phi函数对应原始变量在4.4)-1)-2)中的最新定值(def)则为phi函数的第x个参数,代表运行时来若控制流来自第x个前驱,则当前参数x的定值应来自哪个SSA_NAME</span><br></pre></td></tr></table></figure>
@@ -817,8 +817,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>中间表示（IR）</tag>
         <tag>CFG</tag>
+        <tag>中间表示（IR）</tag>
         <tag>AST</tag>
         <tag>TAC</tag>
         <tag>SSA</tag>
@@ -860,8 +860,8 @@
         <category>博客</category>
       </categories>
       <tags>
-        <tag>博客</tag>
         <tag>hexo</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
   <entry>
@@ -971,7 +971,6 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>数据流</tag>
         <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
@@ -979,6 +978,7 @@
         <tag>Datalog</tag>
         <tag>CFG</tag>
         <tag>IR</tag>
+        <tag>数据流</tag>
       </tags>
   </entry>
   <entry>
@@ -1110,8 +1110,8 @@
         <category>程序分析</category>
       </categories>
       <tags>
-        <tag>程序分析</tag>
         <tag>数据流</tag>
+        <tag>程序分析</tag>
         <tag>Def-Use</tag>
         <tag>中间表示（IR）</tag>
       </tags>
