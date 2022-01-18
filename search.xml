@@ -19,8 +19,8 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>EOSIO</tag>
         <tag>数据流</tag>
+        <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
@@ -1059,8 +1059,8 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>EOSIO</tag>
         <tag>数据流</tag>
+        <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
