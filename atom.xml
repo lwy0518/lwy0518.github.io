@@ -6,7 +6,7 @@
   <link href="https://lwy0518.github.io/atom.xml" rel="self"/>
   
   <link href="https://lwy0518.github.io/"/>
-  <updated>2022-02-12T06:29:35.640Z</updated>
+  <updated>2022-02-13T13:50:15.506Z</updated>
   <id>https://lwy0518.github.io/</id>
   
   <author>
@@ -17,16 +17,94 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>redis相关知识</title>
-    <link href="https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
-    <id>https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
-    <published>2022-02-12T06:22:21.000Z</published>
-    <updated>2022-02-12T06:29:35.640Z</updated>
+    <title>docker高级篇学习笔记</title>
+    <link href="https://lwy0518.github.io/2022/02/13/docker%E9%AB%98%E7%BA%A7%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://lwy0518.github.io/2022/02/13/docker%E9%AB%98%E7%BA%A7%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-02-13T13:06:53.000Z</published>
+    <updated>2022-02-13T13:50:15.506Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
 
 &lt;h3 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h3&gt;&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="Docker" scheme="https://lwy0518.github.io/categories/Docker/"/>
+    
+    
+    <category term="Docker" scheme="https://lwy0518.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker学习笔记</title>
+    <link href="https://lwy0518.github.io/2022/02/13/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://lwy0518.github.io/2022/02/13/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-02-13T13:01:04.000Z</published>
+    <updated>2022-02-13T13:50:07.692Z</updated>
+    
+    
+    <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
+
+&lt;h3 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h3&gt;&lt;hr&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>redis学习笔记</title>
+    <link href="https://lwy0518.github.io/2022/02/13/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://lwy0518.github.io/2022/02/13/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-02-13T06:51:52.000Z</published>
+    <updated>2022-02-13T13:49:59.606Z</updated>
+    
+    
+    <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
+
+&lt;h3 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h3&gt;&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="Redis" scheme="https://lwy0518.github.io/categories/Redis/"/>
+    
+    
+    <category term="Redis" scheme="https://lwy0518.github.io/tags/Redis/"/>
+    
+    <category term="数据库" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>kubernetes相关知识</title>
+    <link href="https://lwy0518.github.io/2022/02/12/kubernetes%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
+    <id>https://lwy0518.github.io/2022/02/12/kubernetes%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
+    <published>2022-02-12T13:34:24.000Z</published>
+    <updated>2022-02-13T13:49:40.714Z</updated>
+    
+    
+    <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
+
+&lt;h3 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h3&gt;&lt;hr&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>redis相关知识</title>
+    <link href="https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
+    <id>https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
+    <published>2022-02-12T06:22:21.000Z</published>
+    <updated>2022-02-13T13:26:58.487Z</updated>
+    
+    
+    <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
+
+&lt;h4 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h4&gt;&lt;h5 id=&quot;1、NoSQL数据库简介&quot;&gt;&lt;a href=&quot;#1、NoSQL数据库简介&quot; class=&quot;headerlink&quot; title=&quot;1、NoSQL数据库简介&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#1%E3%80%81NoSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%80%E4%BB%8B&quot;&gt;1、NoSQL数据库简介&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;2、Redis6概述和安装&quot;&gt;&lt;a href=&quot;#2、Redis6概述和安装&quot; class=&quot;headerlink&quot; title=&quot;2、Redis6概述和安装&quot;&gt;&lt;/a&gt;&lt;a href=&quot;2%E3%80%81Redis6%E6%A6%82%E8%BF%B0%E5%92%8C%E5%AE%89%E8%A3%85&quot;&gt;2、Redis6概述和安装&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;3、常用五大数据类型&quot;&gt;&lt;a href=&quot;#3、常用五大数据类型&quot; class=&quot;headerlink&quot; title=&quot;3、常用五大数据类型&quot;&gt;&lt;/a&gt;&lt;a href=&quot;3%E3%80%81%E5%B8%B8%E7%94%A8%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B&quot;&gt;3、常用五大数据类型&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;4、Redis6配置文件详解&quot;&gt;&lt;a href=&quot;#4、Redis6配置文件详解&quot; class=&quot;headerlink&quot; title=&quot;4、Redis6配置文件详解&quot;&gt;&lt;/a&gt;&lt;a href=&quot;4%E3%80%81Redis6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3&quot;&gt;4、Redis6配置文件详解&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;5、Redis6的发布和订阅&quot;&gt;&lt;a href=&quot;#5、Redis6的发布和订阅&quot; class=&quot;headerlink&quot; title=&quot;5、Redis6的发布和订阅&quot;&gt;&lt;/a&gt;&lt;a href=&quot;5%E3%80%81Redis6%E7%9A%84%E5%8F%91%E5%B8%83%E5%92%8C%E8%AE%A2%E9%98%85&quot;&gt;5、Redis6的发布和订阅&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;6、Redis6新数据类型&quot;&gt;&lt;a href=&quot;#6、Redis6新数据类型&quot; class=&quot;headerlink&quot; title=&quot;6、Redis6新数据类型&quot;&gt;&lt;/a&gt;&lt;a href=&quot;6%E3%80%81Redis6%E6%96%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B&quot;&gt;6、Redis6新数据类型&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;7、Jedis操作Redis6&quot;&gt;&lt;a href=&quot;#7、Jedis操作Redis6&quot; class=&quot;headerlink&quot; title=&quot;7、Jedis操作Redis6&quot;&gt;&lt;/a&gt;&lt;a href=&quot;7%E3%80%81Jedis%E6%93%8D%E4%BD%9CRedis6&quot;&gt;7、Jedis操作Redis6&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;8、Redis6与SpringBoot整合&quot;&gt;&lt;a href=&quot;#8、Redis6与SpringBoot整合&quot; class=&quot;headerlink&quot; title=&quot;8、Redis6与SpringBoot整合&quot;&gt;&lt;/a&gt;&lt;a href=&quot;8%E3%80%81Redis6%E4%B8%8ESpringBoot%E6%95%B4%E5%90%88&quot;&gt;8、Redis6与SpringBoot整合&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;9、Redis6的事务操作&quot;&gt;&lt;a href=&quot;#9、Redis6的事务操作&quot; class=&quot;headerlink&quot; title=&quot;9、Redis6的事务操作&quot;&gt;&lt;/a&gt;&lt;a href=&quot;9%E3%80%81Redis6%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C&quot;&gt;9、Redis6的事务操作&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;10、Redis6持久化之RDB&quot;&gt;&lt;a href=&quot;#10、Redis6持久化之RDB&quot; class=&quot;headerlink&quot; title=&quot;10、Redis6持久化之RDB&quot;&gt;&lt;/a&gt;&lt;a href=&quot;10%E3%80%81Redis6%E6%8C%81%E4%B9%85%E5%8C%96%E4%B9%8BRDB&quot;&gt;10、Redis6持久化之RDB&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;11、Redis6持久化之AOF&quot;&gt;&lt;a href=&quot;#11、Redis6持久化之AOF&quot; class=&quot;headerlink&quot; title=&quot;11、Redis6持久化之AOF&quot;&gt;&lt;/a&gt;&lt;a href=&quot;11%E3%80%81Redis6%E6%8C%81%E4%B9%85%E5%8C%96%E4%B9%8BAOF&quot;&gt;11、Redis6持久化之AOF&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;12、Redis6的主从复制&quot;&gt;&lt;a href=&quot;#12、Redis6的主从复制&quot; class=&quot;headerlink&quot; title=&quot;12、Redis6的主从复制&quot;&gt;&lt;/a&gt;&lt;a href=&quot;12%E3%80%81Redis6%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&quot;&gt;12、Redis6的主从复制&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;13、Redis6集群&quot;&gt;&lt;a href=&quot;#13、Redis6集群&quot; class=&quot;headerlink&quot; title=&quot;13、Redis6集群&quot;&gt;&lt;/a&gt;&lt;a href=&quot;13%E3%80%81Redis6%E9%9B%86%E7%BE%A4&quot;&gt;13、Redis6集群&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;14、Redis6应用问题解决&quot;&gt;&lt;a href=&quot;#14、Redis6应用问题解决&quot; class=&quot;headerlink&quot; title=&quot;14、Redis6应用问题解决&quot;&gt;&lt;/a&gt;&lt;a href=&quot;14%E3%80%81Redis6%E5%BA%94%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3&quot;&gt;14、Redis6应用问题解决&lt;/a&gt;&lt;/h5&gt;&lt;h5 id=&quot;15、Redis6新功能&quot;&gt;&lt;a href=&quot;#15、Redis6新功能&quot; class=&quot;headerlink&quot; title=&quot;15、Redis6新功能&quot;&gt;&lt;/a&gt;&lt;a href=&quot;15%E3%80%81Redis6%E6%96%B0%E5%8A%9F%E8%83%BD&quot;&gt;15、Redis6新功能&lt;/a&gt;&lt;/h5&gt;&lt;hr&gt;</summary>
     
     
     
@@ -266,6 +344,8 @@
     
     <category term="EOSIO" scheme="https://lwy0518.github.io/tags/EOSIO/"/>
     
+    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
+    
     <category term="编译器" scheme="https://lwy0518.github.io/tags/%E7%BC%96%E8%AF%91%E5%99%A8/"/>
     
     <category term="漏洞检测" scheme="https://lwy0518.github.io/tags/%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B/"/>
@@ -277,8 +357,6 @@
     <category term="CFG" scheme="https://lwy0518.github.io/tags/CFG/"/>
     
     <category term="IR" scheme="https://lwy0518.github.io/tags/IR/"/>
-    
-    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
     
   </entry>
   
@@ -300,9 +378,9 @@
     <category term="程序分析" scheme="https://lwy0518.github.io/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/"/>
     
     
-    <category term="CFG" scheme="https://lwy0518.github.io/tags/CFG/"/>
-    
     <category term="中间表示（IR）" scheme="https://lwy0518.github.io/tags/%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA%EF%BC%88IR%EF%BC%89/"/>
+    
+    <category term="CFG" scheme="https://lwy0518.github.io/tags/CFG/"/>
     
     <category term="AST" scheme="https://lwy0518.github.io/tags/AST/"/>
     
@@ -319,7 +397,7 @@
     <link href="https://lwy0518.github.io/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/"/>
     <id>https://lwy0518.github.io/2021/12/10/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91/</id>
     <published>2021-12-10T07:10:46.000Z</published>
-    <updated>2021-12-22T02:59:05.560Z</updated>
+    <updated>2022-02-13T13:14:52.467Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -399,6 +477,8 @@
     
     <category term="EOSIO" scheme="https://lwy0518.github.io/tags/EOSIO/"/>
     
+    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
+    
     <category term="编译器" scheme="https://lwy0518.github.io/tags/%E7%BC%96%E8%AF%91%E5%99%A8/"/>
     
     <category term="漏洞检测" scheme="https://lwy0518.github.io/tags/%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B/"/>
@@ -411,8 +491,6 @@
     
     <category term="IR" scheme="https://lwy0518.github.io/tags/IR/"/>
     
-    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
-    
   </entry>
   
   <entry>
@@ -420,7 +498,7 @@
     <link href="https://lwy0518.github.io/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/"/>
     <id>https://lwy0518.github.io/2021/12/07/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</id>
     <published>2021-12-07T07:31:36.000Z</published>
-    <updated>2021-12-23T03:00:11.231Z</updated>
+    <updated>2022-02-13T13:10:00.586Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -446,9 +524,9 @@
     <category term="程序分析" scheme="https://lwy0518.github.io/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/"/>
     
     
-    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
-    
     <category term="程序分析" scheme="https://lwy0518.github.io/tags/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/"/>
+    
+    <category term="数据流" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B5%81/"/>
     
     <category term="Def-Use" scheme="https://lwy0518.github.io/tags/Def-Use/"/>
     
@@ -461,7 +539,7 @@
     <link href="https://lwy0518.github.io/2021/12/07/EOSIO-Vulneribilities/"/>
     <id>https://lwy0518.github.io/2021/12/07/EOSIO-Vulneribilities/</id>
     <published>2021-12-07T07:29:37.000Z</published>
-    <updated>2021-12-22T02:58:46.385Z</updated>
+    <updated>2022-02-13T13:08:46.693Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
