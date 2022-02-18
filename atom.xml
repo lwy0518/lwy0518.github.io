@@ -6,7 +6,7 @@
   <link href="https://lwy0518.github.io/atom.xml" rel="self"/>
   
   <link href="https://lwy0518.github.io/"/>
-  <updated>2022-02-13T13:50:15.506Z</updated>
+  <updated>2022-02-14T07:14:16.791Z</updated>
   <id>https://lwy0518.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://lwy0518.github.io/2022/02/13/docker%E9%AB%98%E7%BA%A7%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>https://lwy0518.github.io/2022/02/13/docker%E9%AB%98%E7%BA%A7%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
     <published>2022-02-13T13:06:53.000Z</published>
-    <updated>2022-02-13T13:50:15.506Z</updated>
+    <updated>2022-02-14T07:14:16.791Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -42,7 +42,7 @@
     <link href="https://lwy0518.github.io/2022/02/13/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>https://lwy0518.github.io/2022/02/13/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
     <published>2022-02-13T13:01:04.000Z</published>
-    <updated>2022-02-13T13:50:07.692Z</updated>
+    <updated>2022-02-14T07:14:18.337Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -51,6 +51,10 @@
     
     
     
+    <category term="Docker" scheme="https://lwy0518.github.io/categories/Docker/"/>
+    
+    
+    <category term="Docker" scheme="https://lwy0518.github.io/tags/Docker/"/>
     
   </entry>
   
@@ -58,8 +62,8 @@
     <title>redis学习笔记</title>
     <link href="https://lwy0518.github.io/2022/02/13/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>https://lwy0518.github.io/2022/02/13/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
-    <published>2022-02-13T06:51:52.000Z</published>
-    <updated>2022-02-13T13:49:59.606Z</updated>
+    <published>2022-02-13T06:51:52.214Z</published>
+    <updated>2022-02-14T07:14:25.511Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -75,6 +79,8 @@
     
     <category term="数据库" scheme="https://lwy0518.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
+    <category term="[object Object]" scheme="https://lwy0518.github.io/tags/object-Object/"/>
+    
   </entry>
   
   <entry>
@@ -82,7 +88,7 @@
     <link href="https://lwy0518.github.io/2022/02/12/kubernetes%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
     <id>https://lwy0518.github.io/2022/02/12/kubernetes%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
     <published>2022-02-12T13:34:24.000Z</published>
-    <updated>2022-02-13T13:49:40.714Z</updated>
+    <updated>2022-02-14T07:14:23.803Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
@@ -91,6 +97,12 @@
     
     
     
+    <category term="K8S" scheme="https://lwy0518.github.io/categories/K8S/"/>
+    
+    
+    <category term="K8s" scheme="https://lwy0518.github.io/tags/K8s/"/>
+    
+    <category term="容器" scheme="https://lwy0518.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
     
   </entry>
   
@@ -99,7 +111,7 @@
     <link href="https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
     <id>https://lwy0518.github.io/2022/02/12/redis%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
     <published>2022-02-12T06:22:21.000Z</published>
-    <updated>2022-02-13T13:26:58.487Z</updated>
+    <updated>2022-02-14T07:14:21.599Z</updated>
     
     
     <summary type="html">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;
