@@ -19,8 +19,8 @@
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>EOSIO</tag>
         <tag>数据流</tag>
+        <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
@@ -6935,8 +6935,8 @@ cluster-node-timeout 15000  设定节点失联时间，超过该时间（毫秒�
         <category>EOSIO</category>
       </categories>
       <tags>
-        <tag>EOSIO</tag>
         <tag>数据流</tag>
+        <tag>EOSIO</tag>
         <tag>编译器</tag>
         <tag>漏洞检测</tag>
         <tag>静态分析</tag>
